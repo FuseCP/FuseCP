@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Done for today",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File",
+        "${workspaceFolder}/FuseCP/Tools/Done-For-Today.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Closing VS",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File",
+        "${workspaceFolder}/FuseCP/Tools/Closing-VS.ps1"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
