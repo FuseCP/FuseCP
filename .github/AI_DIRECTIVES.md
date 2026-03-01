@@ -69,4 +69,16 @@ AI tools must not be used to:
 Maintainers may request edits, additional testing, provenance details, or reject
 changes that do not comply with these directives.
 
+## 8. Session Continuity (Required)
+
+When AI performs multi-session work, it must maintain the repository tracker:
+
+* Use `TODO_MULTI_DAY_TRACKER.md` as the single source of truth for ongoing tasks.
+* At session start, resume from any `IN-PROGRESS` item first; otherwise pick the highest-priority `TODO`.
+* Keep exactly one item in `IN-PROGRESS` unless maintainers explicitly request parallel tracks.
+* On pause/stop, update the item status (`PAUSED` or `DONE`) and set a concrete `Next Resume Step`.
+* Append a one-line Daily Log entry summarizing progress and validation performed.
+
+If this tracker is missing or out of date, AI should create/update it before continuing substantial implementation.
+
 These directives supplement (and do not replace) the project Code of Conduct.
