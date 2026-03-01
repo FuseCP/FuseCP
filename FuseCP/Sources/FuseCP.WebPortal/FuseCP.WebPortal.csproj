@@ -97,19 +97,19 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup Condition="$(TargetFramework) == 'net10.0'">
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web" Version="1.4.2" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web" Version="1.4.6" />
         <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.9.30" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Drawing" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Configuration" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Build" Version="1.4.2" ExcludeAssets="runtime" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Compilers" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Extensions" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Mobile" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Optimization" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Optimization.WebForms" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Infrastructure" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.WebGrease" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.AjaxControlToolkit" Version="1.4.2" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Drawing" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Configuration" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Build" Version="1.4.6" ExcludeAssets="runtime" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Compilers" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Extensions" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Mobile" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Optimization" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Optimization.WebForms" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Infrastructure" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.WebGrease" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.AjaxControlToolkit" Version="1.4.6" />
         
         <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="10.0.0" />
     </ItemGroup>

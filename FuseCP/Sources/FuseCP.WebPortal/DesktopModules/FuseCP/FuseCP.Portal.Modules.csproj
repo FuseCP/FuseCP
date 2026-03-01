@@ -37,13 +37,13 @@
     
     <ItemGroup Condition="$(TargetFramework) != 'net48'">
 		<PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web" Version="1.4.2" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web" Version="1.4.6" />
                 <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.9.30" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Configuration" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Build" Version="1.4.2" ExcludeAssets="runtime" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Mobile" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Extensions" Version="1.4.2" />
-        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.AjaxControlToolkit" Version="1.4.2" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Configuration" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Build" Version="1.4.6" ExcludeAssets="runtime" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Mobile" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Extensions" Version="1.4.6" />
+        <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.AjaxControlToolkit" Version="1.4.6" />
         <PackageReference Include="System.Web.Services.Description" Version="10.0.652802" Aliases="SD" />
         <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
     </ItemGroup>

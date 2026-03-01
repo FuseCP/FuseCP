@@ -21,8 +21,8 @@ Last updated: 2026-03-01 (session continuity enabled)
 
 | ID | Priority | Status | Area | Task | Next Resume Step | Updated |
 |---|---|---|---|---|---|---|
-| P1-01 | P1 | IN-PROGRESS | Net10 Compatibility | Upgrade WebFormsForCore stack from 1.4.2 -> 1.4.6 in Portal and Portal.Modules | Update package refs in WebPortal + Portal.Modules, then run `run-local-validation.ps1 -Scope Portal -Configuration Debug -DisableNuGetAudit` | 2026-03-01 |
-| P1-02 | P1 | TODO | Compatibility | Remove SSL3/WebRequest-era TLS behavior in CheckWebSiteTask | Replace with modern HttpClient flow, preserve behavior | 2026-03-01 |
+| P1-01 | P1 | DONE | Net10 Compatibility | Upgrade WebFormsForCore stack from 1.4.2 -> 1.4.6 in Portal and Portal.Modules | Completed. Included noVNC WebFormsForCore alignment to resolve NU1605 downgrade during Portal validation. | 2026-03-01 |
+| P1-02 | P1 | IN-PROGRESS | Compatibility | Remove SSL3/WebRequest-era TLS behavior in CheckWebSiteTask | Replace with modern HttpClient flow, preserve behavior | 2026-03-01 |
 | P1-03 | P1 | TODO | MailCleaner | Modernize APIMailCleanerHelper from HttpWebRequest/ServicePointManager to HttpClientHandler | Keep IgnoreCheckSSL behavior, add compatibility smoke check | 2026-03-01 |
 | P2-01 | P2 | TODO | Packages | Patch/minor update wave for MailKit, MimeKit, Microsoft.Data.SqlClient, BouncyCastle | Update in smallest safe batch, run ChangedOnly validation | 2026-03-01 |
 | P2-02 | P2 | TODO | Packages | Align IdentityModel package family versions | Choose one aligned version band and rebuild Enterprise/Server | 2026-03-01 |
@@ -60,6 +60,8 @@ Last updated: 2026-03-01 (session continuity enabled)
 - Scoped validation (Portal/Enterprise/Server) succeeded with high warning volume.
 - Identified primary next focus: net10 compatibility warnings (NU1701/WebFormsForCore path) and legacy TLS/WebRequest code paths.
 - Session continuity enabled: set P1-01 to IN-PROGRESS as the default resume target.
+- Completed P1-01 uplift: WebFormsForCore packages updated to 1.4.6 in WebPortal + Portal.Modules, plus noVNC alignment to prevent NU1605 downgrade.
+- Validation: `pwsh -File .\FuseCP\Tools\run-local-validation.ps1 -Scope Portal -Configuration Debug -DisableNuGetAudit` passed (warnings remain; no blocking errors).
 
 ## Parking Lot (Ideas, Not Committed)
 
