@@ -1,6 +1,6 @@
 # Multi-Day Work Tracker
 
-Last updated: 2026-03-01 (session continuity enabled)
+Last updated: 2026-03-03 (session continuity enabled)
 
 ## Status Legend
 
@@ -33,6 +33,18 @@ Last updated: 2026-03-01 (session continuity enabled)
 
 ## Session Checklist (Start / Pause / Resume)
 
+## Warning Remediation Guardrails (Do Not Skip)
+
+- Work in batches (3-6 related files per batch), not per-file micro loops.
+- Use `FuseCP/build-debug.bat` as the default build validation gate for each batch.
+- Do not remove/relax project dependencies, output paths, or assembly load/copy behavior to reduce warnings.
+- If a warning fix touches project references or package versions, verify critical runtime artifacts are still produced and loadable:
+  - `FuseCP.EnterpriseServer.dll`
+  - `FuseCP.Server.dll`
+  - `FuseCP.EnterpriseServer.Client.dll`
+- Functionality and compatibility across related scopes (Portal/Enterprise/Server) take priority over warning count.
+- No warning suppression as a shortcut; use real code/package/framework fixes.
+
 ### Start of Session
 
 - Review top IN-PROGRESS or highest-priority TODO.
@@ -62,6 +74,11 @@ Last updated: 2026-03-01 (session continuity enabled)
 - Session continuity enabled: set P1-01 to IN-PROGRESS as the default resume target.
 - Completed P1-01 uplift: WebFormsForCore packages updated to 1.4.6 in WebPortal + Portal.Modules, plus noVNC alignment to prevent NU1605 downgrade.
 - Validation: `pwsh -File .\FuseCP\Tools\run-local-validation.ps1 -Scope Portal -Configuration Debug -DisableNuGetAudit` passed (warnings remain; no blocking errors).
+
+### 2026-03-03
+
+- Regression fixed: restored net48 EnterpriseServer dependency chain for EnterpriseServer.Client so portal runtime assembly loading is not broken by warning-cleanup changes.
+- Guardrails added for multi-day warning work: batch-only remediation, `build-debug.bat` per batch, and explicit runtime artifact checks for critical assemblies.
 
 ## Parking Lot (Ideas, Not Committed)
 

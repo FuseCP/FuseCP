@@ -50,8 +50,18 @@ Choose `-Scope Shared` when uncertain.
 - Prioritize low-risk fixes first:
   - exact-version alignment for existing package constraints
   - removal of unnecessary explicit references
-- Validate warning deltas with targeted build commands before broadening.
+- Validate warning deltas in batches (not per-file loops) before broadening.
+- Use `FuseCP/build-debug.bat` as the default validation gate for warning-remediation batches.
 - Do not hide warnings globally; prefer explicit fixes.
+
+Regression-prevention requirements during warning work:
+
+- Do not remove or weaken project dependency edges/output-copy behavior to silence warnings.
+- If any package/reference/project-reference/output-path change is made, verify critical runtime assemblies still resolve:
+  - `FuseCP.EnterpriseServer.dll`
+  - `FuseCP.Server.dll`
+  - `FuseCP.EnterpriseServer.Client.dll`
+- Treat Portal/Enterprise/Server as coupled scopes for compatibility checks.
 
 For dependency/CVE updates:
 
