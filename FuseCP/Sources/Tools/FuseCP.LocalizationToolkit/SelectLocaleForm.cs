@@ -82,6 +82,8 @@ namespace FuseCP.LocalizationToolkit
 
 		private string selectedLocale;
 
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SelectedLocale
 		{
 			get { return selectedLocale; }

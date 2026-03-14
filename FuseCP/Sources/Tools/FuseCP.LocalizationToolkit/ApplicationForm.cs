@@ -830,9 +830,10 @@ namespace FuseCP.LocalizationToolkit
 			{
 				if (this.thread.IsAlive)
 				{
-					this.thread.Abort();
+					this.thread.Interrupt();
+					this.thread.Join(500);
 				}
-				//this.thread.Join();
+				this.thread = null;
 			}
 		}
 
@@ -841,13 +842,13 @@ namespace FuseCP.LocalizationToolkit
 			Exception innerException = ex;
 			while (innerException != null)
 			{
-				if (innerException is System.Threading.ThreadAbortException)
+				if (innerException is ThreadInterruptedException)
 					return true;
 				innerException = innerException.InnerException;
 			}
 
 			string str = ex.ToString();
-			return str.Contains("System.Threading.ThreadAbortException");
+			return str.Contains("System.Threading.ThreadInterruptedException");
 		}
 
 		private void OnKeyDown(object sender, KeyEventArgs e)

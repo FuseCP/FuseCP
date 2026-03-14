@@ -14,16 +14,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using System.Security;
-using System.Security.Permissions;
 using System.Threading;
 using System.Resources;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Runtime.Versioning;
 using FuseCP.LocalizationToolkit;
 using System.Diagnostics;
+
+[assembly: SupportedOSPlatform("windows")]
 
 namespace FusecpCP.LocalizationToolkit
 {
@@ -73,15 +74,8 @@ namespace FusecpCP.LocalizationToolkit
 		/// </summary>
 		private static bool CheckSecurity()
 		{
-			try
-			{
-				new PermissionSet(PermissionState.Unrestricted).Demand();
-			}
-			catch (SecurityException)
-			{
-				return false;
-			}
-			return true;
+			string startupPath = AppDomain.CurrentDomain.BaseDirectory;
+			return !startupPath.StartsWith(@"\\", StringComparison.Ordinal);
 		}
 
 		private static void LoadResources(string source)

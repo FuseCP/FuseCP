@@ -31,6 +31,7 @@ namespace FuseCP.LocalizationToolkit
 	public class ProgressIcon : System.Windows.Forms.UserControl
 	{
 		private Thread thread = null;
+		private volatile bool stopRequested;
 		private int currentFrame = 0;
 		private int delayInterval = 50;
 		private int pause = 0;
@@ -66,8 +67,7 @@ namespace FuseCP.LocalizationToolkit
 				if( components != null )
 					components.Dispose();
 
-				if( thread != null )
-					thread.Abort();
+				StopAnimation();
 			}
 			base.Dispose( disposing );
 		}
@@ -117,6 +117,7 @@ namespace FuseCP.LocalizationToolkit
 		{
 			StopAnimation();
 			CheckRange();			// Check the first and the last frames
+			stopRequested = false;
 
 			thread = new Thread( new ThreadStart( threadFunc ) );
 			thread.IsBackground = true;
@@ -129,7 +130,9 @@ namespace FuseCP.LocalizationToolkit
 		{
 			if( thread != null )
 			{
-				thread.Abort();
+				stopRequested = true;
+				if( thread.IsAlive )
+					thread.Join(500);
 				thread = null;
 			}
 			currentLoop = 0;
@@ -186,7 +189,7 @@ namespace FuseCP.LocalizationToolkit
 			bool wasPause = false;
 			currentFrame = firstFrame;
 
-			while( thread != null && thread.IsAlive )
+			while( !stopRequested )
 			{
 				Refresh();						// Redraw the current frame
 				wasPause = false;
