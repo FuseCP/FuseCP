@@ -1,4 +1,7 @@
 @echo off
+setlocal
+pushd "%~dp0"
+
 :: forced output into English
 set DOTNET_CLI_UI_LANGUAGE=en-US
 set VSLANG=1033
@@ -30,6 +33,8 @@ IF not defined MsBuildSwitches ( Set MsBuildSwitches=/v:n /nr:false)
 IF not defined FuseCPVersion ( Set FuseCPVersion=2.0.0)
 IF not defined FuseCPFileVersion ( Set FuseCPFileVersion=2.0.0)
 IF not defined Configuration ( Set Configuration=Release)
+IF not defined BuildLegacyPackaging ( Set BuildLegacyPackaging=false)
+IF not defined BuildLinuxInstallPackages ( Set BuildLinuxInstallPackages=false)
 
 IF EXIST "%ProgramFiles%\Microsoft Visual Studio\18\Community\MSBuild\Current\bin\MSBuild.exe" (
 	Set FCPMSBuild="%ProgramFiles%\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\MSBuild.exe"
@@ -138,7 +143,12 @@ dotnet msbuild build.xml /target:Deploy ^
 	/p:Version="%FuseCPVersion%" ^
 	/p:FileVersion="%FuseCPFileVersion%" ^
 	/p:VersionLabel="%FuseCPFileVersion%" ^
+	/p:BuildLegacyPackaging=%BuildLegacyPackaging% ^
+	/p:BuildLinuxInstallPackages=%BuildLinuxInstallPackages% ^
 	%MsBuildSwitches% ^
 	/fileLogger ^
 	/flp:verbosity=normal ^
 	/p:VisualStudioVersion=%FCPVSVer%
+set ERR=%ERRORLEVEL%
+popd
+endlocal & exit /b %ERR%
