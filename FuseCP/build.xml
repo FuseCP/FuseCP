@@ -106,8 +106,8 @@
 		<BuildInstallerSolution Condition="'$(BuildInstallerSolution)' == ''">false</BuildInstallerSolution>
 
 		<!-- Build legacy MSI package (.vdproj) with devenv.com (requires full Visual Studio + Installer Projects extension) -->
-		<BuildInstallerMsi Condition="'$(BuildInstallerMsi)' == '' and Exists('$(DevEnv)')">true</BuildInstallerMsi>
-		<BuildInstallerMsi Condition="'$(BuildInstallerMsi)' == '' and !Exists('$(DevEnv)')">false</BuildInstallerMsi>
+		<BuildInstallerMsi Condition="'$(BuildInstallerMsi)' == '' and '$(BuildInstallerSolution)' == 'true' and Exists('$(DevEnv)')">true</BuildInstallerMsi>
+		<BuildInstallerMsi Condition="'$(BuildInstallerMsi)' == ''">false</BuildInstallerMsi>
 
 		<!-- Build legacy database sql script from install_db.sql & update_db.sql -->
 		<BuildLegacyDatabaseScript Condition="'$(BuildLegacyDatabaseScript)' == ''">false</BuildLegacyDatabaseScript>
