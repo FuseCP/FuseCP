@@ -26,8 +26,6 @@ using System.Text;
 using System.Runtime.Versioning;
 #endif
 
-using Microsoft.Win32;
-
 
 namespace FuseCP.VmConfig
 {
