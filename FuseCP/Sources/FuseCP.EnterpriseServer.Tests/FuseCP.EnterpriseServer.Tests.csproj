@@ -31,8 +31,7 @@
         <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.3" />
         <PackageReference Include="Azure.Identity" Version="1.17.1" />
         <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.10" />
-        <PackageReference Include="EntityFramework.DynamicLinq" Version="1.6.10" Condition="'$(TargetFramework)' == 'net48'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.6.10" Condition="'$(TargetFramework)' != 'net48'" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.6.10" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
         <PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
         <PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
@@ -51,23 +50,10 @@
         <ProjectReference Include="..\FuseCP.Tests\FuseCP.Tests.csproj" />
     </ItemGroup>
 
-    <ItemGroup Condition="$(TargetFramework) == 'net48'">
-        <Reference Include="System.Net.Http" />
-    </ItemGroup>
-
     <ItemGroup>
         <Folder Include="App_Data\" />
         <Folder Include="TestResults\" />
     </ItemGroup>
-
-    <Target Name="CopyNativeDlls" AfterTargets="Build" Condition="$(TargetFramework) == 'net48'">
-        <ItemGroup>
-            <ESDataFiles64 Include="..\FuseCP.EnterpriseServer.Data\bin\$(Configuration)\net48\x64\**\*.*" />
-            <ESDataFiles86 Include="..\FuseCP.EnterpriseServer.Data\bin\$(Configuration)\net48\x86\**\*.*" />
-        </ItemGroup>
-        <Copy SourceFiles="@(ESDataFiles64)" DestinationFolder="bin\$(Configuration)\net48\x64\%(RecursiveDir)" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="@(ESDataFiles86)" DestinationFolder="bin\$(Configuration)\net48\x86\%(RecursiveDir)" SkipUnchangedFiles="true" />
-    </Target>
 
 </Project>
 

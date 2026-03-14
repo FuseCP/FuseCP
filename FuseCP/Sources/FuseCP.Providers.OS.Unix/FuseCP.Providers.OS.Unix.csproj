@@ -9,9 +9,6 @@
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <LangVersion>12</LangVersion>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(TargetFramework)' == 'net48' ">
-        <OutputPath>bin\$(Configuration)\net48</OutputPath>
-    </PropertyGroup>
     <Target Name="CopyMonoPosixNETStandard" AfterTargets="Build">
 		<ItemGroup>
 			<CopyFiles Include="$(PkgMono_Posix)lib\netstandard2.0\Mono.Posix.*" />

@@ -15,20 +15,9 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
         <DebugType>portable</DebugType>
     </PropertyGroup>
-
-    <PropertyGroup Condition="$(TargetFramework) == 'net48'">
-        <OutputPath>..\FuseCP.EnterpriseServer\bin\Code</OutputPath>
-    </PropertyGroup>
     <PropertyGroup Condition="$(TargetFramework) == 'net10.0'">
         <OutputPath>..\FuseCP.EnterpriseServer\bin_dotnet</OutputPath>
     </PropertyGroup>
-
-	<ItemGroup Condition="$(TargetFramework) == 'net48'">
-		<Reference Include="System.Configuration.Install" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.ServiceProcess" />
-    </ItemGroup>
     <ItemGroup>
         <Compile Include="..\VersionInfo.cs" Link="VersionInfo.cs" />
         <Compile Update="SchedulerService.cs" />
