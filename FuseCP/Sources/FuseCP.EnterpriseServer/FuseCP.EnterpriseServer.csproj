@@ -96,6 +96,8 @@
 
     <Target Name="CopyNativeDlls" AfterTargets="CopyFilesToOutputDirectory">
         <ItemGroup>
+            <ESDataFiles64 Include="..\FuseCP.EnterpriseServer.Data\bin\$(Configuration)\native\x64\**\*.*" />
+            <ESDataFiles86 Include="..\FuseCP.EnterpriseServer.Data\bin\$(Configuration)\native\x86\**\*.*" />
             <ESDataFiles64 Include="..\FuseCP.EnterpriseServer.Data\bin\$(Configuration)\net48\x64\**\*.*" />
             <ESDataFiles86 Include="..\FuseCP.EnterpriseServer.Data\bin\$(Configuration)\net48\x86\**\*.*" />
         </ItemGroup>

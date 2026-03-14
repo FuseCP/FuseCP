@@ -223,6 +223,8 @@
             <x86SQLiteFiles Include="$(PkgSQLitePCLRaw_lib_e_sqlite3)\runtimes\win-x86\native\*.dll" />
         </ItemGroup>
         <!--<Message Text="Copy native dlls: @(x64SQLiteFiles);@(x86SQLiteFiles)" Importance="high" />-->
+        <Copy SourceFiles="@(x64SQLiteFiles)" DestinationFolder="bin\$(Configuration)\native\x64" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(x86SQLiteFiles)" DestinationFolder="bin\$(Configuration)\native\x86" SkipUnchangedFiles="true" />
         <Copy SourceFiles="@(x64SQLiteFiles)" DestinationFolder="bin\$(Configuration)\net48\x64" SkipUnchangedFiles="true" />
         <Copy SourceFiles="@(x86SQLiteFiles)" DestinationFolder="bin\$(Configuration)\net48\x86" SkipUnchangedFiles="true" />
     </Target>

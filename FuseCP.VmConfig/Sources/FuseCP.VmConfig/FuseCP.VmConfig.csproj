@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net48;net8.0</TargetFrameworks>
+        <TargetFrameworks>net48;net10.0</TargetFrameworks>
         <StartupObject>FuseCP.VmConfig.Program</StartupObject>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <LangVersion>13</LangVersion>
