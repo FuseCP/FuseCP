@@ -73,19 +73,21 @@ jobs:
     steps:
 
     - name: Install WSL Ubuntu
-      uses: Vampire/setup-wsl@v6
-      with: 
-        wsl-version: 2
-        distribution: Ubuntu-24.04
-        additional-packages: dotnet-sdk-8.0
-        use-cache: 'false'
+      shell: pwsh
+      run: |
+        wsl --set-default-version 2
+        wsl --install -d Ubuntu-24.04 --no-launch
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host "wsl --install returned $LASTEXITCODE (continuing; distro may already be installed)."
+        }
+        wsl --distribution Ubuntu-24.04 --user root bash -lc "apt-get update && apt-get install -y wget ca-certificates"
 
     - name: Install .NET SDK 10.0.200 in WSL
       run: |
         wsl wget https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.200/dotnet-sdk-10.0.200-linux-x64.tar.gz
-        wsl tar -xvzf dotnet-sdk-10.0.200-linux-x64.tar.gz -C /usr/lib/dotnet
-        wsl dotnet --info
-        wsl dotnet dev-certs https
+        wsl --distribution Ubuntu-24.04 --user root tar -xvzf dotnet-sdk-10.0.200-linux-x64.tar.gz -C /usr/lib/dotnet
+        wsl /usr/lib/dotnet/dotnet --info
+        wsl /usr/lib/dotnet/dotnet dev-certs https
 
     - name: Checkout
       uses: actions/checkout@v5

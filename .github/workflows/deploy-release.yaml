@@ -93,12 +93,14 @@ jobs:
     #    wsl --version
 
     - name: Install WSL Ubuntu with rpm tools
-      uses: Vampire/setup-wsl@v6
-      with: 
-        wsl-version: 2
-        distribution: Ubuntu-24.04
-        additional-packages: rpm
-        use-cache: 'false'
+      shell: pwsh
+      run: |
+        wsl --set-default-version 2
+        wsl --install -d Ubuntu-24.04 --no-launch
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host "wsl --install returned $LASTEXITCODE (continuing; distro may already be installed)."
+        }
+        wsl --distribution Ubuntu-24.04 --user root bash -lc "apt-get update && apt-get install -y rpm"
 
     - name: Show WSL distro info
       run: |
