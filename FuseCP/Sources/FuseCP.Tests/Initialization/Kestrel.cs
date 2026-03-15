@@ -67,7 +67,22 @@ namespace FuseCP.Tests
 			}
 			var distro = (wslDistro?.ToString() ?? "Windows");
 
-			var exe = shell.Find("dotnet");
+			var exe = wslDistro != null ? "/usr/lib/dotnet/dotnet" : shell.Find("dotnet");
+			if (wslDistro != null)
+			{
+				var dotnetExists = shell.Exec($"test -x \"{exe}\" && echo ok").Output().Result.Trim() == "ok";
+				if (!dotnetExists)
+				{
+					var discoveredExe = shell.Find("dotnet");
+					if (!string.IsNullOrWhiteSpace(discoveredExe)) exe = discoveredExe;
+				}
+			}
+			if (string.IsNullOrWhiteSpace(exe))
+			{
+				throw new FileNotFoundException(wslDistro != null
+					? "Could not find dotnet in WSL. Expected /usr/lib/dotnet/dotnet or a PATH entry for dotnet."
+					: "Could not find dotnet in PATH.");
+			}
 			shell.LogFile = log;
 			shell.LogCommand += msg =>
 			{
