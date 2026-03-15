@@ -25,7 +25,7 @@ These instructions guide AI coding assistants working in this repository.
 * Update docs when behavior, configuration, or deployment steps change.
 * For files that carry copyright headers/metadata, use exact text `Copyright (C) 2026 FuseCP` and keep generator-driven files in sync (for example `FuseCP/build.xml` and generated `VersionInfo.*` files).
 * **UI/CSS changes**: Always edit the LESS source files (`main.less`, `Menus.less`) — never `main.css` directly. Recompile with `npm run build:css` from the `App_Themes/Default/Styles/` directory and commit both the `.less` and the recompiled `.css`.
-* **Database schema changes**: Edit Entity classes under `FuseCP.EnterpriseServer.Data/Entities/`, update Configuration Fluent API if needed, then generate a migration with `MigrationAdd.bat`. Never edit EF model snapshot files by hand. See `FuseCP/Sources/FuseCP.EnterpriseServer.Data/README.md` and `AI_DIRECTIVES.md §6` for the full workflow.
+* **Database schema changes**: Edit Entity classes under `FuseCP.EnterpriseServer.Data/Entities/`, update Configuration Fluent API if needed, then generate a migration with `MigrationAdd.bat`. Treat `install.*.sql` as generated artifacts, not the source of truth; SQLite upgrades run through EF migrations, not `install.sqlite.sql`. Never edit EF model snapshot files by hand. See `FuseCP/Sources/FuseCP.EnterpriseServer.Data/README.md` and `AI_DIRECTIVES.md §6` for the full workflow.
 
 ## Security and Data Handling
 

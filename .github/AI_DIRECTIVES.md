@@ -82,22 +82,26 @@ FuseCP uses Entity Framework (EF Core 8 on .NET 10, EF 6 on .NET Framework) for 
 ### Updating the schema
 
 1. Edit Entity classes in `FuseCP/Sources/FuseCP.EnterpriseServer.Data/Entities/` (e.g. add/remove properties).
-2. Update the corresponding Fluent API configuration in `FuseCP/Sources/FuseCP.EnterpriseServer.Data/Configuration/` if needed for cross-DB type mapping.
+2. Update the corresponding Fluent API configuration in `FuseCP/Sources/FuseCP.EnterpriseServer.Data/Configuration/` if needed for cross-DB type mapping, relationships, or seeded data (`HasData`).
 3. Create a migration:
    ```
    cd FuseCP/Sources/FuseCP.EnterpriseServer.Data
    MigrationAdd.bat   # or run individual lines for a single DB flavor
    ```
-4. Verify the generated migration files under `Migrations/` look correct.
-5. For raw SQL-based changes (legacy path via `FuseCP/Database/update_db.sql`), also apply `update_db.sql` to a fresh DB, re-scaffold, diff the `Entities/Sources/` output against `Entities/`, and manually port changes to the Entity and Configuration classes before raising a migration.
+4. Verify the generated migration files under `Migrations/` look correct, then regenerate the installer SQL artifacts (`install.*.sql`) from those migrations.
+5. Treat `install.*.sql` files as generated artifacts for fresh installs. Do not hand-edit them as the source of truth; fix the migration and/or Configuration seed data, then regenerate the scripts.
+6. For raw SQL-based legacy changes (`FuseCP/Database/update_db.sql` and `FuseCP/Database/Migrate_msSQL.sql`), only update those scripts when preserving the explicit legacy upgrade path is required. Apply the legacy script to a fresh DB, re-scaffold, diff the `Entities/Sources/` output against `Entities/`, and manually port changes to the Entity and Configuration classes before raising a migration.
 
 ### Rules
 
 * Never modify `main.css` directly — same discipline applies: never alter auto-generated EF model snapshot files by hand; let `dotnet ef` maintain them.
 * EF migrations are executed with EF Core only (NET 10); the installer applies SQL scripts for .NET Framework environments.
+* `install.sqlserver.sql` can be used by the installer for fresh installs and upgrade-from-v2+ SQL Server flows because it is generated from the current EF migration chain.
+* `install.sqlite.sql` is a generated fresh-install artifact only. SQLite upgrades must run through EF migration execution on .NET 10 (`context.Migrate()`); do not use `install.sqlite.sql` as an upgrade script.
 * Squash development-only intermediate migrations into one before a release using the `MigrationRemove.bat` / snapshot-revert approach documented in `FuseCP/Sources/FuseCP.EnterpriseServer.Data/README.md`.
-* Always update `FuseCP/Database/update_db.sql` when a schema migration is added so the legacy SQL path stays in sync.
-* When retiring a provider, add cleanup to `FuseCP/Database/update_db.sql` that is safe for upgraded installs: delete provider-owned defaults/properties first, then delete the provider row only when no `Services` rows reference it (never break FK integrity on existing tenants).
+* `FuseCP/Database/update_db.sql` is a legacy bridge for upgrading older installations to v2.0.0-era schema. Do not change it for normal post-v2.0.0 migration work unless the old-upgrade path itself must be repaired.
+* Use `FuseCP/Database/Migrate_msSQL.sql` for legacy SQL Server module cleanup during upgrade scenarios where that script is part of the supported path.
+* When retiring a provider, put the primary cleanup in Entity/Configuration changes plus EF migrations, regenerate `install.*.sql`, and only add legacy-script cleanup when older upgraded installs still need it. Legacy cleanup must delete provider-owned defaults/properties first, then delete the provider row only when no `Services` rows reference it (never break FK integrity on existing tenants).
 * If provider cleanup is skipped due to active references, the script must emit an explicit operator action message explaining that services must be reassigned to a supported provider before final provider-row deletion.
 * Reference: `FuseCP/Sources/FuseCP.EnterpriseServer.Data/README.md` for scaffolding, connection strings, and multi-DB type-mapping patterns.
 

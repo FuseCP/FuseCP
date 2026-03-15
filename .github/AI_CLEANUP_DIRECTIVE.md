@@ -23,8 +23,9 @@ When removing a feature, technology, provider, or component from FuseCP:
 3. **Database & Data**
    - [ ] Remove EF seed data (Configuration Fluent API files)
    - [ ] Remove or update database enums/constants
-   - [ ] Add idempotent database cleanup/migration guards to ALL DB scripts
-   - [ ] Update all database schema scripts: `install.*.sql` (MySQL, PostgreSQL, SQLite, SqlServer), `update_db.sql`, `Migrate_msSQL.sql`, legacy scripts in `LegacyScripts/`
+   - [ ] Add cleanup in the real source of truth first: Entity classes, `Configuration/*.cs` Fluent API seed/config, and EF migrations
+   - [ ] Regenerate `install.*.sql` from migrations; do not hand-edit generated install scripts as the primary fix
+   - [ ] Update legacy upgrade scripts (`update_db.sql`, `Migrate_msSQL.sql`, `LegacyScripts/`) only when the supported pre-v2.0.0 or module-cleanup upgrade path requires it
 
 4. **Dependencies & References**
    - [ ] Remove NuGet package references from *.csproj files
@@ -112,6 +113,7 @@ When removing a feature, technology, provider, or component from FuseCP:
 - Multiple solution files exist in repo; grep across **all** .sln files, not just primary
 - Build orchestration (build.xml) contains component-specific exclusions that must also be cleaned
 - Language resources contain user-facing strings that still reference removed components
+- Generated installer SQL can hide the real root cause; provider/seed cleanup usually starts in `Configuration/*.cs` and migrations, not in `install.*.sql`
 
 ### Enforcement
 

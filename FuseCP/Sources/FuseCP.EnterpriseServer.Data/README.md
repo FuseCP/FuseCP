@@ -26,6 +26,10 @@ contained in the Configuration folder. Migrations are contained in the Migration
 corresponding to the database flavor. The folder CodeTemplates contains the T4 templates used for database scaffolding.
 The Extensions folder contains extension classes.
 
+The `Configuration` folder is also the source of truth for EF FluentAPI relationship mapping and seeded data (`HasData`).
+If seeded providers, quotas, resource groups, schedule task parameters, or other bootstrap rows change, update the
+Configuration classes and regenerate migrations/scripts instead of hand-editing generated `install.*.sql` output.
+
 # Scaffolding of the Database
 The folder CodeTemplates contains the T4 templates used by the "dotnet ef dbcontext scaffold" command to create the
 entity, dbcontext and configuration classes from an existing SQL Server database. You can run the scaffolding of the
@@ -37,6 +41,10 @@ update_db.sql to the database, and then scaffold the database. You will see all 
 Entities\Sources\.., Configuraton\Sources\.. and DbContextBase.Source.cs files. You can then use the diff viewer
 to track all changes in those classes and can then apply the changes to the classes in the Entities and Configuration
 folders and to DbContextBase.cs.
+
+This raw-SQL path is legacy compatibility guidance, not the primary workflow for current releases. `update_db.sql`
+is kept for older upgrade scenarios up to the v2.0.0 migration boundary. Post-v2.0.0 schema evolution should be done
+through Entity/Configuration changes plus EF migrations.
 For portability accross different database flavors, you'll have to tweak the classes in the Entities\Sources folder a
 bit. In particular, you'll have to comment out all manual assignmens of a database type by the
 [Column(TypeName="...")]. If you want to assign a specific database type, you'll have to do it in the Configuration
@@ -66,6 +74,15 @@ EF Core. As migrations are always handled by EF Core, the migration creates the 
 # Migrations
 Migrations are only managed with EF Core, not with EF 6. They are always executed with .NET 10 or with SQL scripts by the
 installer, not with .NET Framework.
+
+`MigrationAdd.bat` generates both migration classes and the `install.*.sql` scripts copied into `FuseCP/Database/`.
+Treat those `install.*.sql` files as generated artifacts for fresh installs. For SQL Server, the installer can use the
+generated install script for fresh installs and migration-chain-based upgrades from v2 onwards. For SQLite, upgrades do
+not go through `install.sqlite.sql`; they must run through EF migration execution on .NET 10.
+
+`update_db.sql` must not be used as the normal post-v2.0.0 migration mechanism. It remains a legacy bridge for older
+databases that must first be brought forward to the v2.0.0 migration baseline. `Migrate_msSQL.sql` is likewise a legacy
+upgrade/helper script used for supported SQL Server cleanup/upgrade flows, not the primary source of schema truth.
 
 To create a new migration, you can run MigrationAdd.bat, or if you just want a migration for the database flavor
 you're developing with, copy the individual lines in AddMigration.bat to a command line shell.
