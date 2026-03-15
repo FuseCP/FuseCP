@@ -19,8 +19,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Web.Mvc;
-using System.Web.Routing;
+using Microsoft.AspNetCore.Mvc;
 using FuseCP.WebDav.Core;
 
 namespace FuseCP.WebDavPortal.CustomAttributes

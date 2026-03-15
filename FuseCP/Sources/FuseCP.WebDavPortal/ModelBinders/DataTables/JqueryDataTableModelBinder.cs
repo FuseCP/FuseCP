@@ -15,43 +15,56 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.Ajax.Utilities;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using FuseCP.WebDavPortal.Models.Common.DataTable;
 
 
 namespace FuseCP.WebDavPortal.ModelBinders.DataTables
 {
-    public class JqueryDataTableModelBinder : DefaultModelBinder
+    public class JqueryDataTableModelBinder : IModelBinder
     {
-        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            base.BindModel(controllerContext, bindingContext);
-            HttpRequestBase request = controllerContext.HttpContext.Request;
+            string GetValue(string key)
+            {
+                return bindingContext.ValueProvider.GetValue(key).FirstValue;
+            }
+
+            int ParseInt(string key)
+            {
+                var value = GetValue(key);
+                return int.TryParse(value, out var result) ? result : 0;
+            }
+
+            bool ParseBool(string key)
+            {
+                var value = GetValue(key);
+                return bool.TryParse(value, out var result) && result;
+            }
 
             // Retrieve request data
-            int draw = Convert.ToInt32(request["draw"]);
-            int start = Convert.ToInt32(request["start"]);
-            int count = Convert.ToInt32(request["length"]);
+            int draw = ParseInt("draw");
+            int start = ParseInt("start");
+            int count = ParseInt("length");
 
             // Search
             var search = new JqueryDataTableSearch
             {
-                Value = request["search[value]"],
-                IsRegex = Convert.ToBoolean(request["search[regex]"])
+                Value = GetValue("search[value]"),
+                IsRegex = ParseBool("search[regex]")
             };
 
             var orderIndex = 0;
 
             var orders = new List<JqueryDataTableOrder>();
 
-            while (request["order[" + orderIndex + "][column]"] != null)
+            while (!string.IsNullOrEmpty(GetValue("order[" + orderIndex + "][column]")))
             {
                 orders.Add(new JqueryDataTableOrder()
                 {
-                    Column = Convert.ToInt32(request["order[" + orderIndex + "][column]"]),
-                    Ascending = (request["order[" + orderIndex + "][dir]"] == "asc")
+                    Column = ParseInt("order[" + orderIndex + "][column]"),
+                    Ascending = (GetValue("order[" + orderIndex + "][dir]") == "asc")
                 });
 
                 orderIndex++;
@@ -61,24 +74,24 @@ namespace FuseCP.WebDavPortal.ModelBinders.DataTables
             var columnsIndex = 0;
             var columns = new List<JqueryDataTableColumn>();
 
-            while (request["columns[" + columnsIndex + "][name]"] != null)
+            while (!string.IsNullOrEmpty(GetValue("columns[" + columnsIndex + "][name]")))
             {
                 columns.Add(new JqueryDataTableColumn
                 {
-                    Data = request["columns[" + columnsIndex + "][data]"],
-                    Name = request["columns[" + columnsIndex + "][name]"],
-                    Orderable = Convert.ToBoolean(request["columns[" + columnsIndex + "][orderable]"]),
+                    Data = GetValue("columns[" + columnsIndex + "][data]"),
+                    Name = GetValue("columns[" + columnsIndex + "][name]"),
+                    Orderable = ParseBool("columns[" + columnsIndex + "][orderable]"),
                     Search = new JqueryDataTableSearch
                     {
-                        Value = request["columns[" + columnsIndex + "][search][value]"],
-                        IsRegex = Convert.ToBoolean(request["columns[" + columnsIndex + "][search][regex]"])
+                        Value = GetValue("columns[" + columnsIndex + "][search][value]"),
+                        IsRegex = ParseBool("columns[" + columnsIndex + "][search][regex]")
                     }
                 });
 
                 columnsIndex++;
             }
 
-            return new JqueryDataTableRequest
+            bindingContext.Result = ModelBindingResult.Success(new JqueryDataTableRequest
             {
                 Draw = draw,
                 Start = start,
@@ -86,7 +99,9 @@ namespace FuseCP.WebDavPortal.ModelBinders.DataTables
                 Search = search,
                 Orders = orders,
                 Columns = columns
-            };
+            });
+
+            return Task.CompletedTask;
         }
          
     }

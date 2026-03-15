@@ -17,9 +17,8 @@ using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using FuseCP.WebDav.Core;
 using FuseCP.WebDavPortal.DependencyInjection;
 using FuseCP.WebDavPortal.Models;
@@ -28,7 +27,7 @@ namespace FuseCP.WebDavPortal.Constraints
 {
     public class OrganizationRouteConstraint : IRouteConstraint
     {
-        public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection)
+        public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
         {
             if (ScpContext.User == null)
             {
@@ -36,7 +35,7 @@ namespace FuseCP.WebDavPortal.Constraints
             }
 
             object value;
-            if (!values.TryGetValue(parameterName, out value))
+            if (!values.TryGetValue(routeKey, out value))
                 return false;
 
             var str = value as string;

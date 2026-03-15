@@ -13,40 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
-using FuseCP.WebDavPortal.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using FuseCP.WebDavPortal.UI.Routes;
 
 namespace FuseCP.WebDavPortal.App_Start
 {
-    public class WebApiConfig
+    public static class WebApiConfig
     {
-        public static void Register(HttpConfiguration configuration)
+        public static void Register(IEndpointRouteBuilder endpoints)
         {
             #region Owa
 
-            configuration.Routes.MapHttpRoute(
+            endpoints.MapControllerRoute(
                 name: OwaRouteNames.GetFile,
-                routeTemplate: "owa/wopi*/files/{accessTokenId}/contents",
+                pattern: "owa/wopi/files/{accessTokenId}/contents",
                 defaults: new {controller = "Owa", action = "GetFile"});
 
-            configuration.Routes.MapHttpRoute(
+            endpoints.MapControllerRoute(
                 name: OwaRouteNames.CheckFileInfo,
-                routeTemplate: "owa/wopi*/files/{accessTokenId}",
+                pattern: "owa/wopi/files/{accessTokenId}",
                 defaults: new {controller = "Owa", action = "CheckFileInfo"});
 
             #endregion
 
-
-
-            configuration.Routes.MapHttpRoute("API Default", "api/{controller}/{id}",
-                new { id = RouteParameter.Optional });
-
-            configuration.DependencyResolver = new NinjectDependecyResolver();
+            endpoints.MapControllerRoute("API Default", "api/{controller}/{id?}");
         }
     }
 }

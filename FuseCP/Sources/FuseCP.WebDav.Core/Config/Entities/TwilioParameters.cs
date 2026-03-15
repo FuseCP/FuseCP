@@ -23,9 +23,9 @@ namespace FuseCP.WebDav.Core.Config.Entities
 
         public TwilioParameters()
         {
-            AccountSid = ConfigSection.Twilio.AccountSid;
-            AuthorizationToken = ConfigSection.Twilio.AuthorizationToken;
-            PhoneFrom = ConfigSection.Twilio.PhoneFrom;
+            AccountSid = ConfigSection.Twilio?.AccountSid ?? string.Empty;
+            AuthorizationToken = ConfigSection.Twilio?.AuthorizationToken ?? string.Empty;
+            PhoneFrom = ConfigSection.Twilio?.PhoneFrom ?? string.Empty;
         }
     }
 }

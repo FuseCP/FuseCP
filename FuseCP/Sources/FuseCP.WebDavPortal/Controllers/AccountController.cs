@@ -16,15 +16,16 @@
 using System;
 using System.Linq;
 using System.Net;
-using System.Web.Mvc;
-using System.Web.Routing;
-using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using FuseCP.Providers.HostedSolution;
 using FuseCP.WebDav.Core.Config;
 using FuseCP.WebDav.Core.Security.Authentication;
 using FuseCP.WebDav.Core.Security.Cryptography;
 using FuseCP.WebDav.Core.Scp.Framework;
 using FuseCP.WebDavPortal.CustomAttributes;
+using FuseCP.WebDavPortal.Mapping;
 using FuseCP.WebDavPortal.Models;
 using FuseCP.WebDavPortal.Models.Account;
 using FuseCP.WebDavPortal.Models.Account.Enums;
@@ -65,11 +66,18 @@ namespace FuseCP.WebDavPortal.Controllers
 
             var model = new AccountModel();
 
-            var settings = ScpContext.Services.Organizations.GetWebDavSystemSettings();
-
-            if (settings != null)
+            try
             {
-                model.PasswordResetEnabled = settings.GetValueOrDefault(EnterpriseServer.SystemSettings.WEBDAV_PASSWORD_RESET_ENABLED_KEY, false);
+                var settings = ScpContext.Services.Organizations.GetWebDavSystemSettings();
+
+                if (settings != null)
+                {
+                    model.PasswordResetEnabled = settings.GetValueOrDefault(EnterpriseServer.SystemSettings.WEBDAV_PASSWORD_RESET_ENABLED_KEY, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.WriteError(ex);
 
             }
 
@@ -107,7 +115,7 @@ namespace FuseCP.WebDavPortal.Controllers
         {
             _authenticationService.LogOut();
 
-            Session.Clear();
+            HttpContext.Session.Clear();
 
             return RedirectToRoute(AccountRouteNames.Login);
         }
@@ -138,12 +146,12 @@ namespace FuseCP.WebDavPortal.Controllers
 
         public JsonResult PhoneNumberIsAvailible()
         {
-            var value = Request.QueryString.AllKeys.Any() ? Request.QueryString.Get(0) :string.Empty;
+            var value = Request.Query.Any() ? Request.Query.First().Value.ToString() : string.Empty;
 
             var result = !ScpContext.Services.Organizations.CheckPhoneNumberIsInUse(ScpContext.User.ItemId,
                     value, ScpContext.User.Login);
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         [HttpGet]
@@ -361,8 +369,8 @@ namespace FuseCP.WebDavPortal.Controllers
             {
                 var tokenEntity = ScpContext.Services.Organizations.GetPasswordresetAccessToken(token);
 
-                Session[WebDavAppConfigManager.Instance.SessionKeys.PasswordResetSmsKey] = model.Sms;
-                Session[WebDavAppConfigManager.Instance.SessionKeys.ItemId] = tokenEntity.ItemId;
+                HttpContext.Session.SetString(WebDavAppConfigManager.Instance.SessionKeys.PasswordResetSmsKey, model.Sms);
+                HttpContext.Session.SetInt32(WebDavAppConfigManager.Instance.SessionKeys.ItemId, tokenEntity.ItemId);
 
                 return RedirectToRoute(AccountRouteNames.PasswordResetFinalStep);
             }
@@ -439,7 +447,7 @@ namespace FuseCP.WebDavPortal.Controllers
         /// <param name="pincode">Pincode to verify if session pincode is absent</param>
         private ActionResult VerifyPincode(Guid token, string pincode)
         {
-            var smsResponse = Session[WebDavAppConfigManager.Instance.SessionKeys.PasswordResetSmsKey] as string;
+            var smsResponse = HttpContext.Session.GetString(WebDavAppConfigManager.Instance.SessionKeys.PasswordResetSmsKey);
 
             if (string.IsNullOrEmpty(pincode) == false)
             {
@@ -455,7 +463,7 @@ namespace FuseCP.WebDavPortal.Controllers
 
             var tokenEntity = ScpContext.Services.Organizations.GetPasswordresetAccessToken(token);
 
-            Session[WebDavAppConfigManager.Instance.SessionKeys.ItemId] = tokenEntity.ItemId;
+            HttpContext.Session.SetInt32(WebDavAppConfigManager.Instance.SessionKeys.ItemId, tokenEntity.ItemId);
 
             return null;
         }
@@ -464,7 +472,7 @@ namespace FuseCP.WebDavPortal.Controllers
         {
             var user = ScpContext.Services.Organizations.GetUserGeneralSettingsWithExtraData(itemId, accountId);
 
-            return Mapper.Map<OrganizationUser, UserProfile>(user);
+            return AutoMapperPortalConfiguration.Mapper.Map<OrganizationUser, UserProfile>(user);
         }
 
         private int UpdateUserProfile(int itemId, int accountId, UserProfile model)
@@ -507,6 +515,11 @@ namespace FuseCP.WebDavPortal.Controllers
                 user.LevelId,
                 user.IsVIP,
                 user.UserMustChangePassword);
+        }
+
+        private int? GetSessionItemId()
+        {
+            return HttpContext.Session.GetInt32(WebDavAppConfigManager.Instance.SessionKeys.ItemId);
         }
 
         #endregion

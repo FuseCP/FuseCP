@@ -16,10 +16,12 @@
 using System;
 using System.DirectoryServices;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Security.Principal;
 
 namespace FuseCP.WebDavPortal.Models
 {
+    [SupportedOSPlatform("windows")]
     public class DirectoryIdentity : IIdentity
     {
         private readonly bool _auth;

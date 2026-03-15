@@ -3,7 +3,7 @@
 @model FuseCP.WebDavPortal.Models.ModelForWebDav
            
 <div class="file-upload-menu">
-    @Html.Partial("_ShowContentTopMenu", Model)
+    <partial name="_ShowContentTopMenu" model="Model" />
 </div>
 
 
@@ -117,7 +117,14 @@
 
 
 @section scripts{
-    @Scripts.Render("~/bundles/file-upload")
+    <script src="~/Scripts/jQuery.FileUpload/tmpl.min.js"></script>
+    <script src="~/Scripts/jQuery.FileUpload/load-image.min.js"></script>
+    <script src="~/Scripts/jQuery.FileUpload/jquery.iframe-transport.js"></script>
+    <script src="~/Scripts/jQuery.FileUpload/jquery.fileupload.js"></script>
+    <script src="~/Scripts/jQuery.FileUpload/jquery.fileupload-process.js"></script>
+    <script src="~/Scripts/jQuery.FileUpload/jquery.fileupload-image.js"></script>
+    <script src="~/Scripts/jQuery.FileUpload/jquery.fileupload-validate.js"></script>
+    <script src="~/Scripts/jQuery.FileUpload/jquery.fileupload-ui.js"></script>
 
 <script type="text/javascript">
     fcp.fileBrowser.initFileUpload('#file-upload-form', '@Url.RouteUrl(FileSystemRouteNames.UploadFile)');

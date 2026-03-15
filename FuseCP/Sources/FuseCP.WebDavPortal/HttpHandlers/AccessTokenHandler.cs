@@ -16,12 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Http;
 using FuseCP.WebDav.Core.Interfaces.Managers;
 using FuseCP.WebDav.Core.Interfaces.Security;
 using FuseCP.WebDav.Core.Security.Cryptography;
@@ -29,23 +26,26 @@ using FuseCP.WebDav.Core.Scp.Framework;
 
 namespace FuseCP.WebDavPortal.HttpHandlers
 {
-    public class AccessTokenHandler : DelegatingHandler
+    public class AccessTokenHandler
     {
         private const string Bearer = "Bearer ";
+        private readonly RequestDelegate _next;
 
-        protected override async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request, CancellationToken cancellationToken)
+        public AccessTokenHandler(RequestDelegate next)
         {
-            if (request.Headers.Contains("Authorization"))
+            _next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext context, IAccessTokenManager tokenManager, IAuthenticationService authenticationService, ICryptography cryptography)
+        {
+            if (context.Request.Headers.TryGetValue("Authorization", out var authHeaderValues))
             {
-                var tokenString = request.Headers.GetValues("Authorization").First();
+                var tokenString = authHeaderValues.FirstOrDefault();
                 if (!string.IsNullOrEmpty(tokenString) && tokenString.StartsWith(Bearer))
                 {
                     try
                     {
-                        var accessToken = tokenString.Substring(Bearer.Length - 1);
-
-                        var tokenManager = DependencyResolver.Current.GetService<IAccessTokenManager>();
+                        var accessToken = tokenString.Substring(Bearer.Length).Trim();
 
                         var guid = Guid.Parse(accessToken);
                         tokenManager.ClearExpiredTokens();
@@ -54,10 +54,6 @@ namespace FuseCP.WebDavPortal.HttpHandlers
 
                         if (token != null)
                         {
-                            var authenticationService = DependencyResolver.Current.GetService<IAuthenticationService>();
-                            var cryptography = DependencyResolver.Current.GetService<ICryptography>();
-
-
                             var user = FCP.Services.ExchangeServer.GetAccount(token.ItemId, token.AccountId);
 
                             authenticationService.LogIn(user.UserPrincipalName, cryptography.Decrypt(token.AuthData));
@@ -69,8 +65,7 @@ namespace FuseCP.WebDavPortal.HttpHandlers
                 }
             }
 
-            return await
-                base.SendAsync(request, cancellationToken);
+            await _next(context);
         }
     }
 }

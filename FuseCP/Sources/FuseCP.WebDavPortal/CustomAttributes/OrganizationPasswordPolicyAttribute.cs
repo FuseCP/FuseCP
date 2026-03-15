@@ -18,16 +18,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Mvc;
 using FuseCP.Providers.HostedSolution;
 using FuseCP.WebDav.Core;
-using FuseCP.WebDav.Core.Config;
 
 namespace FuseCP.WebDavPortal.CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class OrganizationPasswordPolicyAttribute : ValidationAttribute, IClientValidatable
+    public class OrganizationPasswordPolicyAttribute : ValidationAttribute
     {
         public int ItemId { get; private set; }
 
@@ -36,10 +33,6 @@ namespace FuseCP.WebDavPortal.CustomAttributes
             if (ScpContext.User != null)
             {
                 ItemId = ScpContext.User.ItemId;
-            }
-            else if (HttpContext.Current != null && HttpContext.Current.Session[WebDavAppConfigManager.Instance.SessionKeys.ItemId] != null)
-            {
-                ItemId = (int)HttpContext.Current.Session[WebDavAppConfigManager.Instance.SessionKeys.ItemId];
             }
         }
 
@@ -99,54 +92,5 @@ namespace FuseCP.WebDavPortal.CustomAttributes
 
             return ValidationResult.Success;
         }
-
-        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
-        {
-            var settings = ScpContext.Services.Organizations.GetOrganizationPasswordSettings(ItemId);
-
-            var rule = new ModelClientValidationRule();
-
-            rule.ErrorMessage = string.Format(Resources.Messages.PasswordMinLengthFormat, settings.MinimumLength);
-            rule.ValidationParameters.Add("count", settings.MinimumLength);
-            rule.ValidationType = "minimumlength";
-
-            yield return rule;
-
-            rule = new ModelClientValidationRule();
-
-            rule.ErrorMessage = string.Format(Resources.Messages.PasswordMaxLengthFormat, settings.MaximumLength);
-            rule.ValidationParameters.Add("count", settings.MaximumLength);
-            rule.ValidationType = "maximumlength";
-
-            yield return rule;
-
-            if (settings.PasswordComplexityEnabled)
-            {
-                rule = new ModelClientValidationRule();
-
-                rule.ErrorMessage = string.Format(Resources.Messages.PasswordUppercaseCountFormat, settings.UppercaseLettersCount);
-                rule.ValidationParameters.Add("count", settings.UppercaseLettersCount);
-                rule.ValidationType = "uppercasecount";
-
-                yield return rule;
-
-                rule = new ModelClientValidationRule();
-
-                rule.ErrorMessage = string.Format(Resources.Messages.PasswordNumbersCountFormat, settings.NumbersCount);
-                rule.ValidationParameters.Add("count", settings.NumbersCount);
-                rule.ValidationType = "numberscount";
-
-                yield return rule;
-
-                rule = new ModelClientValidationRule();
-
-                rule.ErrorMessage = string.Format(Resources.Messages.PasswordSymbolsCountFormat, settings.SymbolsCount);
-                rule.ValidationParameters.Add("count", settings.SymbolsCount);
-                rule.ValidationType = "symbolscount";
-
-                yield return rule;
-            }
-        }
-
     }
 }

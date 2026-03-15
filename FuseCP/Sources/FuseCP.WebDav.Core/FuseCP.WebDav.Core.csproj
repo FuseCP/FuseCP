@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <OutputPath>bin\$(Configuration)\</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -10,28 +10,20 @@
         <DebugType>portable</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
-        <PackageReference Include="Microsoft.AspNet.Razor" Version="3.2.9" />
-        <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.10" />
         <PackageReference Include="Microsoft.Bcl.TimeProvider" Version="9.0.10" />
         <PackageReference Include="Microsoft.IdentityModel.Abstractions" Version="8.14.0" />
         <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.14.0" />
         <PackageReference Include="Microsoft.IdentityModel.Logging" Version="8.14.0" />
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.14.0" />
-        <PackageReference Include="Microsoft.Web.Infrastructure" Version="2.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="RestSharp" Version="112.1.0" />
-        <PackageReference Include="System.Buffers" Version="4.6.1" />
-        <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.10" />
+        <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.10" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
-        <PackageReference Include="System.Memory" Version="4.6.3" />
-        <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-        <PackageReference Include="System.Security.AccessControl" Version="6.0.1" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="9.0.10" />
-        <PackageReference Include="System.Text.Json" Version="9.0.10" />
-        <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
+        <PackageReference Include="System.Runtime.Caching" Version="9.0.10" />
         <PackageReference Include="System.ValueTuple" Version="4.6.1" />
         <PackageReference Include="Twilio" Version="7.13.4" />
     </ItemGroup>
@@ -39,19 +31,7 @@
         <Reference Include="Microsoft.CobaltCore">
             <HintPath>..\..\Lib\References\Microsoft\Microsoft.CobaltCore.dll</HintPath>
         </Reference>
-        <Reference Include="System.ComponentModel.DataAnnotations" />
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.DirectoryServices.AccountManagement" />
-        <Reference Include="System.Net" />
-        <Reference Include="System.Net.Http" />
-        <Reference Include="System.Runtime.Caching" />
-        <Reference Include="System.Web">
-            <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Web.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Web.Extensions" />
-        <Reference Include="System.Web.Services" />
         <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Resources\HttpErrors.Designer.cs">
@@ -67,8 +47,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\FuseCP.EnterpriseServer.Base\FuseCP.EnterpriseServer.Base.csproj" />
-        <ProjectReference Include="..\FuseCP.EnterpriseServer\WebServices\FuseCP.Build\FuseCP.EnterpriseServer.Client.csproj"
-            AdditionalProperties="TargetFrameworks=net48" />
+        <ProjectReference Include="..\FuseCP.EnterpriseServer\WebServices\FuseCP.Build\FuseCP.EnterpriseServer.Client.csproj" />
         <ProjectReference Include="..\FuseCP.Providers.Base\FuseCP.Providers.Base.csproj" />
         <ProjectReference Include="..\FuseCP.Server.Utils\FuseCP.Server.Utils.csproj" />
         <ProjectReference Include="..\FuseCP.Web.Clients\FuseCP.Web.Clients.csproj" />

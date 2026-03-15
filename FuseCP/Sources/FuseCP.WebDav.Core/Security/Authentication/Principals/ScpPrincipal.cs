@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System;
+using System.Security.Claims;
 using System.Security.Principal;
-using System.Web.Script.Serialization;
-using System.Web.Security;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace FuseCP.WebDav.Core.Security.Authentication.Principals
@@ -39,7 +40,7 @@ namespace FuseCP.WebDav.Core.Security.Authentication.Principals
             }
         }
 
-        [XmlIgnore, ScriptIgnore]
+        [XmlIgnore, JsonIgnore]
         public IIdentity Identity { get; private set; }
 
         public string EncryptedPassword { get; set; }
@@ -58,7 +59,10 @@ namespace FuseCP.WebDav.Core.Security.Authentication.Principals
         {
             return Identity.IsAuthenticated 
                 && !string.IsNullOrWhiteSpace(role) 
-                && Roles.IsUserInRole(Identity.Name, role);
+                && Identity is ClaimsIdentity claimsIdentity
+                && claimsIdentity.HasClaim(claim =>
+                    string.Equals(claim.Type, ClaimTypes.Role, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(claim.Value, role, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

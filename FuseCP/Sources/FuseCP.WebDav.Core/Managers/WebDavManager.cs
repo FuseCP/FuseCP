@@ -21,7 +21,7 @@ using System.Net;
 using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
+using Microsoft.AspNetCore.Http;
 using System.Xml.Serialization;
 using FuseCP.Providers.OS;
 using FuseCP.WebDav.Core.Client;
@@ -36,6 +36,8 @@ using FuseCP.WebDav.Core.Scp.Framework;
 
 namespace FuseCP.WebDav.Core.Managers
 {
+    using UploadedFile = IFormFile;
+
     public class WebDavManager : IWebDavManager
     {
         private readonly ICryptography _cryptography;
@@ -155,7 +157,7 @@ namespace FuseCP.WebDav.Core.Managers
             }
         }
 
-        public void UploadFile(string path, HttpPostedFileBase file)
+        public void UploadFile(string path, UploadedFile file)
         {
             var resource = new WebDavResource();
 
@@ -167,10 +169,13 @@ namespace FuseCP.WebDav.Core.Managers
             resource.SetHref(fileUrl);
             resource.SetCredentials(new NetworkCredential(ScpContext.User.Login,  _cryptography.Decrypt(ScpContext.User.EncryptedPassword)));
 
-            file.InputStream.Seek(0, SeekOrigin.Begin);
-            var bytes = ReadFully(file.InputStream);
+            using (var stream = file.OpenReadStream())
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                var bytes = ReadFully(stream);
 
-            resource.Upload(bytes);
+                resource.Upload(bytes);
+            }
         }
 
         public void UploadFile(string path, byte[] bytes)

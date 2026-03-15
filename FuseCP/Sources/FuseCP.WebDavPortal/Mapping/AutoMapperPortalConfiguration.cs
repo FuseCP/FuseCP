@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using AutoMapper;
+using Microsoft.Extensions.Logging.Abstractions;
 using FuseCP.WebDavPortal.Mapping.Profiles.Account;
 using FuseCP.WebDavPortal.Mapping.Profiles.Webdav;
 
@@ -21,14 +22,42 @@ namespace FuseCP.WebDavPortal.Mapping
 {
     public class AutoMapperPortalConfiguration
     {
+        private static MapperConfiguration _configuration;
+        private static IMapper _mapper;
+
+        public static IMapper Mapper
+        {
+            get
+            {
+                if (_mapper == null)
+                {
+                    Configure();
+                }
+
+                return _mapper;
+            }
+        }
+
         public static void Configure()
         {
-            Mapper.Initialize(
-                config =>
-                {
-                    config.AddProfile<UserProfileProfile>();
-                    config.AddProfile<ResourceTableItemProfile>();
-                });
-        } 
+            _configuration = new MapperConfiguration(config =>
+            {
+                config.AddProfile<UserProfileProfile>();
+                config.AddProfile<ResourceTableItemProfile>();
+            }, NullLoggerFactory.Instance);
+
+            _mapper = _configuration.CreateMapper();
+        }
+
+        public static void AssertConfigurationIsValid()
+        {
+            (_configuration ?? ConfigureAndReturn()).AssertConfigurationIsValid();
+        }
+
+        private static MapperConfiguration ConfigureAndReturn()
+        {
+            Configure();
+            return _configuration;
+        }
     }
 }

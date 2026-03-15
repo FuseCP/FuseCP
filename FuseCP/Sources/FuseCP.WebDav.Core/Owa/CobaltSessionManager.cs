@@ -20,7 +20,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
-using System.Web;
 using Cobalt;
 using FuseCP.WebDav.Core.Client;
 using FuseCP.WebDav.Core.Config;
@@ -99,7 +98,7 @@ namespace FuseCP.WebDav.Core.Owa
             }
             else
             {
-                var filePath = HttpContext.Current.Server.MapPath(WebDavAppConfigManager.Instance.OfficeOnline.NewFilePath + Path.GetExtension(token.FilePath));
+                var filePath = ResolveContentRootPath(WebDavAppConfigManager.Instance.OfficeOnline.NewFilePath + Path.GetExtension(token.FilePath));
 
                 atom = new AtomFromByteArray(File.ReadAllBytes(filePath));
             }
@@ -131,6 +130,15 @@ namespace FuseCP.WebDav.Core.Owa
         private string GetSessionKey(string filePath)
         {
             return string.Format("{0}/{1}", ScpContext.User.AccountId, filePath);
+        }
+
+        private static string ResolveContentRootPath(string relativePath)
+        {
+            var normalizedPath = relativePath
+                .Replace('/', Path.DirectorySeparatorChar)
+                .TrimStart('~', '/', '\\');
+
+            return Path.Combine(AppContext.BaseDirectory, normalizedPath);
         }
     }
 }

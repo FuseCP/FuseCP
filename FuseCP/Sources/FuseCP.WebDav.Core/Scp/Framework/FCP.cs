@@ -14,12 +14,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using System.Web;
-using System.Web.Mvc;
+using System.Collections.Generic;
+using System.Threading;
 using FuseCP.EnterpriseServer;
 using FuseCP.EnterpriseServer.Client;
 using FuseCP.WebDav.Core.Config;
 using FuseCP.WebDav.Core.Security.Cryptography;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FuseCP.WebDav.Core.Scp.Framework
 {
@@ -27,23 +28,45 @@ namespace FuseCP.WebDav.Core.Scp.Framework
 
     public class FCP
     {
+        private const string WebServicesKey = "WebServices";
+        private static readonly AsyncLocal<Dictionary<string, object>> CurrentItems = new AsyncLocal<Dictionary<string, object>>();
         private readonly ICryptography _cryptography;
+
+        public static IServiceProvider ServiceProvider { get; set; }
+
+        private static Dictionary<string, object> Items
+        {
+            get
+            {
+                if (CurrentItems.Value == null)
+                {
+                    CurrentItems.Value = new Dictionary<string, object>();
+                }
+
+                return CurrentItems.Value;
+            }
+        }
 
         protected FCP()
         {
-            _cryptography = DependencyResolver.Current.GetService<ICryptography>();
+            _cryptography = ServiceProvider?.GetService<ICryptography>() ?? new CryptoUtils();
         }
 
         public static FCP Services
         {
             get
             {
-                FCP services = (FCP)HttpContext.Current.Items["WebServices"];
+                FCP services = null;
+
+                if (Items.ContainsKey(WebServicesKey))
+                {
+                    services = Items[WebServicesKey] as FCP;
+                }
 
                 if (services == null)
                 {
                     services = new FCP();
-                    HttpContext.Current.Items["WebServices"] = services;
+                    Items[WebServicesKey] = services;
                 }
 
                 return services;
@@ -224,11 +247,17 @@ namespace FuseCP.WebDav.Core.Scp.Framework
         {
             Type t = typeof(T);
             string key = t.FullName + ".ServiceProxy";
-            T proxy = (T)HttpContext.Current.Items[key];
+            T proxy = default(T);
+
+            if (Items.ContainsKey(key))
+            {
+                proxy = (T)Items[key];
+            }
+
             if (proxy == null)
             {
                 proxy = (T)Activator.CreateInstance(t);
-                HttpContext.Current.Items[key] = proxy;
+                Items[key] = proxy;
             }
 
             object p = proxy;

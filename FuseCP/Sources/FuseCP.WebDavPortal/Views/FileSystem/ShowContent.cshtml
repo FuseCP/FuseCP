@@ -1,6 +1,5 @@
 @using FuseCP.WebDav.Core
 @using FuseCP.WebDav.Core.Client
-@using Ninject
 @using FuseCP.WebDav.Core.Config
 @using FuseCP.WebDav.Core.Entities.Account.Enums
 @using FuseCP.WebDav.Core.Interfaces.Managers
@@ -18,9 +17,9 @@
 }
 else
 {
-    @Html.Partial("_ShowContentTopMenu", Model)
+    <partial name="_ShowContentTopMenu" model="Model" />
 
-    @Html.Action("ContentList", "FileSystem", new { model = Model });
+    @await Component.InvokeAsync("ContentList", new { model = Model })
 }
 
 
@@ -33,12 +32,10 @@ else
             textItemExist: "@UI.ItemExist." });
     </script>
 
-    @Scripts.Render("~/bundles/appScripts-webdav")
+    <script src="~/Scripts/appScripts/FCP-webdav.js"></script>
 
     @if (Model.UserSettings.WebDavViewType == FolderViewTypes.BigIcons)
     {
-        @Scripts.Render("~/bundles/bigIconsScripts")
-
         <script>
             $(document).ready(function () {
                 @if (string.IsNullOrEmpty(Model.SearchValue))

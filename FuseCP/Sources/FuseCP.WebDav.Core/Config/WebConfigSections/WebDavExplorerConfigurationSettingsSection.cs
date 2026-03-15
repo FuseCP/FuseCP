@@ -81,7 +81,7 @@ namespace FuseCP.WebDavPortal.WebConfigSections
             set { this[FuseCPConstantUserKey] = value; }
         }
 
-        [ConfigurationProperty(TwilioKey, IsRequired = true)]
+        [ConfigurationProperty(TwilioKey, IsRequired = false)]
         public TwilioElement Twilio
         {
             get { return (TwilioElement)this[TwilioKey]; }

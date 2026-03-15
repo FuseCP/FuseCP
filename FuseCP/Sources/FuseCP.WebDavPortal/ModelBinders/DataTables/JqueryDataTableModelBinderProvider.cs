@@ -1,4 +1,4 @@
-// Copyright (C) 2025 FuseCP
+// Copyright (C) 2026 FuseCP
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,20 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using FuseCP.WebDav.Core.Security.Authentication.Principals;
-using FuseCP.WebDav.Core.Scp.Framework;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using FuseCP.WebDavPortal.Models.Common.DataTable;
 
-namespace FuseCP.WebDav.Core
+namespace FuseCP.WebDavPortal.ModelBinders.DataTables
 {
-    public class ScpContext
+    public class JqueryDataTableModelBinderProvider : IModelBinderProvider
     {
-        public static ScpPrincipal User { get { return Thread.CurrentPrincipal as ScpPrincipal; } }
-        public static FCP Services { get { return FCP.Services; } }
+#nullable enable
+        public IModelBinder? GetBinder(ModelBinderProviderContext context)
+        {
+            if (context.Metadata.ModelType == typeof(JqueryDataTableRequest))
+                return new JqueryDataTableModelBinder();
+
+            return null;
+        }
+#nullable restore
     }
 }

@@ -16,26 +16,41 @@
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Web;
-using System.Web.SessionState;
-using System.Web.Hosting;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using FuseCP.WebDavPortal.DependencyInjection;
 using FuseCP.WebDavPortal.Models;
 
 namespace FuseCP.WebDavPortal.HttpHandlers
 {
-    public class FileTransferRequestHandler : IHttpHandler 
+    public class FileTransferRequestHandler
     {
-        public void ProcessRequest(HttpContext context) 
+        private readonly RequestDelegate _next;
+
+        public FileTransferRequestHandler(RequestDelegate next)
         {
-            context.Response.WriteFile(context.Request.RawUrl.TrimEnd('?'));
-            context.Response.End();
+            _next = next;
         }
 
-        public bool IsReusable
+        public async Task InvokeAsync(HttpContext context)
         {
-            get { return true; }
+            var requestPath = context.Request.Path.Value;
+
+            if (!string.IsNullOrWhiteSpace(requestPath))
+            {
+                var relativePath = requestPath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar);
+                var absolutePath = Path.Combine(AppContext.BaseDirectory, relativePath);
+
+                if (File.Exists(absolutePath))
+                {
+                    await context.Response.SendFileAsync(absolutePath);
+                    return;
+                }
+            }
+
+            await _next(context);
         }
     }
 }

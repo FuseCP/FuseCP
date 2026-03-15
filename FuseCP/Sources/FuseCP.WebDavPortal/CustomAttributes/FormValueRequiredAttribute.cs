@@ -14,7 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System.Reflection;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Routing;
 
 namespace FuseCP.WebDavPortal.CustomAttributes
 {
@@ -27,9 +29,9 @@ namespace FuseCP.WebDavPortal.CustomAttributes
             _submitButtonName = submitButtonName;
         }
 
-        public override bool IsValidForRequest(ControllerContext controllerContext, MethodInfo methodInfo)
+        public override bool IsValidForRequest(RouteContext routeContext, ActionDescriptor action)
         {
-            var value = controllerContext.HttpContext.Request.Form[_submitButtonName];
+            var value = routeContext.HttpContext.Request.Form[_submitButtonName];
             return !string.IsNullOrEmpty(value);
         }
     }

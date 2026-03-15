@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#if NETFRAMEWORK
 using System.Web.Http.Dependencies;
 using Ninject;
 using System;
@@ -60,3 +61,4 @@ namespace FuseCP.WebDavPortal.DependencyInjection
         }
     }
 }
+#endif

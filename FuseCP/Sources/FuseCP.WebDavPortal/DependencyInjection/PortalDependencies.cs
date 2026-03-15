@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using Ninject;
-using System.Web.SessionState;
 using FuseCP.WebDav.Core.Interfaces.Managers;
 using FuseCP.WebDav.Core.Interfaces.Managers.Users;
 using FuseCP.WebDav.Core.Interfaces.Owa;
@@ -29,7 +28,9 @@ using FuseCP.WebDav.Core.Security.Authorization;
 using FuseCP.WebDav.Core.Security.Cryptography;
 using FuseCP.WebDav.Core.Services;
 using FuseCP.WebDav.Core.Storages;
+#if NETFRAMEWORK
 using FuseCP.WebDavPortal.DependencyInjection.Providers;
+#endif
 
 namespace FuseCP.WebDavPortal.DependencyInjection
 {
@@ -37,7 +38,9 @@ namespace FuseCP.WebDavPortal.DependencyInjection
     {
         public static void Configure(IKernel kernel)
         {
+#if NETFRAMEWORK
             kernel.Bind<HttpSessionState>().ToProvider<HttpSessionStateProvider>();
+#endif
             kernel.Bind<ICryptography>().To<CryptoUtils>();
             kernel.Bind<IAuthenticationService>().To<FormsAuthenticationService>();
             kernel.Bind<IWebDavManager>().To<WebDavManager>();

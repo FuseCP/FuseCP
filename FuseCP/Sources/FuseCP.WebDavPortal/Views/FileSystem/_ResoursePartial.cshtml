@@ -3,7 +3,6 @@
 @using FuseCP.WebDav.Core.Client
 @using FuseCP.WebDav.Core.Config
 @using FuseCP.WebDavPortal.FileOperations
-@using Ninject;
 @using FuseCP.WebDavPortal.Helpers
 @using FuseCP.WebDavPortal.Resources
 @using FuseCP.WebDavPortal.UI
@@ -11,16 +10,20 @@
 @model IHierarchyItem
   
 @{
-    string actualPath = Model.ItemType == ItemType.Folder ? "~/Content/Images/folder_100x100.png" : WebDavAppConfigManager.Instance.FileIcons[Path.GetExtension(Model.DisplayName.Trim('/'))];
+    string actualPath = Model.ItemType == ItemType.Folder
+        ? "~/Content/Images/folder_100x100.png"
+        : WebDavAppConfigManager.Instance.FileIcons[System.IO.Path.GetExtension(Model.DisplayName.Trim('/'))];
     string name = Model.DisplayName.Trim('/');
     var _opener = new FileOpenerManager();
-    var opener = _opener[Path.GetExtension(Model.DisplayName)];
+    var opener = _opener[System.IO.Path.GetExtension(Model.DisplayName)];
+    var _ua = Context.Request.Headers.UserAgent.ToString().ToLowerInvariant();
+    var isMobile = _ua.Contains("mobile") || _ua.Contains("android") || _ua.Contains("iphone");
     bool isTargetBlank;
     string href = "/";
     switch (opener)
     {
         case FileOpenerType.OfficeOnline:
-            isTargetBlank = !Request.Browser.IsMobileDevice;
+            isTargetBlank = !isMobile;
             var pathPart = Model.Href.AbsolutePath.Replace("/" + ScpContext.User.OrganizationId, "").TrimStart('/'); 
             href = string.Concat(Url.RouteUrl(FileSystemRouteNames.EditOfficeOnline, new { org = ScpContext.User.OrganizationId, pathPart = "" }), pathPart);
             break;
@@ -38,7 +41,7 @@
 
     if (isTargetBlank == false && Model.ItemType != ItemType.Folder)
     {
-        isTargetBlank = _opener.GetIsTargetBlank(Model) && !Request.Browser.IsMobileDevice;
+        isTargetBlank = _opener.GetIsTargetBlank(Model) && !isMobile;
     }
 
     int percent = 0;

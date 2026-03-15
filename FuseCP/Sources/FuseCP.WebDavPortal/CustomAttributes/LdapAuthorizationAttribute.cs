@@ -13,21 +13,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using Ninject;
-using FuseCP.WebDavPortal.DependencyInjection;
-using FuseCP.WebDavPortal.Models;
-using FuseCP.WebDavPortal.UI.Routes;
+using System;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 
 namespace FuseCP.WebDavPortal.CustomAttributes
 {
-    public class LdapAuthorizationAttribute : AuthorizeAttribute
+    public class LdapAuthorizationAttribute : Attribute, IAuthorizationFilter
     {
-        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
-            filterContext.Result = new RedirectToRouteResult(AccountRouteNames.Login, null);
+            if (context.ActionDescriptor.EndpointMetadata.OfType<IAllowAnonymous>().Any())
+            {
+                return;
+            }
+
+            if (context.HttpContext.User?.Identity?.IsAuthenticated == true)
+            {
+                return;
+            }
+
+            context.Result = new RedirectToRouteResult(new RouteValueDictionary
+            {
+                ["controller"] = "Account",
+                ["action"] = "Login"
+            });
         }
     }
 }

@@ -13,16 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace FuseCP.WebDavPortal
 {
-    public class FilterConfig
+    public static class FilterConfig
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        public static void RegisterGlobalFilters(MvcOptions options)
         {
-            filters.Add(new HandleErrorAttribute());
+            options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
         }
     }
 }

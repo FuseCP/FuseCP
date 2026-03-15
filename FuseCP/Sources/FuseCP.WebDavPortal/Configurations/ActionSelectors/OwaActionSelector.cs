@@ -14,26 +14,25 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System.Linq;
-using System.Web.Http.Controllers;
+using Microsoft.AspNetCore.Http;
 
 namespace FuseCP.WebDavPortal.Configurations.ActionSelectors
 {
-    public class OwaActionSelector : ApiControllerActionSelector
+    public static class OwaActionSelector
     {
-        public override HttpActionDescriptor SelectAction(HttpControllerContext controllerContext)
+        public static string ResolveOperation(IHeaderDictionary headers)
         {
-            if (controllerContext.Request.Headers.Contains("X-WOPI-Override"))
+            if (headers == null)
             {
-                var matchingHeaders = controllerContext.Request.Headers.GetValues("X-WOPI-Override");
-                var headerValue = (matchingHeaders == null) ? "" : (matchingHeaders.FirstOrDefault() ?? "");
-
-                if (!string.IsNullOrEmpty(headerValue))
-                {
-                    controllerContext.RouteData.Values["action"] = headerValue;
-                }
+                return string.Empty;
             }
 
-            return base.SelectAction(controllerContext);
+            if (!headers.ContainsKey("X-WOPI-Override"))
+            {
+                return string.Empty;
+            }
+
+            return headers["X-WOPI-Override"].FirstOrDefault() ?? string.Empty;
         }
     }
 }

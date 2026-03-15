@@ -11,7 +11,7 @@
         {
             foreach (IHierarchyItem element in Model.Items)
             {
-                @Html.Partial("_ResoursePartial", element)
+                <partial name="_ResoursePartial" model="element" />
             }
         }
     </div>

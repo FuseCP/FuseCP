@@ -13,77 +13,75 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Web.Mvc;
-using System.Web.Routing;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using FuseCP.WebDavPortal.UI.Routes;
 
 namespace FuseCP.WebDavPortal
 {
-    public class RouteConfig
+    public static class RouteConfig
     {
-        public static void RegisterRoutes(RouteCollection routes)
+        public static void RegisterRoutes(IEndpointRouteBuilder endpoints)
         {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
             #region Account
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                name: AccountRouteNames.PhoneNumberIsAvailible,
-               url: "account/profile/phone-number-availible",
+               pattern: "account/profile/phone-number-availible",
                defaults: new { controller = "Account", action = "PhoneNumberIsAvailible" }
                );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.UserProfile,
-                url: "account/profile",
+                pattern: "account/profile",
                 defaults: new { controller = "Account", action = "UserProfile" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.PasswordResetLogin,
-                url: "account/password-reset/step-1",
+                pattern: "account/password-reset/step-1",
                 defaults: new { controller = "Account", action = "PasswordResetLogin" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.PasswordResetPincodeSendOptions,
-                url: "account/password-reset/step-2/{token}",
+                pattern: "account/password-reset/step-2/{token}",
                 defaults: new { controller = "Account", action = "PasswordResetPincodeSendOptions" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.PasswordResetPincode,
-                url: "account/password-reset/step-3/{token}",
+                pattern: "account/password-reset/step-3/{token}",
                 defaults: new { controller = "Account", action = "PasswordResetPincode" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.PasswordResetFinalStep,
-                url: "account/password-reset/step-final/{token}/{pincode}",
-                defaults: new { controller = "Account", action = "PasswordResetFinalStep", pincode = UrlParameter.Optional }
+                pattern: "account/password-reset/step-final/{token}/{pincode?}",
+                defaults: new { controller = "Account", action = "PasswordResetFinalStep" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.PasswordResetSuccess,
-                url: "account/password-reset/success",
+                pattern: "account/password-reset/success",
                 defaults: new { controller = "Account", action = "PasswordSuccessfullyChanged" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.PasswordChange,
-                url: "account/profile/password-change",
+                pattern: "account/profile/password-change",
                 defaults: new { controller = "Account", action = "PasswordChange" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.Logout,
-                url: "account/logout",
+                pattern: "account/logout",
                 defaults: new { controller = "Account", action = "Logout" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: AccountRouteNames.Login,
-                url: "account/login",
+                pattern: "account/login",
                 defaults: new { controller = "Account", action = "Login" }
                 ); 
 
@@ -91,102 +89,102 @@ namespace FuseCP.WebDavPortal
 
             #region Owa
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.ViewOfficeOnline,
-                url: "office365/view/{org}/{*pathPart}",
+                pattern: "office365/view/{org}/{*pathPart}",
                 defaults:
-                    new {controller = "FileSystem", action = "ViewOfficeDocument", pathPart = UrlParameter.Optional}
+                    new {controller = "FileSystem", action = "ViewOfficeDocument"}
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.EditOfficeOnline,
-                url: "office365/edit/{org}/{*pathPart}",
+                pattern: "office365/edit/{org}/{*pathPart}",
                 defaults:
-                    new {controller = "FileSystem", action = "EditOfficeDocument", pathPart = UrlParameter.Optional}
+                    new {controller = "FileSystem", action = "EditOfficeDocument"}
                 );
 
             #endregion
 
             #region Enterprise storage 
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.ItemExist,
-                url: "storage/item-exist/{org}/{*pathPart}",
+                pattern: "storage/item-exist/{org}/{*pathPart}",
                 defaults:
-                    new { controller = "FileSystem", action = "ItemExist", pathPart = UrlParameter.Optional }
+                    new { controller = "FileSystem", action = "ItemExist" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.NewWebDavItem,
-                url: "storage/new/{org}/{*pathPart}",
+                pattern: "storage/new/{org}/{*pathPart}",
                 defaults:
-                    new { controller = "FileSystem", action = "NewWebDavItem", pathPart = UrlParameter.Optional }
+                    new { controller = "FileSystem", action = "NewWebDavItem" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.NewFolder,
-                url: "storage/new-folder/{org}/{*pathPart}",
+                pattern: "storage/new-folder/{org}/{*pathPart}",
                 defaults: new { controller = "FileSystem", action = "NewFolder" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                     name: FileSystemRouteNames.SearchFiles,
-                    url: "storage/search/{org}/{*pathPart}",
-                    defaults: new { controller = "FileSystem", action = "SearchFiles", pathPart = UrlParameter.Optional }
+                    pattern: "storage/search/{org}/{*pathPart}",
+                    defaults: new { controller = "FileSystem", action = "SearchFiles" }
                     );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                     name: FileSystemRouteNames.SearchFilesContent,
-                    url: "storage/ajax/search/{org}/{*pathPart}",
-                    defaults: new { controller = "FileSystem", action = "SearchFilesContent", pathPart = UrlParameter.Optional }
+                    pattern: "storage/ajax/search/{org}/{*pathPart}",
+                    defaults: new { controller = "FileSystem", action = "SearchFilesContent" }
                     );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                     name: FileSystemRouteNames.ChangeWebDavViewType,
-                    url: "storage/change-view-type/{viewType}",
+                    pattern: "storage/change-view-type/{viewType}",
                     defaults: new { controller = "FileSystem", action = "ChangeViewType" }
                     );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                     name: FileSystemRouteNames.DeleteFiles,
-                    url: "storage/files-group-action/delete",
+                    pattern: "storage/files-group-action/delete",
                     defaults: new { controller = "FileSystem", action = "DeleteFiles" }
                     );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.UploadFile,
-                url: "storage/upload-files/{org}/{*pathPart}",
+                pattern: "storage/upload-files/{org}/{*pathPart}",
                 defaults: new { controller = "FileSystem", action = "UploadFiles" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.DownloadFile,
-                url: "storage/download-file/{org}/{*pathPart}",
+                pattern: "storage/download-file/{org}/{*pathPart}",
                 defaults: new { controller = "FileSystem", action = "DownloadFile" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.ShowAdditionalContent,
-                url: "storage/show-additional-content/{*path}",
-                defaults: new { controller = "FileSystem", action = "ShowAdditionalContent", path = UrlParameter.Optional }
+                pattern: "storage/show-additional-content/{*path}",
+                defaults: new { controller = "FileSystem", action = "ShowAdditionalContent" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.ShowContentDetails,
-                url: "storage/details/{org}/{*pathPart}",
-                defaults: new { controller = "FileSystem", action = "GetContentDetails", pathPart = UrlParameter.Optional }
+                pattern: "storage/details/{org}/{*pathPart}",
+                defaults: new { controller = "FileSystem", action = "GetContentDetails" }
                 );
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: FileSystemRouteNames.ShowContentPath,
-                url: "{org}/{*pathPart}",
-                defaults: new { controller = "FileSystem", action = "ShowContent", pathPart = UrlParameter.Optional }
+                pattern: "{org}/{*pathPart}",
+                defaults: new { controller = "FileSystem", action = "ShowContent" }
                 ); 
             #endregion
 
-            routes.MapRoute(
+            endpoints.MapControllerRoute(
                 name: "Default",
-                url: "{controller}/{action}",
+                pattern: "{controller}/{action}",
                 defaults: new { controller = "Account", action = "Login" }
             );
         }

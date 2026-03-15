@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System.Configuration;
+using FuseCP.WebDav.Core.Config;
 using FuseCP.WebDavPortal.WebConfigSections;
 
 namespace FuseCP.WebDav.Core.Config.Entities
@@ -24,9 +25,7 @@ namespace FuseCP.WebDav.Core.Config.Entities
 
         protected AbstractConfigCollection()
         {
-            ConfigSection =
-                (WebDavExplorerConfigurationSettingsSection)
-                    ConfigurationManager.GetSection(WebDavExplorerConfigurationSettingsSection.SectionName);
+            ConfigSection = WebDavConfigSectionResolver.GetRequiredSection();
         }
     }
 }

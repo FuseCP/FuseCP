@@ -26,7 +26,7 @@ namespace FuseCP.WebDav.Core.Config
 
         private WebDavAppConfigManager()
         {
-            _configSection = ((WebDavExplorerConfigurationSettingsSection) ConfigurationManager.GetSection(WebDavExplorerConfigurationSettingsSection.SectionName));
+            _configSection = WebDavConfigSectionResolver.GetRequiredSection();
             FuseCPConstantUserParameters = new FuseCPConstantUserParameters();
             ElementsRendering = new ElementsRendering();
             SessionKeys = new SessionKeysCollection();

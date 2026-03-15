@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using FuseCP.WebDav.Core.Config;
 using FuseCP.WebDavPortal.Models;
 
@@ -37,7 +37,7 @@ namespace FuseCP.WebDavPortal.Controllers
                 return View(model);
 
             var errorObject = new { statusCode = model.HttpStatusCode, message = model.Message };
-            return Json(errorObject, JsonRequestBehavior.AllowGet);
+            return Json(errorObject);
         }
     }
 }

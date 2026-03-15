@@ -3,7 +3,7 @@
 @model FuseCP.WebDavPortal.Models.ModelForWebDav
            
 
-@Html.Partial("_ShowContentTopMenu", Model)
+<partial name="_ShowContentTopMenu" model="Model" />
 
 <div class="prevent-deselect container">
     <table id="search-items-table" class="display table table-striped table-bordered noselect" cellspacing="0" width="100%">
@@ -24,6 +24,6 @@
             fcp.fileBrowser.initSearchDataTable('#search-items-table', '@Url.RouteUrl(FileSystemRouteNames.ShowContentDetails)', '@Model.SearchValue');
         });
     </script>
-    @Scripts.Render("~/bundles/appScripts-webdav")
+    <script src="~/Scripts/appScripts/FCP-webdav.js"></script>
 }
 

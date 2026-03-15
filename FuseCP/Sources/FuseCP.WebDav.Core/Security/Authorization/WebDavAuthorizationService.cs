@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Threading;
 using Cobalt;
 using FuseCP.EnterpriseServer.Base.HostedSolution;
 using FuseCP.Providers.HostedSolution;
@@ -31,6 +31,21 @@ namespace FuseCP.WebDav.Core.Security.Authorization
 {
     public class WebDavAuthorizationService : IWebDavAuthorizationService
     {
+        private static readonly AsyncLocal<Dictionary<string, object>> SessionItems = new AsyncLocal<Dictionary<string, object>>();
+
+        private static Dictionary<string, object> CurrentSession
+        {
+            get
+            {
+                if (SessionItems.Value == null)
+                {
+                    SessionItems.Value = new Dictionary<string, object>();
+                }
+
+                return SessionItems.Value;
+            }
+        }
+
         public bool HasAccess(ScpPrincipal principal, string path)
         {
             path = path.RemoveLeadingFromPath(principal.OrganizationId);
@@ -94,8 +109,9 @@ namespace FuseCP.WebDav.Core.Security.Authorization
 
         private IEnumerable<ESPermission> GetFolderEsPermissions(ScpPrincipal principal, string rootFolderName)
         {
-            var dictionary = HttpContext.Current.Session != null ?HttpContext.Current.Session[WebDavAppConfigManager.Instance.SessionKeys.WebDavRootFoldersPermissions] as
-                Dictionary<string, IEnumerable<ESPermission>> : null;
+            var dictionary = CurrentSession.ContainsKey(WebDavAppConfigManager.Instance.SessionKeys.WebDavRootFoldersPermissions)
+                ? CurrentSession[WebDavAppConfigManager.Instance.SessionKeys.WebDavRootFoldersPermissions] as Dictionary<string, IEnumerable<ESPermission>>
+                : null;
 
             if (dictionary == null)
             {
@@ -110,10 +126,7 @@ namespace FuseCP.WebDav.Core.Security.Authorization
                     dictionary.Add(rootFolder.Name, permissions);
                 }
 
-                if (HttpContext.Current.Session != null)
-                {
-                    HttpContext.Current.Session[WebDavAppConfigManager.Instance.SessionKeys.WebDavRootFoldersPermissions] = dictionary;
-                }
+                CurrentSession[WebDavAppConfigManager.Instance.SessionKeys.WebDavRootFoldersPermissions] = dictionary;
             }
 
             return dictionary.ContainsKey(rootFolderName) ? dictionary[rootFolderName] : new ESPermission[0];
@@ -121,16 +134,15 @@ namespace FuseCP.WebDav.Core.Security.Authorization
 
         public IEnumerable<ExchangeAccount> GetUserSecurityGroups(ScpPrincipal principal)
         {
-            var groups = HttpContext.Current.Session != null ? HttpContext.Current.Session[WebDavAppConfigManager.Instance.SessionKeys.UserGroupsKey] as IEnumerable<ExchangeAccount> : null;
+            var groups = CurrentSession.ContainsKey(WebDavAppConfigManager.Instance.SessionKeys.UserGroupsKey)
+                ? CurrentSession[WebDavAppConfigManager.Instance.SessionKeys.UserGroupsKey] as IEnumerable<ExchangeAccount>
+                : null;
 
             if (groups == null)
             {
                  groups = FCP.Services.Organizations.GetSecurityGroupsByMember(principal.ItemId, principal.AccountId);
 
-                if (HttpContext.Current.Session != null)
-                {
-                    HttpContext.Current.Session[WebDavAppConfigManager.Instance.SessionKeys.UserGroupsKey] = groups;
-                }
+                CurrentSession[WebDavAppConfigManager.Instance.SessionKeys.UserGroupsKey] = groups;
             }
 
             return groups ?? new ExchangeAccount[0];
@@ -138,7 +150,9 @@ namespace FuseCP.WebDav.Core.Security.Authorization
 
         private IEnumerable<string> GetOwaFoldersWithEditPermission(ScpPrincipal principal)
         {
-            var folders = HttpContext.Current.Session != null ? HttpContext.Current.Session[WebDavAppConfigManager.Instance.SessionKeys.OwaEditFoldersSessionKey] as IEnumerable<string> : null;
+            var folders = CurrentSession.ContainsKey(WebDavAppConfigManager.Instance.SessionKeys.OwaEditFoldersSessionKey)
+                ? CurrentSession[WebDavAppConfigManager.Instance.SessionKeys.OwaEditFoldersSessionKey] as IEnumerable<string>
+                : null;
 
             if (folders != null)
             {
@@ -164,10 +178,7 @@ namespace FuseCP.WebDav.Core.Security.Authorization
             }
 
 
-            if (HttpContext.Current.Session != null)
-            {
-                HttpContext.Current.Session[WebDavAppConfigManager.Instance.SessionKeys.OwaEditFoldersSessionKey] = folders;
-            }
+            CurrentSession[WebDavAppConfigManager.Instance.SessionKeys.OwaEditFoldersSessionKey] = folders;
 
             return folders;
         }

@@ -18,14 +18,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Hosting;
-using System.Web.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Cobalt;
 using FuseCP.EnterpriseServer.Base.HostedSolution;
 using FuseCP.WebDav.Core;
@@ -36,7 +34,7 @@ using FuseCP.WebDav.Core.Interfaces.Owa;
 using FuseCP.WebDav.Core.Interfaces.Security;
 using FuseCP.WebDav.Core.Security.Cryptography;
 using FuseCP.WebDav.Core.Scp.Framework;
-using FuseCP.WebDavPortal.Configurations.ControllerConfigurations;
+using FuseCP.WebDavPortal.Configurations.ActionSelectors;
 using FuseCP.WebDavPortal.Extensions;
 using FuseCP.WebDavPortal.UI.Routes;
 using FuseCP.WebDav.Core.Extensions;
@@ -44,8 +42,9 @@ using FuseCP.WebDav.Core.Extensions;
 namespace FuseCP.WebDavPortal.Controllers.Api
 {
     [Authorize]
-    [OwaControllerConfiguration]
-    public class OwaController : ApiController
+    [ApiController]
+    [Route("owa/wopi/files/{accessTokenId:int}")]
+    public class OwaController : ControllerBase
     {
         private readonly IWopiServer _wopiServer;
         private readonly IWebDavManager _webDavManager;
@@ -76,87 +75,96 @@ namespace FuseCP.WebDavPortal.Controllers.Api
                 return fileInfo;
             }
 
-            var urlPart = Url.Route(FileSystemRouteNames.ShowContentPath, new {org = ScpContext.User.OrganizationId, pathPart = token.FilePath});
-            var url = new Uri(Request.RequestUri, urlPart).ToString();
+            var urlPart = Url.RouteUrl(FileSystemRouteNames.ShowContentPath, new { org = ScpContext.User.OrganizationId, pathPart = token.FilePath });
+            var url = new Uri(new Uri(Request.GetDisplayUrl()), urlPart).ToString();
 
             fileInfo.DownloadUrl = url;
 
             return fileInfo;
         }
 
-        public HttpResponseMessage GetFile(int accessTokenId)
+        [HttpGet("contents")]
+        public IActionResult GetFile(int accessTokenId)
         {
             var bytes = _wopiServer.GetFileBytes(accessTokenId);
 
-            var result = new HttpResponseMessage(HttpStatusCode.OK);
-
-            var stream = new MemoryStream(bytes);
-
-            result.Content = new StreamContent(stream);
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-            return result;
+            return File(bytes, "application/octet-stream");
         }
 
         [HttpPost]
-        public HttpResponseMessage Cobalt(int accessTokenId)
+        public IActionResult Post(int accessTokenId)
         {
-            var responseBatch = _cobaltManager.ProcessRequest(accessTokenId, HttpContext.Current.Request.InputStream);
+            var operation = OwaActionSelector.ResolveOperation(Request.Headers);
 
-            var correlationId = Request.Headers.GetValues("X-WOPI-CorrelationID").FirstOrDefault() ?? "";
+            if (string.IsNullOrWhiteSpace(operation))
+            {
+                return Cobalt(accessTokenId);
+            }
 
-            var response = new HttpResponseMessage();
-
-            response.Content = new PushStreamContent(
-                (stream, content, context) =>
-                {
-                    responseBatch.CopyTo(stream);
-                    stream.Close();
-                }, "application/octet-stream");
-
-            response.Content.Headers.ContentLength = responseBatch.Length;
-            response.Headers.Add("X-WOPI-CorellationID", correlationId);
-            response.Headers.Add("request-id", correlationId);
-
-            return response;
+            switch (operation.ToUpperInvariant())
+            {
+                case "LOCK":
+                    return Lock(accessTokenId);
+                case "REFRESH_LOCK":
+                    return RefreshLock(accessTokenId);
+                case "UNLOCK":
+                    return Unlock(accessTokenId);
+                case "PUT":
+                    return Put(accessTokenId);
+                case "PUT_RELATIVE":
+                    return PutRelative(accessTokenId);
+                default:
+                    return BadRequest();
+            }
         }
 
-        [HttpPost]
-        public HttpResponseMessage Lock(int accessTokenId)
+        private IActionResult Cobalt(int accessTokenId)
+        {
+            var responseBatch = _cobaltManager.ProcessRequest(accessTokenId, HttpContext.Request.Body);
+
+            var correlationId = Request.Headers["X-WOPI-CorrelationID"].FirstOrDefault() ?? string.Empty;
+
+            Response.Headers["X-WOPI-CorellationID"] = correlationId;
+            Response.Headers["request-id"] = correlationId;
+
+            using (var copy = new MemoryStream())
+            {
+                responseBatch.CopyTo(copy);
+                return File(copy.ToArray(), "application/octet-stream");
+            }
+        }
+
+        private IActionResult Lock(int accessTokenId)
         {
            // var token = _tokenManager.GetToken(accessTokenId);
 
             //_webDavManager.LockFile(token.FilePath);
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
-        [HttpPost]
-        public HttpResponseMessage Refresh_Lock(int accessTokenId)
+        private IActionResult RefreshLock(int accessTokenId)
         {
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
-        [HttpPost]
-        public HttpResponseMessage UnLock(int accessTokenId)
+        private IActionResult Unlock(int accessTokenId)
         {
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
-        [HttpPost]
-        public HttpResponseMessage Put(int accessTokenId)
+        private IActionResult Put(int accessTokenId)
         {
             var token = _tokenManager.GetToken(accessTokenId);
 
-            var bytes = Request.Content.ReadAsByteArrayAsync().Result;
+            var bytes = ReadRequestBytes();
 
             _webDavManager.UploadFile(token.FilePath, bytes);
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Ok();
         }
 
-        [HttpPost]
-        public PutRelativeFile Put_Relative(int accessTokenId)
+        private IActionResult PutRelative(int accessTokenId)
         {
             var result = new PutRelativeFile();
 
@@ -164,13 +172,16 @@ namespace FuseCP.WebDavPortal.Controllers.Api
 
             var newFilePath = string.Empty;
 
-            var target = Request.Headers.Contains("X-WOPI-RelativeTarget") ? Request.Headers.GetValues("X-WOPI-RelativeTarget").First() : Request.Headers.GetValues("X-WOPI-SuggestedTarget").First();
+            var target = Request.Headers.ContainsKey("X-WOPI-RelativeTarget")
+                ? Request.Headers["X-WOPI-RelativeTarget"].FirstOrDefault()
+                : Request.Headers["X-WOPI-SuggestedTarget"].FirstOrDefault();
 
-            bool overwrite = Request.Headers.Contains("X-WOPI-RelativeTarget") && Convert.ToBoolean(Request.Headers.GetValues("X-WOPI-OverwriteRelativeTarget").First());
+            bool overwrite = Request.Headers.ContainsKey("X-WOPI-RelativeTarget")
+                && Convert.ToBoolean(Request.Headers["X-WOPI-OverwriteRelativeTarget"].FirstOrDefault());
 
             if (string.IsNullOrEmpty(target))
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
 
             if (target.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).Count() > 1)
@@ -186,24 +197,33 @@ namespace FuseCP.WebDavPortal.Controllers.Api
 
             if (overwrite == false && _webDavManager.FileExist(newFilePath))
             {
-                throw new HttpResponseException(HttpStatusCode.Conflict);
+                return Conflict();
             }
 
-            var bytes = Request.Content.ReadAsByteArrayAsync().Result;
+            var bytes = ReadRequestBytes();
 
             _webDavManager.UploadFile(newFilePath, bytes);
 
             var newToken = _tokenManager.CreateToken(ScpContext.User,newFilePath);
 
-            var readUrlPart = Url.Route(FileSystemRouteNames.ViewOfficeOnline, new { org = ScpContext.User.OrganizationId, pathPart = newFilePath});
-            var writeUrlPart = Url.Route(FileSystemRouteNames.EditOfficeOnline, new { org = ScpContext.User.OrganizationId, pathPart = newFilePath });
+            var readUrlPart = Url.RouteUrl(FileSystemRouteNames.ViewOfficeOnline, new { org = ScpContext.User.OrganizationId, pathPart = newFilePath});
+            var writeUrlPart = Url.RouteUrl(FileSystemRouteNames.EditOfficeOnline, new { org = ScpContext.User.OrganizationId, pathPart = newFilePath });
 
-            result.HostEditUrl = new Uri(Request.RequestUri, writeUrlPart).ToString();
-            result.HostViewUrl = new Uri(Request.RequestUri, readUrlPart).ToString(); ;
+            result.HostEditUrl = new Uri(new Uri(Request.GetDisplayUrl()), writeUrlPart).ToString();
+            result.HostViewUrl = new Uri(new Uri(Request.GetDisplayUrl()), readUrlPart).ToString();
             result.Name = Path.GetFileName(newFilePath);
             result.Url = Url.GenerateWopiUrl(newToken, newFilePath);
 
-            return result;
+            return Ok(result);
+        }
+
+        private byte[] ReadRequestBytes()
+        {
+            using (var memory = new MemoryStream())
+            {
+                Request.Body.CopyTo(memory);
+                return memory.ToArray();
+            }
         }
     }
 }

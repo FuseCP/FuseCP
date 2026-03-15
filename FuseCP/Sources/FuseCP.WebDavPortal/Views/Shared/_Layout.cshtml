@@ -1,5 +1,3 @@
-@using System.Web.Script.Serialization
-@using Ninject
 @using FuseCP.WebDav.Core
 @using FuseCP.WebDav.Core.Config
 @using FuseCP.WebDavPortal.Controllers
@@ -39,8 +37,9 @@
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
 
 </head>
 <body>
@@ -77,26 +76,34 @@
     </div>
     
     <div class="prevent-deselect">
-        @Html.Partial("_ProcessDialog", null)
-        @Html.Partial("_ConfirmDialog")
+        <partial name="_ProcessDialog" />
+        <partial name="_ConfirmDialog" />
 
         @RenderSection("popups", required: false)
     </div>
     
     <div class="manual-scripts">
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/bundles/appScripts")
+        <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+        <script src="~/Scripts/jquery.cookie-1.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/appScripts/FCP.js"></script>
+        <script src="~/Scripts/appScripts/dialogs.js"></script>
+        <script src="~/Scripts/appScripts/fileBrowsing.js"></script>
+        <script src="~/Scripts/appScripts/messages.js"></script>
+        <script src="~/Scripts/appScripts/recalculateResourseHeight.js"></script>
+        <script src="~/Scripts/appScripts/uploadingData2.js"></script>
+        <script src="~/Scripts/appScripts/validation/passwordeditor.unobtrusive.js"></script>
     </div>
 
     @if (ScpContext.User != null)
     {
-        @Scripts.Render("~/bundles/authScripts")
+        <script src="~/Scripts/appScripts/authentication.js"></script>
         
         <script>
             $(document).ready(function () {
-                StartAuthExpirationCheckTimer("@WebDavAppConfigManager.Instance.AuthTimeoutCookieName", "@FormsAuthentication.FormsCookieName", "@Url.RouteUrl(AccountRouteNames.Logout)");
+                StartAuthExpirationCheckTimer("@WebDavAppConfigManager.Instance.AuthTimeoutCookieName", "FuseCP.WebDav.Auth", "@Url.RouteUrl(AccountRouteNames.Logout)");
             });
         </script>
     }
@@ -104,7 +111,7 @@
 
     <script>
         $(document).ready(function () {
-            fcp.messages.showMessages(@Html.Raw(Json.Encode(messages)));
+            fcp.messages.showMessages(@Json.Serialize(messages));
         });
     </script>
 

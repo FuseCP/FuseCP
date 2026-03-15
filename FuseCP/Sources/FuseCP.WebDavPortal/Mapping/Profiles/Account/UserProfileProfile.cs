@@ -29,27 +29,9 @@ namespace FuseCP.WebDavPortal.Mapping.Profiles.Account
 {
     public class UserProfileProfile : Profile
     {
-        /// <summary>
-        ///     Gets the name of the profile.
-        /// </summary>
-        /// <value>
-        ///     The name of the profile.
-        /// </value>
-        public override string ProfileName
+        public UserProfileProfile()
         {
-            get
-            {
-                return this.GetType().Name;
-            }
-        }
-
-        /// <summary>
-        ///     Override this method in a derived class and call the CreateMap method to associate that map with this profile.
-        ///     Avoid calling the <see cref="T:AutoMapper.Mapper" /> class from this method.
-        /// </summary>
-        protected override void Configure()
-        {
-            Mapper.CreateMap<OrganizationUser, UserProfile>()
+            CreateMap<OrganizationUser, UserProfile>()
                 .ForMember(ti => ti.PrimaryEmailAddress, x => x.MapFrom(hi => hi.PrimaryEmailAddress))
                 .ForMember(ti => ti.DisplayName, x => x.MapFrom(hi => hi.DisplayName))
                 .ForMember(ti => ti.DisplayName, x => x.MapFrom(hi => hi.DisplayName))

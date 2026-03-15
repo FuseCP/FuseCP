@@ -20,10 +20,9 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Security.Policy;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using FuseCP.WebDav.Core;
 using FuseCP.WebDav.Core.Client;
 using FuseCP.WebDav.Core.Config;
@@ -40,7 +39,7 @@ using FuseCP.WebDavPortal.CustomAttributes;
 using FuseCP.WebDavPortal.Extensions;
 using FuseCP.WebDavPortal.FileOperations;
 using FuseCP.WebDavPortal.Helpers;
-using FuseCP.WebDavPortal.ModelBinders.DataTables;
+using FuseCP.WebDavPortal.Mapping;
 using FuseCP.WebDavPortal.Models;
 using System.Net;
 using FuseCP.WebDavPortal.Models.Common;
@@ -54,7 +53,6 @@ using FuseCP.WebDavPortal.UI.Routes;
 namespace FuseCP.WebDavPortal.Controllers
 
 {
-    [ValidateInput(false)]
     [LdapAuthorization]
     public class FileSystemController : BaseController
     {
@@ -90,7 +88,7 @@ namespace FuseCP.WebDavPortal.Controllers
         {
             if (org != ScpContext.User.OrganizationId)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+                return StatusCode((int)HttpStatusCode.NoContent);
             }
 
             if (_webdavManager.IsFile(pathPart))
@@ -112,7 +110,7 @@ namespace FuseCP.WebDavPortal.Controllers
                     SearchValue = searchValue
                 };
 
-                if (Request.Browser.IsMobileDevice)
+                if (IsMobileDevice())
                 {
                     model.UserSettings.WebDavViewType = FolderViewTypes.BigIcons;
                 }
@@ -123,16 +121,15 @@ namespace FuseCP.WebDavPortal.Controllers
             catch (UnauthorizedException e)
 #pragma warning restore 0168
             {
-                throw new HttpException(404, "Not Found");
+                return NotFound();
             }
         }
 
-        [ChildActionOnly]
         public ActionResult ContentList(string org, ModelForWebDav model, string pathPart = "")
         {
             try
             {
-                if (Request.Browser.IsMobileDevice == false && model.UserSettings.WebDavViewType == FolderViewTypes.Table)
+                if (!IsMobileDevice() && model.UserSettings.WebDavViewType == FolderViewTypes.Table)
                 {
                     return PartialView("_ShowContentTable", model);
                 }
@@ -156,13 +153,14 @@ namespace FuseCP.WebDavPortal.Controllers
             catch (UnauthorizedException e)
 #pragma warning disable 0168
             {
-                throw new HttpException(404, "Not Found");
+                return NotFound();
             }
         }
 
         [HttpGet]
-        public ActionResult GetContentDetails(string org, string pathPart, [ModelBinder(typeof (JqueryDataTableModelBinder))] JqueryDataTableRequest dtRequest)
+        public ActionResult GetContentDetails(string org, string pathPart)
         {
+            var dtRequest = BuildDataTableRequest();
             IEnumerable<WebDavResource> folderItems;
 
             if (string.IsNullOrEmpty(dtRequest.Search.Value) == false)
@@ -174,7 +172,7 @@ namespace FuseCP.WebDavPortal.Controllers
                 folderItems = _webdavManager.OpenFolder(pathPart).Cast<WebDavResource>();
             }
 
-            var tableItems = Mapper.Map<IEnumerable<WebDavResource>, IEnumerable<ResourceTableItemModel>>(folderItems).ToList();
+            var tableItems = AutoMapperPortalConfiguration.Mapper.Map<IEnumerable<WebDavResource>, IEnumerable<ResourceTableItemModel>>(folderItems).ToList();
 
             FillContentModel(tableItems, org);
 
@@ -185,7 +183,64 @@ namespace FuseCP.WebDavPortal.Controllers
 
             var dataTableResponse = DataTableHelper.ProcessRequest(tableItems, dtRequest);
 
-            return Json(dataTableResponse, JsonRequestBehavior.AllowGet);
+            return Json(dataTableResponse);
+        }
+
+        private JqueryDataTableRequest BuildDataTableRequest()
+        {
+            int ParseInt(string key, int defaultValue)
+            {
+                var value = GetRequestValue(key);
+                return int.TryParse(value, out var parsed) ? parsed : defaultValue;
+            }
+
+            bool ParseBool(string key, bool defaultValue)
+            {
+                var value = GetRequestValue(key);
+                return bool.TryParse(value, out var parsed) ? parsed : defaultValue;
+            }
+
+            var search = new JqueryDataTableSearch
+            {
+                Value = GetRequestValue("search[value]"),
+                IsRegex = ParseBool("search[regex]", false)
+            };
+
+            var orders = new List<JqueryDataTableOrder>();
+            for (var orderIndex = 0; !string.IsNullOrEmpty(GetRequestValue($"order[{orderIndex}][column]")); orderIndex++)
+            {
+                orders.Add(new JqueryDataTableOrder
+                {
+                    Column = ParseInt($"order[{orderIndex}][column]", 0),
+                    Ascending = string.Equals(GetRequestValue($"order[{orderIndex}][dir]"), "asc", StringComparison.OrdinalIgnoreCase)
+                });
+            }
+
+            var columns = new List<JqueryDataTableColumn>();
+            for (var columnsIndex = 0; !string.IsNullOrEmpty(GetRequestValue($"columns[{columnsIndex}][name]")); columnsIndex++)
+            {
+                columns.Add(new JqueryDataTableColumn
+                {
+                    Data = GetRequestValue($"columns[{columnsIndex}][data]"),
+                    Name = GetRequestValue($"columns[{columnsIndex}][name]"),
+                    Orderable = ParseBool($"columns[{columnsIndex}][orderable]", true),
+                    Search = new JqueryDataTableSearch
+                    {
+                        Value = GetRequestValue($"columns[{columnsIndex}][search][value]"),
+                        IsRegex = ParseBool($"columns[{columnsIndex}][search][regex]", false)
+                    }
+                });
+            }
+
+            return new JqueryDataTableRequest
+            {
+                Draw = ParseInt("draw", 0),
+                Start = ParseInt("start", 0),
+                Count = ParseInt("length", 10),
+                Search = search,
+                Orders = orders,
+                Columns = columns
+            };
         }
 
         [HttpPost]
@@ -223,7 +278,7 @@ namespace FuseCP.WebDavPortal.Controllers
         {
             if (org != ScpContext.User.OrganizationId)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+                return StatusCode((int)HttpStatusCode.NoContent);
             }
 
             string fileName = pathPart.Split('/').Last();
@@ -255,21 +310,21 @@ namespace FuseCP.WebDavPortal.Controllers
         {
             var uploadResults = new List<UploadFileResult>();
 
-            foreach (string file in Request.Files)
+            foreach (var hpf in Request.Form.Files)
             {
-                var hpf = Request.Files[file] as HttpPostedFileBase;
-
-                if (hpf == null || hpf.ContentLength == 0)
+                if (hpf == null || hpf.Length == 0)
                 {
                     continue;
                 }
 
-                _webdavManager.UploadFile(pathPart, hpf);
+                var destinationPath = string.Format("{0}/{1}", pathPart.TrimEnd('/'), Path.GetFileName(hpf.FileName));
+
+                _webdavManager.UploadFile(destinationPath, hpf.OpenReadStream());
 
                 uploadResults.Add(new UploadFileResult()
                 {
                     name = hpf.FileName,
-                    size = hpf.ContentLength,
+                    size = (int)hpf.Length,
                     type = hpf.ContentType
                 });
             }
@@ -277,7 +332,8 @@ namespace FuseCP.WebDavPortal.Controllers
             var result = Json(new { files = uploadResults });
 
             //for IE8 which does not accept application/json
-            if (Request.Headers["Accept"] != null && !Request.Headers["Accept"].Contains("application/json"))
+            var acceptHeader = Request.Headers["Accept"].ToString();
+            if (!string.IsNullOrEmpty(acceptHeader) && !acceptHeader.Contains("application/json"))
             {
                 result.ContentType = MediaTypeNames.Text.Plain;
             }
@@ -301,7 +357,7 @@ namespace FuseCP.WebDavPortal.Controllers
             {
                 try
                 {
-                    _webdavManager.DeleteResource(Server.UrlDecode(file), deleteNonEmptyFolder);
+                    _webdavManager.DeleteResource(Uri.UnescapeDataString(file), deleteNonEmptyFolder);
 
                     model.DeletedFiles.Add(file);
                 }
@@ -329,7 +385,7 @@ namespace FuseCP.WebDavPortal.Controllers
         [HttpPost]
         public ActionResult NewFolder(string org, string pathPart)
         {
-            string folderPath = pathPart + "/" + Request["foldername"];
+            string folderPath = pathPart + "/" + Request.Form["foldername"];
             var permissions = _webDavAuthorizationService.GetPermissions(ScpContext.User, pathPart);
             if (!permissions.HasFlag(WebDavPermissions.Write))
             {
@@ -367,10 +423,7 @@ namespace FuseCP.WebDavPortal.Controllers
         {
             var exist = _webdavManager.FileExist(string.Format("{0}/{1}", pathPart.TrimEnd('/'), newItemName.Trim('/')));
 
-            return new JsonResult()
-            {
-                Data = !exist
-            };
+            return Json(!exist);
         }
 
         #region Owa Actions
@@ -380,12 +433,12 @@ namespace FuseCP.WebDavPortal.Controllers
             string fileUrl = WebDavAppConfigManager.Instance.WebdavRoot + org + "/" + pathPart.TrimStart('/');
             var accessToken = _tokenManager.CreateToken(ScpContext.User, pathPart);
 
-            var urlPart = Url.HttpRouteUrl(OwaRouteNames.CheckFileInfo, new { accessTokenId = accessToken.Id });
-            var url = new Uri(Request.Url, urlPart).ToString();
+            var urlPart = Url.RouteUrl(OwaRouteNames.CheckFileInfo, new { accessTokenId = accessToken.Id });
+            var url = new Uri(new Uri(Request.GetDisplayUrl()), urlPart).ToString();
 
-            string wopiSrc = Server.UrlDecode(url);
+            string wopiSrc = Uri.UnescapeDataString(url);
 
-            var uri = string.Format("{0}/{1}WOPISrc={2}&access_token={3}", WebDavAppConfigManager.Instance.OfficeOnline.Url, owaOpenerUri, Server.UrlEncode(wopiSrc), Server.UrlEncode(accessToken.AccessToken.ToString("N")));
+            var uri = string.Format("{0}/{1}WOPISrc={2}&access_token={3}", WebDavAppConfigManager.Instance.OfficeOnline.Url, owaOpenerUri, Uri.EscapeDataString(wopiSrc), Uri.EscapeDataString(accessToken.AccessToken.ToString("N")));
 
             string fileName = fileUrl.Split('/').Last();
             string folder = pathPart.ReplaceLast(fileName, "").Trim('/');
@@ -397,7 +450,7 @@ namespace FuseCP.WebDavPortal.Controllers
         {
             var owaOpener = WebDavAppConfigManager.Instance.OfficeOnline.Single(x => x.Extension == Path.GetExtension(pathPart));
 
-            var owaOpenerUrl = Request.Browser.IsMobileDevice ? owaOpener.OwaMobileViev : owaOpener.OwaView;
+            var owaOpenerUrl = IsMobileDevice() ? owaOpener.OwaMobileViev : owaOpener.OwaView;
 
             return ShowOfficeDocument(org, pathPart, owaOpenerUrl);
         }
@@ -406,7 +459,7 @@ namespace FuseCP.WebDavPortal.Controllers
         {
             var permissions = _webDavAuthorizationService.GetPermissions(ScpContext.User, pathPart);
 
-            if (permissions.HasFlag(WebDavPermissions.Write) == false || permissions.HasFlag(WebDavPermissions.OwaEdit) == false || Request.Browser.IsMobileDevice)
+            if (permissions.HasFlag(WebDavPermissions.Write) == false || permissions.HasFlag(WebDavPermissions.OwaEdit) == false || IsMobileDevice())
             {
                 return new RedirectToRouteResult(FileSystemRouteNames.ViewOfficeOnline, null);
             }
@@ -440,16 +493,38 @@ namespace FuseCP.WebDavPortal.Controllers
                     }
                 }
 
-                var folderPath = Server.UrlDecode(_webdavManager.GetFileFolderPath(pathPart));
+                var folderPath = Uri.UnescapeDataString(_webdavManager.GetFileFolderPath(pathPart));
 
-                item.FolderUrlAbsoluteString =  Server.UrlDecode(Url.RouteUrl(FileSystemRouteNames.ShowContentPath, new  {org = organizationId, pathPart = folderPath}, Request.Url.Scheme));
+                var absoluteRouteUrl = Url.RouteUrl(FileSystemRouteNames.ShowContentPath, new { org = organizationId, pathPart = folderPath });
+                item.FolderUrlAbsoluteString = Uri.UnescapeDataString(new Uri(new Uri(Request.GetDisplayUrl()), absoluteRouteUrl).ToString());
                 item.FolderUrlLocalString = Url.RouteUrl(FileSystemRouteNames.ShowContentPath, new { org = organizationId, pathPart = folderPath });
 
-                if (Request.Browser.IsMobileDevice)
+                if (IsMobileDevice())
                 {
                     item.IsTargetBlank = false;
                 }
             }
+        }
+
+        private string GetRequestValue(string key)
+        {
+            if (Request.Query.TryGetValue(key, out var queryValue))
+            {
+                return queryValue.ToString();
+            }
+
+            if (Request.HasFormContentType && Request.Form.TryGetValue(key, out var formValue))
+            {
+                return formValue.ToString();
+            }
+
+            return string.Empty;
+        }
+
+        private bool IsMobileDevice()
+        {
+            var userAgent = Request.Headers.UserAgent.ToString().ToLowerInvariant();
+            return userAgent.Contains("mobile") || userAgent.Contains("android") || userAgent.Contains("iphone");
         }
     }
 }

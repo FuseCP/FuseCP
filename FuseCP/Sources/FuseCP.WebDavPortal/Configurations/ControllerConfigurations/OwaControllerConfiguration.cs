@@ -14,19 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http.Controllers;
-using FuseCP.WebDavPortal.Configurations.ActionSelectors;
 
 namespace FuseCP.WebDavPortal.Configurations.ControllerConfigurations
 {
-    public class OwaControllerConfiguration : Attribute, IControllerConfiguration
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class OwaControllerConfiguration : Attribute
     {
-        public void Initialize(HttpControllerSettings controllerSettings, HttpControllerDescriptor controllerDescriptor)
-        {
-            controllerSettings.Services.Replace(typeof(IHttpActionSelector), new OwaActionSelector());
-        }
     }
 }

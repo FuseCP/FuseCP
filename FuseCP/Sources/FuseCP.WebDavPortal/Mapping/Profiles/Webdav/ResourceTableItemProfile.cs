@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using AutoMapper;
 using FuseCP.WebDav.Core.Client;
 using FuseCP.WebDav.Core.Config;
@@ -30,29 +29,11 @@ namespace FuseCP.WebDavPortal.Mapping.Profiles.Webdav
 {
     public class ResourceTableItemProfile : Profile
     {
-        /// <summary>
-        ///     Gets the name of the profile.
-        /// </summary>
-        /// <value>
-        ///     The name of the profile.
-        /// </value>
-        public override string ProfileName
-        {
-            get
-            {
-                return this.GetType().Name;
-            }
-        }
-
-        /// <summary>
-        ///     Override this method in a derived class and call the CreateMap method to associate that map with this profile.
-        ///     Avoid calling the <see cref="T:AutoMapper.Mapper" /> class from this method.
-        /// </summary>
-        protected override void Configure()
+        public ResourceTableItemProfile()
         {
             var openerManager = new FileOpenerManager();
 
-            Mapper.CreateMap<WebDavResource, ResourceTableItemModel>()
+            CreateMap<WebDavResource, ResourceTableItemModel>()
                 .ForMember(ti => ti.DisplayName, x => x.MapFrom(hi => hi.DisplayName.Trim('/')))
                 .ForMember(ti => ti.Href, x => x.MapFrom(hi => hi.Href))
                 .ForMember(ti => ti.Type, x => x.MapFrom(hi => hi.ItemType.GetDescription().ToLowerInvariant()))

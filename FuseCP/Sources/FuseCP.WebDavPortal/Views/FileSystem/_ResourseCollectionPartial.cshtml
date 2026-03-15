@@ -2,5 +2,5 @@
 
 @foreach (var element in Model)
 {
-    @Html.Partial("_ResoursePartial", element)
+    <partial name="_ResoursePartial" model="element" />
 }

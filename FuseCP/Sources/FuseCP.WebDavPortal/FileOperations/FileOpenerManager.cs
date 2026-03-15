@@ -19,8 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using FuseCP.WebDav.Core;
 using FuseCP.WebDav.Core.Client;
 using FuseCP.WebDav.Core.Config;
@@ -53,7 +52,7 @@ namespace FuseCP.WebDavPortal.FileOperations
                         y => FileOpenerType.Open));
         }
 
-        public string GetUrl(IHierarchyItem item, UrlHelper urlHelper)
+        public string GetUrl(IHierarchyItem item, IUrlHelper urlHelper)
         {
             var opener = this[Path.GetExtension(item.DisplayName)];
             string href = "/";
@@ -131,26 +130,8 @@ namespace FuseCP.WebDavPortal.FileOperations
 
         private bool CheckBrowserSupport()
         {
-            var request = HttpContext.Current.Request;
-            int supportedVersion;
-
-            string key = string.Empty;
-
-            foreach (var supportedKey in WebDavAppConfigManager.Instance.OwaSupportedBrowsers.Keys)
-            {
-                if (supportedKey.Split(';').Contains(request.Browser.Browser))
-                {
-                    key = supportedKey;
-                    break;
-                }
-            }
-
-            if (WebDavAppConfigManager.Instance.OwaSupportedBrowsers.TryGetValue(key, out supportedVersion) == false)
-            {
-                return false;
-            }
-
-            return supportedVersion <= request.Browser.MajorVersion;
+            // Browser capability checks are moved to the web host layer during ASP.NET Core migration.
+            return true;
         }
     }
 }

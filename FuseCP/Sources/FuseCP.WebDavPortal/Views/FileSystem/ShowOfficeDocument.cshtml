@@ -1,7 +1,9 @@
 @using FuseCP.WebDavPortal.UI.Routes
 @model FuseCP.WebDavPortal.Models.OfficeOnlineModel
 @{
-  Layout = null;
+        Layout = null;
+        var _ua = Context.Request.Headers.UserAgent.ToString().ToLowerInvariant();
+        var isMobile = _ua.Contains("mobile") || _ua.Contains("android") || _ua.Contains("iphone");
 }
 
 <!DOCTYPE html>
@@ -27,13 +29,14 @@
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="msapplication-TileImage" content="/mstile-144x144.png">
         <meta name="theme-color" content="#ffffff">
-        @if (Request.Browser.IsMobileDevice)
+        @if (isMobile)
         {
-            @Styles.Render("~/Content/css")
+            <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+            <link href="~/Content/Site.css" rel="stylesheet" />
         }
     </head>
     <body>
-        @if (Request.Browser.IsMobileDevice)
+        @if (isMobile)
         {
             <div class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container top-container">
@@ -45,7 +48,7 @@
                 </div>
             </div>
         }
-        <iframe src="@Model.Url" width="100%" height="100%" frameborder='0' style="position: absolute;top: 0;left: 0;bottom: 0;right: 0; @(Request.Browser.IsMobileDevice ? "margin-top: 50px;" : "")">
+        <iframe src="@Model.Url" width="100%" height="100%" frameborder='0' style="position: absolute;top: 0;left: 0;bottom: 0;right: 0; @(isMobile ? "margin-top: 50px;" : "")">
             This is an embedded
             <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by
             <a target='_blank' href='http://office.com/webapps'>Office Web Apps</a>.

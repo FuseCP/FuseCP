@@ -6,6 +6,11 @@
 
 @model FuseCP.WebDavPortal.Models.ModelForWebDav
 
+@{
+    var userAgent = Context.Request.Headers.UserAgent.ToString().ToLowerInvariant();
+    var isMobile = userAgent.Contains("mobile") || userAgent.Contains("android") || userAgent.Contains("iphone");
+}
+
 <div id="breadcrumb_wrapper" class="container row prevent-deselect">
     @if (Model != null)
     {
@@ -82,7 +87,7 @@
         }
 
         <div class="file-upload navbar-right">
-            @if (Request.Browser.IsMobileDevice == false)
+            @if (!isMobile)
             {
                 <div class="btn-toolbar change-view-block" role="toolbar">
                     <div class="btn-group">

@@ -19,8 +19,6 @@ using System.Linq;
 using System.Net.Mime;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Web;
-using System.Web.Mvc;
 using Cobalt;
 using FuseCP.EnterpriseServer.Base.HostedSolution;
 using FuseCP.WebDav.Core.Client;
