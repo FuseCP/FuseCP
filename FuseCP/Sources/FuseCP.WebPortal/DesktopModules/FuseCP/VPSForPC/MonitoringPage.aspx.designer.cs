@@ -22,7 +22,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-#if Reporting
 namespace FuseCP.Portal.VPSForPC {
     
     
@@ -101,13 +100,12 @@ namespace FuseCP.Portal.VPSForPC {
         protected global::System.Web.UI.UpdatePanel UpdatePanelCharts;
         
         /// <summary>
-        /// ChartCounter control.
+        /// litCounterChart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart ChartCounter;
+        protected global::System.Web.UI.WebControls.Literal litCounterChart;
     }
 }
-#endif

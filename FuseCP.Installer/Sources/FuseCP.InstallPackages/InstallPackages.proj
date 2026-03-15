@@ -2,8 +2,10 @@
 
 	<PropertyGroup>
 		<Version Condition=" '$(Version)' == '' ">1.5.0</Version>
-		<FileVersion Condition=" '$(FileVersion)' == '' ">$(BUILD_NUMBER)</FileVersion>
-		<VersionLabel Condition=" '$(VersionLabel)' == '' ">$(BUILD_NUMBER)</VersionLabel>
+        <FileVersion Condition=" '$(FileVersion)' == '' and '$(BUILD_NUMBER)' != '' ">$(BUILD_NUMBER)</FileVersion>
+        <FileVersion Condition=" '$(FileVersion)' == '' ">$(Version)</FileVersion>
+        <VersionLabel Condition=" '$(VersionLabel)' == '' and '$(BUILD_NUMBER)' != '' ">$(BUILD_NUMBER)</VersionLabel>
+        <VersionLabel Condition=" '$(VersionLabel)' == '' ">$(FileVersion)</VersionLabel>
 		<ReleaseDate Condition=" '$(ReleaseDate)' == '' ">2023-01-31</ReleaseDate>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <BuildConfiguration>$(Configuration)</BuildConfiguration>
@@ -17,6 +19,8 @@
 		<BuildFolder>$(TrunkFolder)\Build\$(BuildConfiguration)</BuildFolder>
 		<DeployFolder>$(TrunkFolder)\Deploy\$(BuildConfiguration)</DeployFolder>
         <PackagesFolder>$(SetupTrunkFolder)\Sources\FuseCP.InstallPackages</PackagesFolder>
+        <InstallerArtifactsDir Condition="Exists('$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0\FuseCP.Installer.dll')">$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0</InstallerArtifactsDir>
+        <InstallerArtifactsDir Condition="'$(InstallerArtifactsDir)' == '' and Exists('$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi\FuseCP.Installer.dll')">$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi</InstallerArtifactsDir>
 
         <GZipCmd Condition=" '$(OS)' == 'Windows_NT' and Exists('$(RootFolder)\tools\gzip\bin\gzip.exe') ">"$(RootFolder)\tools\gzip\bin\gzip.exe"</GZipCmd>
         <GZipCmd Condition=" '$(OS)' == 'Windows_NT' and '$(GZipCmd)' == '' and Exists('$(ProgramFiles)\Git\usr\bin\gzip.exe') ">"$(ProgramFiles)\Git\usr\bin\gzip.exe"</GZipCmd>
@@ -73,6 +77,7 @@
     </Target>
 
     <Target Name="Debian" DependsOnTargets="Dos2Unix">
+		<Error Condition="'$(InstallerArtifactsDir)' == ''" Text="Required installer artifacts were not found. Checked: $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0 and $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi." />
         
         <Message Text="Preparing Debian Files"/>
 
@@ -81,9 +86,9 @@
             <DocFilesDebian Include="$(PackagesFolder)\src\doc\*.*" Exclude="@(DocFilesDebianExclude)" />
         </ItemGroup>
 
-		<Copy SourceFiles="$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0\FuseCP.Installer.dll" DestinationFolder="$(PackagesFolder)\Debian\usr\share\fusecp\Installer" />
-		<Copy SourceFiles="$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0\FuseCP.Installer.deps.json" DestinationFolder="$(PackagesFolder)\Debian\usr\share\fusecp\Installer" />
-		<Copy SourceFiles="$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0\FuseCP.Installer.runtimeconfig.json" DestinationFolder="$(PackagesFolder)\Debian\usr\share\fusecp\Installer" />
+        <Copy SourceFiles="$(InstallerArtifactsDir)\FuseCP.Installer.dll" DestinationFolder="$(PackagesFolder)\Debian\usr\share\fusecp\Installer" />
+        <Copy SourceFiles="$(InstallerArtifactsDir)\FuseCP.Installer.deps.json" DestinationFolder="$(PackagesFolder)\Debian\usr\share\fusecp\Installer" />
+        <Copy SourceFiles="$(InstallerArtifactsDir)\FuseCP.Installer.runtimeconfig.json" DestinationFolder="$(PackagesFolder)\Debian\usr\share\fusecp\Installer" />
 		<Copy SourceFiles="$(PackagesFolder)\src\man\fusecp-installer.1" DestinationFiles="$(PackagesFolder)\Debian\usr\share\man\man1\fusecp-installer.1" />
 		<Copy SourceFiles="$(PackagesFolder)\src\icon\FuseCP.png" DestinationFiles="$(PackagesFolder)\Debian\usr\share\pixmaps\FuseCP.png" />
 		<Copy SourceFiles="$(PackagesFolder)\src\desktop\fusecp-installer.desktop" DestinationFolder="$(PackagesFolder)\Debian\usr\share\applications" />
@@ -118,6 +123,7 @@
     </Target>
 
     <Target Name="Fedora" DependsOnTargets="Debian">
+		<Error Condition="'$(InstallerArtifactsDir)' == ''" Text="Required installer artifacts were not found. Checked: $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0 and $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi." />
         
         <Message Text="Preparing Fedora Files"/>
 
@@ -126,9 +132,9 @@
             <DocFilesFedora Include="$(PackagesFolder)\src\doc\*.*" Exclude="@(DocFilesFedoraExclude)" /> 
             <BinFilesFedora Include="$(PackagesFolder)\src\bin\*.*" />
         </ItemGroup>
-		<Copy SourceFiles="$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0\FuseCP.Installer.dll" DestinationFolder="$(PackagesFolder)\Fedora\usr\share\fusecp\Installer" />
-		<Copy SourceFiles="$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0\FuseCP.Installer.deps.json" DestinationFolder="$(PackagesFolder)\Fedora\usr\share\fusecp\Installer" />
-		<Copy SourceFiles="$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0\FuseCP.Installer.runtimeconfig.json" DestinationFolder="$(PackagesFolder)\Fedora\usr\share\fusecp\Installer" />
+        <Copy SourceFiles="$(InstallerArtifactsDir)\FuseCP.Installer.dll" DestinationFolder="$(PackagesFolder)\Fedora\usr\share\fusecp\Installer" />
+        <Copy SourceFiles="$(InstallerArtifactsDir)\FuseCP.Installer.deps.json" DestinationFolder="$(PackagesFolder)\Fedora\usr\share\fusecp\Installer" />
+        <Copy SourceFiles="$(InstallerArtifactsDir)\FuseCP.Installer.runtimeconfig.json" DestinationFolder="$(PackagesFolder)\Fedora\usr\share\fusecp\Installer" />
 		<Copy SourceFiles="$(PackagesFolder)\src\man\fusecp-installer.1" DestinationFiles="$(PackagesFolder)\Fedora\usr\share\man\man1\fusecp-installer.1" />
 		<Copy SourceFiles="$(PackagesFolder)\src\icon\FuseCP.png" DestinationFiles="$(PackagesFolder)\Fedora\usr\share\pixmaps\FuseCP.png" />
 		<Copy SourceFiles="$(PackagesFolder)\src\desktop\fusecp-installer.desktop" DestinationFolder="$(PackagesFolder)\Fedora\usr\share\applications" />

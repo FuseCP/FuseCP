@@ -77,24 +77,48 @@ namespace FuseCP.Tests
 
 			//if (process.HasExited) throw new Exception($"IIS Express exited with code {process.ExitCode}");
 
-			// wait for the server to be ready
-			bool done = false;
-			int n = 0;
-			const int max = 20;
-            do
-            {
-                try
-                {
-					var response = Servers.HttpClient.GetAsync(HttpsUrl).Result;
-                    done = true;
-                }
-				catch (Exception) { }
+			// Wait for at least one HTTP endpoint to respond before continuing.
+			const int maxRetries = 30;
+			var isReady = false;
+			for (var n = 0; n < maxRetries; n++)
+			{
+				if (process.HasExited)
+				{
+					throw new Exception($"IIS Express terminated before readiness check completed (exit code {process.ExitCode}).");
+				}
 
-                if (!done) Thread.Sleep(2000);
-                if (process.HasExited) done = true; // throw new Exception("Server has terminated.");
-				if (n++ >= max) done = true;
-            } while (!done);
+				if (TryProbe(HttpUrl) || TryProbe(HttpsUrl))
+				{
+					isReady = true;
+					break;
+				}
+
+				Thread.Sleep(2000);
+			}
+
+			if (!isReady)
+			{
+				throw new TimeoutException($"IIS Express endpoint readiness timed out for component '{component}'. Probed URLs: {HttpUrl}, {HttpsUrl}");
+			}
         }
+
+		static bool TryProbe(string url)
+		{
+			if (string.IsNullOrWhiteSpace(url))
+			{
+				return false;
+			}
+
+			try
+			{
+				var response = Servers.HttpClient.GetAsync(url).Result;
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
 		public void Dispose()
 		{

@@ -204,7 +204,9 @@ public class Servers
 		IDisposable server = type.Os == Os.Windows ?
 		type.Framework switch
 		{
-			Framework.NetFramework => new IISExpress(type.Component, urls),
+			Framework.NetFramework => type.Component == Component.Server
+				? new Kestrel(type.Component, urls)
+				: new IISExpress(type.Component, urls),
 			Framework.Core => new Kestrel(type.Component, urls),
 			_ => null
 		} :

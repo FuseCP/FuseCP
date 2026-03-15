@@ -22,7 +22,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-#if Reporting
 namespace FuseCP.Portal.VPSForPC {
     
     
@@ -119,13 +118,13 @@ namespace FuseCP.Portal.VPSForPC {
         protected global::System.Web.UI.UpdatePanel UpdatePanelCharts;
         
         /// <summary>
-        /// ChartProc control.
+        /// litProcessorChart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart ChartProc;
+        protected global::System.Web.UI.WebControls.Literal litProcessorChart;
         
         /// <summary>
         /// btnShowProcessorAsPanel control.
@@ -137,13 +136,13 @@ namespace FuseCP.Portal.VPSForPC {
         protected global::System.Web.UI.WebControls.LinkButton btnShowProcessorAsPanel;
         
         /// <summary>
-        /// ChartNetwork control.
+        /// litNetworkChart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart ChartNetwork;
+        protected global::System.Web.UI.WebControls.Literal litNetworkChart;
         
         /// <summary>
         /// btnShowNetworkAsPanel control.
@@ -155,13 +154,13 @@ namespace FuseCP.Portal.VPSForPC {
         protected global::System.Web.UI.WebControls.LinkButton btnShowNetworkAsPanel;
         
         /// <summary>
-        /// ChartMemory control.
+        /// litMemoryChart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart ChartMemory;
+        protected global::System.Web.UI.WebControls.Literal litMemoryChart;
         
         /// <summary>
         /// btnShowMemoryAsPanel control.
@@ -182,4 +181,3 @@ namespace FuseCP.Portal.VPSForPC {
         protected global::System.Web.UI.WebControls.Localize FormComments;
     }
 }
-#endif

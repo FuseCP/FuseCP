@@ -349,12 +349,26 @@ public class Tests
 			}
 			catch (FaultException fex)
 			{
-				TestContext.WriteLine($"Access denied: {fex.StackTrace}");
+				// Expected path: authenticated endpoint should reject wrong password with a SOAP fault.
+				TestContext?.WriteLine($"Access denied as expected. Fault: {fex.Message}");
+				return;
+			}
+			catch (ProtocolException pex)
+			{
+				Assert.Fail($"WrongPassword expected a SOAP auth fault but got protocol/content mismatch at '{client.Url}'. " +
+					$"This usually indicates the service endpoint returned HTML (host/config issue) instead of SOAP. Details: {pex.Message}");
+			}
+			catch (CommunicationException cex)
+			{
+				Assert.Fail($"WrongPassword expected a SOAP auth fault but endpoint '{client.Url}' was unreachable. " +
+					$"Ensure server test host is started and listening before tests run. Details: {cex.Message}");
 			}
 			catch (Exception ex)
 			{
-				throw;
+				Assert.Fail($"WrongPassword failed with unexpected exception at '{client.Url}': {ex}");
 			}
+
+			Assert.Fail($"WrongPassword expected an authentication failure but no fault was raised at '{client.Url}'.");
 		}
 	}
 }

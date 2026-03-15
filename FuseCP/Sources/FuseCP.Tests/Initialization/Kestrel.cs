@@ -62,7 +62,6 @@ namespace FuseCP.Tests
 
 				testdllpath = Paths.Wsl(testdllpath);
 				testprojpath = Paths.Wsl(testprojpath);
-				//workingDir = Paths.Wsl(workingDir);
 				dll = Paths.Wsl(dll);
 				pfx = Paths.Wsl(pfx);
 			}
@@ -108,25 +107,48 @@ namespace FuseCP.Tests
 
 			if (WslDistro == null && process.HasExited) throw new Exception($"Kestrel exited with code {process.ExitCode}");
 
-			// wait for the server to be ready
-			bool done = false;
-			int n = 0;
-			const int max = 20;
-            do
-            {
-                try
-                {
-					var response = Servers.HttpClient.GetAsync(HttpsUrl).Result;
-                    done = true;
-                }
-				catch (Exception) { }
+			// Wait for at least one HTTP endpoint to respond before continuing.
+			const int maxRetries = 30;
+			var isReady = false;
+			for (var n = 0; n < maxRetries; n++)
+			{
+				if (process.HasExited)
+				{
+					throw new Exception($"Kestrel process terminated before readiness check completed (exit code {process.ExitCode}).");
+				}
 
-                if (!done) Thread.Sleep(2000);
-				if (process.HasExited) done = true; //throw new Exception("Server has terminated.");
-				if (n++ >= max) done = true;
+				if (TryProbe(HttpUrl) || TryProbe(HttpsUrl))
+				{
+					isReady = true;
+					break;
+				}
 
-            } while (!done) ;
+				Thread.Sleep(2000);
+			}
+
+			if (!isReady)
+			{
+				throw new TimeoutException($"Kestrel endpoint readiness timed out for component '{component}'. Probed URLs: {HttpUrl}, {HttpsUrl}");
+			}
         }
+
+		static bool TryProbe(string url)
+		{
+			if (string.IsNullOrWhiteSpace(url))
+			{
+				return false;
+			}
+
+			try
+			{
+				var response = Servers.HttpClient.GetAsync(url).Result;
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
 		public void Dispose()
 		{

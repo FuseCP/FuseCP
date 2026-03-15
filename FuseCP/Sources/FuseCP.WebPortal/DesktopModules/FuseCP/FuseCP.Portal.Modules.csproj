@@ -53,8 +53,6 @@
         <AspNetControls Remove="VPS2012\VdcCreateServer.ascx" />
         <AspNetControls Remove="VPSForPC\VdcCreateServer.ascx" />
         <AspNetControls Remove="Proxmox\VdcCreateServer.ascx" />
-        <AspNetControls Remove="VPSForPC\VpsMonitoring.ascx" />
-        <AspNetControls Remove="VPSForPC\MonitoringPage.aspx" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="..\..\..\VersionInfo.cs">

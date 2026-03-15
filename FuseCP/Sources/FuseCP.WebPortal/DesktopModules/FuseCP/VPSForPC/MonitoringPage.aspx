@@ -1,8 +1,6 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MonitoringPage.aspx.cs"
 	Inherits="FuseCP.Portal.VPSForPC.MonitoringPage" %>
 
-<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
-	Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 <%@ Register Src="../UserControls/MessageBox.ascx" TagName="MessageBox" TagPrefix="fcp" %>
 <%@ Register Src="../UserControls/SimpleMessageBox.ascx" TagName="SimpleMessageBox"
 	TagPrefix="uc1" %>
@@ -45,31 +43,7 @@
 			</Triggers>
 			<ContentTemplate>
 				<div id="monitoringWrapper">
-					<asp:Chart ID="ChartCounter" runat="server" ImageLocation="TempImages/ChartPic_#SEQ(300,3)"
-						Width="584px" Height="296px" BorderlineDashStyle="Solid" BackGradientStyle="TopBottom"
-						BorderWidth="2px" BorderColor="#B54001" IsSoftShadows="False">
-						<Series>
-							<asp:Series MarkerSize="8" BorderWidth="3" XValueType="DateTime" Name="series" ChartType="StackedArea"
-								MarkerStyle="Circle" ShadowColor="Black" BorderColor="180, 26, 59, 105" Color="#33CC33"
-								ShadowOffset="2" YValueType="Double">
-							</asp:Series>
-						</Series>
-						<ChartAreas>
-							<asp:ChartArea Name="chartArea" BorderColor="64, 64, 64, 64" BorderDashStyle="Solid"
-								BackSecondaryColor="White" BackColor="OldLace" ShadowColor="Transparent" BackGradientStyle="TopBottom">
-								<Area3DStyle Rotation="25" Perspective="9" LightStyle="Realistic" Inclination="40"
-									IsRightAngleAxes="False" WallWidth="3" IsClustered="False" />
-								<AxisY LineColor="64, 64, 64, 64">
-									<LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
-									<MajorGrid LineColor="64, 64, 64, 64" />
-								</AxisY>
-								<AxisX LineColor="64, 64, 64, 64">
-									<LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
-									<MajorGrid LineColor="64, 64, 64, 64" />
-								</AxisX>
-							</asp:ChartArea>
-						</ChartAreas>
-					</asp:Chart>
+					<asp:Literal ID="litCounterChart" runat="server" />
 				</div>
 			</ContentTemplate>
 		</asp:UpdatePanel>
