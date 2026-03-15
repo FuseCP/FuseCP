@@ -83,11 +83,13 @@ jobs:
         wsl --distribution Ubuntu-24.04 --user root bash -lc "apt-get update && apt-get install -y wget ca-certificates"
 
     - name: Install .NET SDK 10.0.200 in WSL
+      shell: pwsh
       run: |
         wsl wget https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.200/dotnet-sdk-10.0.200-linux-x64.tar.gz
-        wsl --distribution Ubuntu-24.04 --user root tar -xvzf dotnet-sdk-10.0.200-linux-x64.tar.gz -C /usr/lib/dotnet
-        wsl /usr/lib/dotnet/dotnet --info
-        wsl /usr/lib/dotnet/dotnet dev-certs https
+        $linuxTarPath = wsl wslpath -a dotnet-sdk-10.0.200-linux-x64.tar.gz
+        wsl --distribution Ubuntu-24.04 --user root bash -lc "mkdir -p /usr/lib/dotnet && tar -xvzf '$linuxTarPath' -C /usr/lib/dotnet"
+        wsl --distribution Ubuntu-24.04 /usr/lib/dotnet/dotnet --info
+        wsl --distribution Ubuntu-24.04 /usr/lib/dotnet/dotnet dev-certs https
 
     - name: Checkout
       uses: actions/checkout@v5
