@@ -20,7 +20,9 @@
 		<DeployFolder>$(TrunkFolder)\Deploy\$(BuildConfiguration)</DeployFolder>
         <PackagesFolder>$(SetupTrunkFolder)\Sources\FuseCP.InstallPackages</PackagesFolder>
         <InstallerArtifactsDir Condition="Exists('$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0\FuseCP.Installer.dll')">$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0</InstallerArtifactsDir>
+        <InstallerArtifactsDir Condition="'$(InstallerArtifactsDir)' == '' and Exists('$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0-windows\FuseCP.Installer.dll')">$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0-windows</InstallerArtifactsDir>
         <InstallerArtifactsDir Condition="'$(InstallerArtifactsDir)' == '' and Exists('$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi\FuseCP.Installer.dll')">$(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi</InstallerArtifactsDir>
+        <SkipInstallPackagesWhenArtifactsMissing Condition=" '$(SkipInstallPackagesWhenArtifactsMissing)' == '' ">true</SkipInstallPackagesWhenArtifactsMissing>
 
         <GZipCmd Condition=" '$(OS)' == 'Windows_NT' and Exists('$(RootFolder)\tools\gzip\bin\gzip.exe') ">"$(RootFolder)\tools\gzip\bin\gzip.exe"</GZipCmd>
         <GZipCmd Condition=" '$(OS)' == 'Windows_NT' and '$(GZipCmd)' == '' and Exists('$(ProgramFiles)\Git\usr\bin\gzip.exe') ">"$(ProgramFiles)\Git\usr\bin\gzip.exe"</GZipCmd>
@@ -76,8 +78,12 @@
         <Message Text="$(OutputOfDos2Unix)" />
     </Target>
 
-    <Target Name="Debian" DependsOnTargets="Dos2Unix">
-		<Error Condition="'$(InstallerArtifactsDir)' == ''" Text="Required installer artifacts were not found. Checked: $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0 and $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi." />
+        <Target Name="ValidateInstallerArtifacts" DependsOnTargets="Dos2Unix">
+		<Warning Condition="'$(InstallerArtifactsDir)' == '' and '$(SkipInstallPackagesWhenArtifactsMissing)' == 'true'" Text="Required installer artifacts were not found. Checked: $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0, $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0-windows, and $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi. Linux installer package build will be skipped." />
+		<Error Condition="'$(InstallerArtifactsDir)' == '' and '$(SkipInstallPackagesWhenArtifactsMissing)' != 'true'" Text="Required installer artifacts were not found. Checked: $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0, $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0-windows, and $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi." />
+        </Target>
+
+        <Target Name="Debian" DependsOnTargets="ValidateInstallerArtifacts" Condition="'$(InstallerArtifactsDir)' != ''">
         
         <Message Text="Preparing Debian Files"/>
 
@@ -122,8 +128,7 @@
 
     </Target>
 
-    <Target Name="Fedora" DependsOnTargets="Debian">
-		<Error Condition="'$(InstallerArtifactsDir)' == ''" Text="Required installer artifacts were not found. Checked: $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller\bin\$(Configuration)\net10.0 and $(SetupTrunkFolder)\Sources\FuseCP.UniversalInstaller.Msi." />
+        <Target Name="Fedora" DependsOnTargets="Debian" Condition="'$(InstallerArtifactsDir)' != ''">
         
         <Message Text="Preparing Fedora Files"/>
 
