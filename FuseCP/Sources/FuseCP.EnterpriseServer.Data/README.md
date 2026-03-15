@@ -84,6 +84,11 @@ not go through `install.sqlite.sql`; they must run through EF migration executio
 databases that must first be brought forward to the v2.0.0 migration baseline. `Migrate_msSQL.sql` is likewise a legacy
 upgrade/helper script used for supported SQL Server cleanup/upgrade flows, not the primary source of schema truth.
 
+`LegacyScripts/master.update_db.sql` is an archival baseline copy of the original 1.5.1 update script. Do not modify it.
+If upgrade behavior needs to be fixed, implement the fix through Entity/Configuration + EF migrations first, and only then
+update supported legacy upgrade scripts (`Database/update_db.sql`, `LegacyScripts/update_db.sql`,
+`Migrations/SqlServer/v1.5.1/update_db.sql`) when the old upgrade path itself must be repaired.
+
 To create a new migration, you can run MigrationAdd.bat, or if you just want a migration for the database flavor
 you're developing with, copy the individual lines in AddMigration.bat to a command line shell.
 
@@ -94,6 +99,10 @@ backup .cs file for the `dotnet ef migrations add` command or by reverting the M
 release and creating a new migration. During development, when you have to change the database model often
 you might want to revert the last migration and then calculate a new migration with the MigrationRemove.bat
 script or the command `dotnet ef migrations remove`.
+
+Backup snapshot files (for example `*DbContextModelSnapshot_*` backups used for release/migration workflows) are
+reference points and should not be hand-edited. Let EF tooling regenerate active snapshots; use backup snapshots only for
+revert/rebase migration workflows.
 
 # Usage of FuseCP.EnterpriseServer.Data
 FuseCP.EnterpriseServer.Data provides a class DbContext, that can be used as EF DbContext to access the database,

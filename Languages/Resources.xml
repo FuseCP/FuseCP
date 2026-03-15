@@ -44021,17 +44021,6 @@ for your installation of ADO.NET Driver for MySQL (also known as MySQL Connector
     <DefaultValue>Both passwords should be identical</DefaultValue>
   </Resource>
   <Resource>
-    <Key>cbApplyDefaultTemplate.Text</Key>
-    <DefaultValue>Apply Default Domain Template</DefaultValue>
-  </Resource>
-  <Resource>
-    <Key>lblPassword.Text</Key>
-    <DefaultValue>Password:</DefaultValue>
-  </Resource>
-  <Resource>
-    <Key>lblUserName.Text</Key>
-  </Resource>
-  <Resource>
     <File>DesktopModules\FuseCP\ProviderControls\App_LocalResources\OCS_Settings.ascx.resx</File>
     <Key>btnAdd.Text</Key>
     <DefaultValue>Add</DefaultValue>

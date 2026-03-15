@@ -25,6 +25,30 @@ namespace FuseCP.Providers.OS
 {
     public class SkiaSharp
     {
+        static string GetAssemblyDirectory(Assembly assembly)
+        {
+            string codeBase = null;
+            try
+            {
+                codeBase = assembly?.GetType().GetProperty("CodeBase")?.GetValue(assembly) as string;
+            }
+            catch
+            {
+            }
+
+            if (!string.IsNullOrWhiteSpace(codeBase) && Uri.TryCreate(codeBase, UriKind.Absolute, out var codeBaseUri) && codeBaseUri.IsFile)
+            {
+                return Path.GetDirectoryName(codeBaseUri.LocalPath);
+            }
+
+            if (!string.IsNullOrWhiteSpace(assembly?.Location))
+            {
+                return Path.GetDirectoryName(assembly.Location);
+            }
+
+            return AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        }
+
         public bool IsLinuxMusl
         {
             get
@@ -50,7 +74,7 @@ namespace FuseCP.Providers.OS
                     var runtimeIdentifier = (string)runtimeInformation.GetProperty("RuntimeIdentifier")?.GetValue(null);
                     if (runtimeIdentifier == "linux-x64" && IsLinuxMusl) runtimeIdentifier = "linux-musl-x64";
                     runtimeIdentifier = runtimeIdentifier.Replace("linux-", "");
-                    var currentDllPath = Path.GetDirectoryName(Assembly.Load("SkiaSharp").Location);
+                    var currentDllPath = GetAssemblyDirectory(Assembly.Load("SkiaSharp"));
                     string libraryFileName = libraryName;
                     if (!libraryFileName.EndsWith(".so")) libraryFileName += ".so";
                     if (!libraryFileName.StartsWith("lib")) libraryFileName = "lib" + libraryFileName;

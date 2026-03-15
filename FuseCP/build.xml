@@ -544,7 +544,7 @@
 
         <!-- build MSI package -->
 		<Error Condition="'$(BuildInstallerMsi)' == 'true' and !Exists('$(DevEnv)')" Text="BuildInstallerMsi=true but devenv.com was not found at '$(DevEnv)'. Install full Visual Studio with the Installer Projects extension, or set /p:BuildInstallerMsi=false." />
-		<Warning Condition="'$(BuildInstallerMsi)' != 'true'" Text="Skipping MSI package build (.vdproj). Full Visual Studio + Installer Projects extension is required. Set /p:BuildInstallerMsi=true to force MSI packaging." />
+		<Message Importance="normal" Condition="'$(BuildInstallerMsi)' != 'true'" Text="Skipping MSI package build (.vdproj). Full Visual Studio + Installer Projects extension is required. Set /p:BuildInstallerMsi=true to force MSI packaging." />
 		<Exec Condition="'$(BuildInstallerMsi)' == 'true'" Command="&quot;$(DevEnv)&quot; &quot;$(InstallerProjectRoot)FuseCP.UniversalInstaller.Msi.sln&quot; /build &quot;$(BuildConfiguration)|$(Platform)&quot;" />
 		<ItemGroup Condition="'$(BuildInstallerMsi)' == 'true'">
 			<InstallerMsi Include="$(InstallerProjectRoot)\FuseCP.UniversalInstaller.Msi\$(BuildConfiguration)\*.msi" />

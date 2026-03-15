@@ -212,8 +212,6 @@ Protocol=dbmssocn"
 			new ServiceDefaultProperty() { ProviderId = 32, PropertyName = "MailboxDatabase", PropertyValue = "Hosted Exchange Database" },
 			new ServiceDefaultProperty() { ProviderId = 32, PropertyName = "RootOU", PropertyValue = "FCP Hosting" },
 			new ServiceDefaultProperty() { ProviderId = 32, PropertyName = "TempDomain", PropertyValue = "my-temp-domain.com" },
-			new ServiceDefaultProperty() { ProviderId = 55, PropertyName = "RecordDefaultTTL", PropertyValue = "86400" },
-			new ServiceDefaultProperty() { ProviderId = 55, PropertyName = "RecordMinimumTTL", PropertyValue = "3600" },
 			new ServiceDefaultProperty() { ProviderId = 56, PropertyName = "ExpireLimit", PropertyValue = "1209600" },
 			new ServiceDefaultProperty() { ProviderId = 56, PropertyName = "MinimumTTL", PropertyValue = "86400" },
 			new ServiceDefaultProperty() { ProviderId = 56, PropertyName = "NameServers", PropertyValue = "ns1.yourdomain.com;ns2.yourdomain.com" },

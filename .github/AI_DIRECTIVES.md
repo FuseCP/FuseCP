@@ -100,9 +100,11 @@ FuseCP uses Entity Framework (EF Core 8 on .NET 10, EF 6 on .NET Framework) for 
 * `install.sqlite.sql` is a generated fresh-install artifact only. SQLite upgrades must run through EF migration execution on .NET 10 (`context.Migrate()`); do not use `install.sqlite.sql` as an upgrade script.
 * Squash development-only intermediate migrations into one before a release using the `MigrationRemove.bat` / snapshot-revert approach documented in `FuseCP/Sources/FuseCP.EnterpriseServer.Data/README.md`.
 * `FuseCP/Database/update_db.sql` is a legacy bridge for upgrading older installations to v2.0.0-era schema. Do not change it for normal post-v2.0.0 migration work unless the old-upgrade path itself must be repaired.
+* `FuseCP/Sources/FuseCP.EnterpriseServer.Data/LegacyScripts/master.update_db.sql` is the archival original 1.5.1 baseline script; do not modify it.
 * Use `FuseCP/Database/Migrate_msSQL.sql` for legacy SQL Server module cleanup during upgrade scenarios where that script is part of the supported path.
 * When retiring a provider, put the primary cleanup in Entity/Configuration changes plus EF migrations, regenerate `install.*.sql`, and only add legacy-script cleanup when older upgraded installs still need it. Legacy cleanup must delete provider-owned defaults/properties first, then delete the provider row only when no `Services` rows reference it (never break FK integrity on existing tenants).
 * If provider cleanup is skipped due to active references, the script must emit an explicit operator action message explaining that services must be reassigned to a supported provider before final provider-row deletion.
+* Do not hand-edit backup snapshot files (for example `*DbContextModelSnapshot_*` backups kept for release/migration rebase flows). Keep them as restore points and let EF tooling maintain active snapshot files.
 * Reference: `FuseCP/Sources/FuseCP.EnterpriseServer.Data/README.md` for scaffolding, connection strings, and multi-DB type-mapping patterns.
 
 ## 7. Legal and Licensing

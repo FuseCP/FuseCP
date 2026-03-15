@@ -36,6 +36,7 @@
 		<PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
         <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web" Version="1.4.6" />
         <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.9.30" />
+                <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.26" />
         <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Configuration" Version="1.4.6" />
         <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Build" Version="1.4.6" ExcludeAssets="runtime" />
         <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Mobile" Version="1.4.6" />
@@ -48,7 +49,6 @@
     <ItemGroup>
         <AspNetControls Remove="MailAccess.ascx" />
         <AspNetControls Remove="RDS\RdsLocalAdmins.ascx" />
-        <AspNetControls Remove="OverusageReport.ascx" />
         <AspNetControls Remove="VPS\VdcCreateServer.ascx" />
         <AspNetControls Remove="VPS2012\VdcCreateServer.ascx" />
         <AspNetControls Remove="VPSForPC\VdcCreateServer.ascx" />
@@ -197,7 +197,7 @@
         <Compile Include="Code\ReportingServices\EmbeddedReportLocalizer.cs" />
         <Compile Include="Code\ReportingServices\FileSystemReportLocalizer.cs" />
         <Compile Include="Code\ReportingServices\IResourceStorage.cs" />
-        <Compile Include="Code\ReportingServices\ReportingServicesUtils.cs" />
+        <!-- ReportingServicesUtils.cs removed: dead code (guarded by #if Reporting, never called; WebForms ReportViewer control replaced by LocalReport/ReportViewerCore.NETCore in OverusageReport.ascx.cs) -->
         <Compile Include="Code\UserControls\Tab.cs" />
         <Compile Include="App_Code\IPAddressExtensions.cs" />
         <Compile Include="ExchangeServer\EnterpriseStorageSpaces.ascx.cs">

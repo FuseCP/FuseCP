@@ -1,4 +1,4 @@
-IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (
         [MigrationId] nvarchar(150) NOT NULL,
@@ -2281,10 +2281,10 @@ BEGIN
     (66, NULL, N''SmarterMail 10.x +'', N''SmarterMail100'', 4, N''SmarterMail'', N''FuseCP.Providers.Mail.SmarterMail10, FuseCP.Providers.Mail.SmarterMail10''),
     (67, NULL, N''SmarterMail 100.x +'', N''SmarterMail100x'', 4, N''SmarterMail'', N''FuseCP.Providers.Mail.SmarterMail100, FuseCP.Providers.Mail.SmarterMail100''),
     (90, NULL, N''Hosted Microsoft Exchange Server 2010 SP2'', N''Exchange'', 12, N''Exchange2010SP2'', N''FuseCP.Providers.HostedSolution.Exchange2010SP2, FuseCP.Providers.HostedSolution''),
-    (91, CAST(1 AS bit), N''Hosted Microsoft Exchange Server 2013'', N''Exchange'', 12, N''Exchange2013'', N''FuseCP.Providers.HostedSolution.Exchange2013, FuseCP.Providers.HostedSolution.Exchange2013'');
+    (91, CAST(1 AS bit), N''Hosted Microsoft Exchange Server 2013'', N''Exchange'', 12, N''Exchange2013'', N''FuseCP.Providers.HostedSolution.Exchange2013, FuseCP.Providers.HostedSolution.Exchange2013''),
+    (92, NULL, N''Hosted Microsoft Exchange Server 2016'', N''Exchange'', 12, N''Exchange2016'', N''FuseCP.Providers.HostedSolution.Exchange2016, FuseCP.Providers.HostedSolution.Exchange2016'');
     INSERT INTO [Providers] ([ProviderID], [DisableAutoDiscovery], [DisplayName], [EditorControl], [GroupID], [ProviderName], [ProviderType])
-    VALUES (92, NULL, N''Hosted Microsoft Exchange Server 2016'', N''Exchange'', 12, N''Exchange2016'', N''FuseCP.Providers.HostedSolution.Exchange2016, FuseCP.Providers.HostedSolution.Exchange2016''),
-    (93, NULL, N''Hosted Microsoft Exchange Server 2019'', N''Exchange'', 12, N''Exchange2016'', N''FuseCP.Providers.HostedSolution.Exchange2019, FuseCP.Providers.HostedSolution.Exchange2019''),
+    VALUES (93, NULL, N''Hosted Microsoft Exchange Server 2019'', N''Exchange'', 12, N''Exchange2016'', N''FuseCP.Providers.HostedSolution.Exchange2019, FuseCP.Providers.HostedSolution.Exchange2019''),
     (100, NULL, N''Windows Server 2008'', N''Windows2008'', 1, N''Windows2008'', N''FuseCP.Providers.OS.Windows2008, FuseCP.Providers.OS.Windows2008''),
     (101, NULL, N''Internet Information Services 7.0'', N''IIS70'', 2, N''IIS70'', N''FuseCP.Providers.Web.IIs70, FuseCP.Providers.Web.IIs70''),
     (102, NULL, N''Microsoft FTP Server 7.0'', N''MSFTP70'', 3, N''MSFTP70'', N''FuseCP.Providers.FTP.MsFTP, FuseCP.Providers.FTP.IIs70''),
@@ -2297,7 +2297,6 @@ BEGIN
     (112, NULL, N''Internet Information Services 10.0'', N''IIS70'', 2, N''IIS100'', N''FuseCP.Providers.Web.IIs100, FuseCP.Providers.Web.IIs100''),
     (113, NULL, N''Microsoft FTP Server 10.0'', N''MSFTP70'', 3, N''MSFTP100'', N''FuseCP.Providers.FTP.MsFTP100, FuseCP.Providers.FTP.IIs100''),
     (135, CAST(1 AS bit), N''Web Application Engines'', N''HeliconZoo'', 42, N''HeliconZoo'', N''FuseCP.Providers.Web.HeliconZoo.HeliconZoo, FuseCP.Providers.Web.HeliconZoo''),
-    (160, NULL, N''IceWarp Mail Server'', N''IceWarp'', 4, N''IceWarp'', N''FuseCP.Providers.Mail.IceWarp, FuseCP.Providers.Mail.IceWarp''),
     (200, NULL, N''Hosted Windows SharePoint Services 3.0'', N''HostedSharePoint30'', 20, N''HostedSharePoint30'', N''FuseCP.Providers.HostedSolution.HostedSharePointServer, FuseCP.Providers.HostedSolution''),
     (202, NULL, N''Microsoft SQL Server 2008'', N''MSSQL'', 22, N''MsSQL'', N''FuseCP.Providers.Database.MsSqlServer2008, FuseCP.Providers.Database.SqlServer''),
     (203, CAST(1 AS bit), N''BlackBerry 4.1'', N''BlackBerry'', 31, N''BlackBerry 4.1'', N''FuseCP.Providers.HostedSolution.BlackBerryProvider, FuseCP.Providers.HostedSolution''),
@@ -2305,23 +2304,18 @@ BEGIN
     (205, CAST(1 AS bit), N''Office Communications Server 2007 R2'', N''OCS'', 32, N''OCS'', N''FuseCP.Providers.HostedSolution.OCS2007R2, FuseCP.Providers.HostedSolution''),
     (206, CAST(1 AS bit), N''OCS Edge server'', N''OCS_Edge'', 32, N''OCSEdge'', N''FuseCP.Providers.HostedSolution.OCSEdge2007R2, FuseCP.Providers.HostedSolution''),
     (208, NULL, N''Hosted SharePoint Foundation 2010'', N''HostedSharePoint30'', 20, N''HostedSharePoint2010'', N''FuseCP.Providers.HostedSolution.HostedSharePointServer2010, FuseCP.Providers.HostedSolution''),
-    (209, NULL, N''Microsoft SQL Server 2012'', N''MSSQL'', 23, N''MsSQL'', N''FuseCP.Providers.Database.MsSqlServer2012, FuseCP.Providers.Database.SqlServer''),
     (250, NULL, N''Microsoft Lync Server 2010 Multitenant Hosting Pack'', N''Lync'', 41, N''Lync2010'', N''FuseCP.Providers.HostedSolution.Lync2010, FuseCP.Providers.HostedSolution''),
     (300, CAST(1 AS bit), N''Microsoft Hyper-V'', N''HyperV'', 30, N''HyperV'', N''FuseCP.Providers.Virtualization.HyperV, FuseCP.Providers.Virtualization.HyperV''),
     (301, NULL, N''MySQL Server 5.5'', N''MySQL'', 11, N''MySQL'', N''FuseCP.Providers.Database.MySqlServer55, FuseCP.Providers.Database.MySQL''),
     (302, NULL, N''MySQL Server 5.6'', N''MySQL'', 11, N''MySQL'', N''FuseCP.Providers.Database.MySqlServer56, FuseCP.Providers.Database.MySQL''),
     (303, NULL, N''MySQL Server 5.7'', N''MySQL'', 11, N''MySQL'', N''FuseCP.Providers.Database.MySqlServer57, FuseCP.Providers.Database.MySQL''),
     (304, NULL, N''MySQL Server 8.0'', N''MySQL'', 90, N''MySQL'', N''FuseCP.Providers.Database.MySqlServer80, FuseCP.Providers.Database.MySQL''),
-    (350, CAST(1 AS bit), N''Microsoft Hyper-V 2012 R2'', N''HyperV2012R2'', 33, N''HyperV2012R2'', N''FuseCP.Providers.Virtualization.HyperV2012R2, FuseCP.Providers.Virtualization.HyperV2012R2''),
     (351, CAST(1 AS bit), N''Microsoft Hyper-V Virtual Machine Management'', N''HyperVvmm'', 33, N''HyperVvmm'', N''FuseCP.Providers.Virtualization.HyperVvmm, FuseCP.Providers.Virtualization.HyperVvmm''),
-    (352, CAST(1 AS bit), N''Microsoft Hyper-V 2016'', N''HyperV2012R2'', 33, N''HyperV2016'', N''FuseCP.Providers.Virtualization.HyperV2016, FuseCP.Providers.Virtualization.HyperV2016''),
-    (370, CAST(1 AS bit), N''Proxmox Virtualization'', N''Proxmox'', 167, N''Proxmox'', N''FuseCP.Providers.Virtualization.Proxmoxvps, FuseCP.Providers.Virtualization.Proxmoxvps''),
     (400, CAST(1 AS bit), N''Microsoft Hyper-V For Private Cloud'', N''HyperVForPrivateCloud'', 40, N''HyperVForPC'', N''FuseCP.Providers.VirtualizationForPC.HyperVForPC, FuseCP.Providers.VirtualizationForPC.HyperVForPC''),
     (410, NULL, N''Microsoft DNS Server 2012+'', N''MSDNS'', 7, N''MSDNS.2012'', N''FuseCP.Providers.DNS.MsDNS2012, FuseCP.Providers.DNS.MsDNS2012''),
     (600, CAST(1 AS bit), N''Enterprise Storage Windows 2012'', N''EnterpriseStorage'', 44, N''EnterpriseStorage2012'', N''FuseCP.Providers.EnterpriseStorage.Windows2012, FuseCP.Providers.EnterpriseStorage.Windows2012''),
     (700, CAST(1 AS bit), N''Storage Spaces Windows 2012'', N''StorageSpaceServices'', 49, N''StorageSpace2012'', N''FuseCP.Providers.StorageSpaces.Windows2012, FuseCP.Providers.StorageSpaces.Windows2012''),
     (1203, NULL, N''Microsoft SQL Server 2014'', N''MSSQL'', 46, N''MsSQL'', N''FuseCP.Providers.Database.MsSqlServer2014, FuseCP.Providers.Database.SqlServer''),
-    INSERT INTO [Providers] ([ProviderID], [DisableAutoDiscovery], [DisplayName], [EditorControl], [GroupID], [ProviderName], [ProviderType])
     (1301, NULL, N''Hosted SharePoint Foundation 2013'', N''HostedSharePoint30'', 20, N''HostedSharePoint2013'', N''FuseCP.Providers.HostedSolution.HostedSharePointServer2013, FuseCP.Providers.HostedSolution.SharePoint2013''),
     (1306, NULL, N''Hosted SharePoint Foundation 2016'', N''HostedSharePoint30'', 20, N''HostedSharePoint2016'', N''FuseCP.Providers.HostedSolution.HostedSharePointServer2016, FuseCP.Providers.HostedSolution.SharePoint2016''),
     (1401, NULL, N''Microsoft Lync Server 2013 Enterprise Edition'', N''Lync'', 41, N''Lync2013'', N''FuseCP.Providers.HostedSolution.Lync2013, FuseCP.Providers.HostedSolution.Lync2013''),
@@ -2331,8 +2325,9 @@ BEGIN
     (1501, CAST(1 AS bit), N''Remote Desktop Services Windows 2012'', N''RDS'', 45, N''RemoteDesktopServices2012'', N''FuseCP.Providers.RemoteDesktopServices.Windows2012,FuseCP.Providers.RemoteDesktopServices.Windows2012''),
     (1502, CAST(1 AS bit), N''Remote Desktop Services Windows 2016'', N''RDS'', 45, N''RemoteDesktopServices2012'', N''FuseCP.Providers.RemoteDesktopServices.Windows2016,FuseCP.Providers.RemoteDesktopServices.Windows2016''),
     (1503, CAST(1 AS bit), N''Remote Desktop Services Windows 2019'', N''RDS'', 45, N''RemoteDesktopServices2019'', N''FuseCP.Providers.RemoteDesktopServices.Windows2019,FuseCP.Providers.RemoteDesktopServices.Windows2019''),
-    (1504, CAST(1 AS bit), N''Remote Desktop Services Windows 2022'', N''RDS'', 45, N''RemoteDesktopServices2022'', N''FuseCP.Providers.RemoteDesktopServices.Windows2019,FuseCP.Providers.RemoteDesktopServices.Windows2019''),
-    (1505, CAST(1 AS bit), N''Remote Desktop Services Windows 2025'', N''RDS'', 45, N''RemoteDesktopServices2025'', N''FuseCP.Providers.RemoteDesktopServices.Windows2025,FuseCP.Providers.RemoteDesktopServices.Windows2019''),
+    (1504, CAST(1 AS bit), N''Remote Desktop Services Windows 2022'', N''RDS'', 45, N''RemoteDesktopServices2022'', N''FuseCP.Providers.RemoteDesktopServices.Windows2019,FuseCP.Providers.RemoteDesktopServices.Windows2019'');
+    INSERT INTO [Providers] ([ProviderID], [DisableAutoDiscovery], [DisplayName], [EditorControl], [GroupID], [ProviderName], [ProviderType])
+    VALUES (1505, CAST(1 AS bit), N''Remote Desktop Services Windows 2025'', N''RDS'', 45, N''RemoteDesktopServices2025'', N''FuseCP.Providers.RemoteDesktopServices.Windows2025,FuseCP.Providers.RemoteDesktopServices.Windows2019''),
     (1550, NULL, N''MariaDB 10.1'', N''MariaDB'', 50, N''MariaDB'', N''FuseCP.Providers.Database.MariaDB101, FuseCP.Providers.Database.MariaDB''),
     (1552, NULL, N''Hosted SharePoint Enterprise 2013'', N''HostedSharePoint30'', 73, N''HostedSharePoint2013Ent'', N''FuseCP.Providers.HostedSolution.HostedSharePointServer2013Ent, FuseCP.Providers.HostedSolution.SharePoint2013Ent''),
     (1560, NULL, N''MariaDB 10.2'', N''MariaDB'', 50, N''MariaDB'', N''FuseCP.Providers.Database.MariaDB102, FuseCP.Providers.Database.MariaDB''),
@@ -2451,11 +2446,11 @@ BEGIN
     (217, 22, NULL, NULL, NULL, N''Max Log Size'', N''MsSQL2008.MaxLogSize'', 4, 3, CAST(0 AS bit)),
     (220, 1, CAST(1 AS bit), NULL, NULL, N''Domain Pointers'', N''OS.DomainPointers'', 5, 2, CAST(0 AS bit)),
     (221, 23, NULL, NULL, NULL, N''Max Database Size'', N''MsSQL2012.MaxDatabaseSize'', 3, 3, CAST(0 AS bit)),
-    (222, 23, NULL, NULL, NULL, N''Database Backups'', N''MsSQL2012.Backup'', 5, 1, CAST(0 AS bit));
+    (222, 23, NULL, NULL, NULL, N''Database Backups'', N''MsSQL2012.Backup'', 5, 1, CAST(0 AS bit)),
+    (223, 23, NULL, NULL, NULL, N''Database Restores'', N''MsSQL2012.Restore'', 6, 1, CAST(0 AS bit)),
+    (224, 23, NULL, NULL, NULL, N''Database Truncate'', N''MsSQL2012.Truncate'', 7, 1, CAST(0 AS bit));
     INSERT INTO [Quotas] ([QuotaID], [GroupID], [HideQuota], [ItemTypeID], [PerOrganization], [QuotaDescription], [QuotaName], [QuotaOrder], [QuotaTypeID], [ServiceQuota])
-    VALUES (223, 23, NULL, NULL, NULL, N''Database Restores'', N''MsSQL2012.Restore'', 6, 1, CAST(0 AS bit)),
-    (224, 23, NULL, NULL, NULL, N''Database Truncate'', N''MsSQL2012.Truncate'', 7, 1, CAST(0 AS bit)),
-    (225, 23, NULL, NULL, NULL, N''Max Log Size'', N''MsSQL2012.MaxLogSize'', 4, 3, CAST(0 AS bit)),
+    VALUES (225, 23, NULL, NULL, NULL, N''Max Log Size'', N''MsSQL2012.MaxLogSize'', 4, 3, CAST(0 AS bit)),
     (230, 13, NULL, NULL, NULL, N''Allow to Change UserPrincipalName'', N''HostedSolution.AllowChangeUPN'', 4, 1, CAST(0 AS bit)),
     (301, 30, NULL, NULL, NULL, N''Allow user to create VPS'', N''VPS.ManagingAllowed'', 2, 1, CAST(0 AS bit)),
     (302, 30, NULL, NULL, NULL, N''Number of CPU cores'', N''VPS.CpuNumber'', 3, 2, CAST(0 AS bit)),
@@ -2494,11 +2489,11 @@ BEGIN
     (344, 2, NULL, NULL, NULL, N''htaccess'', N''Web.Htaccess'', 9, 1, CAST(0 AS bit)),
     (346, 40, NULL, NULL, NULL, N''Allow user to create VPS'', N''VPSForPC.ManagingAllowed'', 2, 1, CAST(0 AS bit)),
     (347, 40, NULL, NULL, NULL, N''Number of CPU cores'', N''VPSForPC.CpuNumber'', 3, 2, CAST(0 AS bit)),
-    (348, 40, NULL, NULL, NULL, N''Boot from CD allowed'', N''VPSForPC.BootCdAllowed'', 7, 1, CAST(0 AS bit));
+    (348, 40, NULL, NULL, NULL, N''Boot from CD allowed'', N''VPSForPC.BootCdAllowed'', 7, 1, CAST(0 AS bit)),
+    (349, 40, NULL, NULL, NULL, N''Boot from CD'', N''VPSForPC.BootCdEnabled'', 7, 1, CAST(0 AS bit)),
+    (350, 40, NULL, NULL, NULL, N''RAM size, MB'', N''VPSForPC.Ram'', 4, 2, CAST(0 AS bit));
     INSERT INTO [Quotas] ([QuotaID], [GroupID], [HideQuota], [ItemTypeID], [PerOrganization], [QuotaDescription], [QuotaName], [QuotaOrder], [QuotaTypeID], [ServiceQuota])
-    VALUES (349, 40, NULL, NULL, NULL, N''Boot from CD'', N''VPSForPC.BootCdEnabled'', 7, 1, CAST(0 AS bit)),
-    (350, 40, NULL, NULL, NULL, N''RAM size, MB'', N''VPSForPC.Ram'', 4, 2, CAST(0 AS bit)),
-    (351, 40, NULL, NULL, NULL, N''Hard Drive size, GB'', N''VPSForPC.Hdd'', 5, 2, CAST(0 AS bit)),
+    VALUES (351, 40, NULL, NULL, NULL, N''Hard Drive size, GB'', N''VPSForPC.Hdd'', 5, 2, CAST(0 AS bit)),
     (352, 40, NULL, NULL, NULL, N''DVD drive'', N''VPSForPC.DvdEnabled'', 6, 1, CAST(0 AS bit)),
     (353, 40, NULL, NULL, NULL, N''External Network'', N''VPSForPC.ExternalNetworkEnabled'', 10, 1, CAST(0 AS bit)),
     (354, 40, NULL, NULL, NULL, N''Number of External IP addresses'', N''VPSForPC.ExternalIPAddressesNumber'', 11, 2, CAST(0 AS bit)),
@@ -2537,11 +2532,11 @@ BEGIN
     (422, 12, NULL, NULL, NULL, N''Disclaimers Allowed'', N''Exchange2007.DisclaimersAllowed'', 26, 1, CAST(0 AS bit)),
     (423, 13, NULL, NULL, 1, N''Security Groups'', N''HostedSolution.SecurityGroups'', 5, 2, CAST(0 AS bit)),
     (424, 12, NULL, NULL, NULL, N''Allow Retention Policy'', N''Exchange2013.AllowRetentionPolicy'', 27, 1, CAST(0 AS bit)),
-    (425, 12, NULL, NULL, 1, N''Archiving storage, MB'', N''Exchange2013.ArchivingStorage'', 29, 2, CAST(0 AS bit));
+    (425, 12, NULL, NULL, 1, N''Archiving storage, MB'', N''Exchange2013.ArchivingStorage'', 29, 2, CAST(0 AS bit)),
+    (426, 12, NULL, NULL, 1, N''Archiving Mailboxes per Organization'', N''Exchange2013.ArchivingMailboxes'', 28, 2, CAST(0 AS bit)),
+    (428, 12, NULL, NULL, 1, N''Resource Mailboxes per Organization'', N''Exchange2013.ResourceMailboxes'', 31, 2, CAST(0 AS bit));
     INSERT INTO [Quotas] ([QuotaID], [GroupID], [HideQuota], [ItemTypeID], [PerOrganization], [QuotaDescription], [QuotaName], [QuotaOrder], [QuotaTypeID], [ServiceQuota])
-    VALUES (426, 12, NULL, NULL, 1, N''Archiving Mailboxes per Organization'', N''Exchange2013.ArchivingMailboxes'', 28, 2, CAST(0 AS bit)),
-    (428, 12, NULL, NULL, 1, N''Resource Mailboxes per Organization'', N''Exchange2013.ResourceMailboxes'', 31, 2, CAST(0 AS bit)),
-    (429, 12, NULL, NULL, 1, N''Shared Mailboxes per Organization'', N''Exchange2013.SharedMailboxes'', 30, 2, CAST(0 AS bit)),
+    VALUES (429, 12, NULL, NULL, 1, N''Shared Mailboxes per Organization'', N''Exchange2013.SharedMailboxes'', 30, 2, CAST(0 AS bit)),
     (430, 44, NULL, NULL, 1, N''Disk Storage Space (Mb)'', N''EnterpriseStorage.DiskStorageSpace'', 1, 2, CAST(0 AS bit)),
     (431, 44, NULL, NULL, 1, N''Number of Root Folders'', N''EnterpriseStorage.Folders'', 1, 2, CAST(0 AS bit)),
     (447, 61, NULL, NULL, NULL, N''Enable Spam Filter'', N''Filters.Enable'', 1, 1, CAST(0 AS bit)),
@@ -2572,9 +2567,8 @@ BEGIN
     (562, 33, NULL, NULL, NULL, N''Number of External IP addresses'', N''VPS2012.ExternalIPAddressesNumber'', 11, 2, CAST(0 AS bit)),
     (563, 33, NULL, NULL, NULL, N''Private Network'', N''VPS2012.PrivateNetworkEnabled'', 13, 1, CAST(0 AS bit)),
     (564, 33, NULL, NULL, NULL, N''Number of Private IP addresses per VPS'', N''VPS2012.PrivateIPAddressesNumber'', 14, 3, CAST(0 AS bit)),
-    (565, 33, NULL, NULL, NULL, N''Number of Snaphots'', N''VPS2012.SnapshotsNumber'', 9, 3, CAST(0 AS bit));
-    INSERT INTO [Quotas] ([QuotaID], [GroupID], [HideQuota], [ItemTypeID], [PerOrganization], [QuotaDescription], [QuotaName], [QuotaOrder], [QuotaTypeID], [ServiceQuota])
-    VALUES (566, 33, NULL, NULL, NULL, N''Allow user to Start, Turn off and Shutdown VPS'', N''VPS2012.StartShutdownAllowed'', 15, 1, CAST(0 AS bit)),
+    (565, 33, NULL, NULL, NULL, N''Number of Snaphots'', N''VPS2012.SnapshotsNumber'', 9, 3, CAST(0 AS bit)),
+    (566, 33, NULL, NULL, NULL, N''Allow user to Start, Turn off and Shutdown VPS'', N''VPS2012.StartShutdownAllowed'', 15, 1, CAST(0 AS bit)),
     (567, 33, NULL, NULL, NULL, N''Allow user to Pause, Resume VPS'', N''VPS2012.PauseResumeAllowed'', 16, 1, CAST(0 AS bit)),
     (568, 33, NULL, NULL, NULL, N''Allow user to Reboot VPS'', N''VPS2012.RebootAllowed'', 17, 1, CAST(0 AS bit)),
     (569, 33, NULL, NULL, NULL, N''Allow user to Reset VPS'', N''VPS2012.ResetAlowed'', 18, 1, CAST(0 AS bit)),
@@ -2583,8 +2577,9 @@ BEGIN
     (572, 33, NULL, NULL, NULL, N''Allow user to Replication'', N''VPS2012.ReplicationEnabled'', 20, 1, CAST(0 AS bit)),
     (575, 50, NULL, NULL, NULL, N''Max Database Size'', N''MariaDB.MaxDatabaseSize'', 3, 3, CAST(0 AS bit)),
     (576, 50, NULL, NULL, NULL, N''Database Backups'', N''MariaDB.Backup'', 5, 1, CAST(0 AS bit)),
-    (577, 50, NULL, NULL, NULL, N''Database Restores'', N''MariaDB.Restore'', 6, 1, CAST(0 AS bit)),
-    (578, 50, NULL, NULL, NULL, N''Database Truncate'', N''MariaDB.Truncate'', 7, 1, CAST(0 AS bit)),
+    (577, 50, NULL, NULL, NULL, N''Database Restores'', N''MariaDB.Restore'', 6, 1, CAST(0 AS bit));
+    INSERT INTO [Quotas] ([QuotaID], [GroupID], [HideQuota], [ItemTypeID], [PerOrganization], [QuotaDescription], [QuotaName], [QuotaOrder], [QuotaTypeID], [ServiceQuota])
+    VALUES (578, 50, NULL, NULL, NULL, N''Database Truncate'', N''MariaDB.Truncate'', 7, 1, CAST(0 AS bit)),
     (579, 50, NULL, NULL, NULL, N''Max Log Size'', N''MariaDB.MaxLogSize'', 4, 3, CAST(0 AS bit)),
     (581, 52, NULL, NULL, NULL, N''Phone Numbers'', N''SfB.PhoneNumbers'', 12, 2, CAST(0 AS bit)),
     (582, 52, NULL, NULL, 1, N''Users'', N''SfB.Users'', 1, 2, CAST(0 AS bit)),
@@ -2615,9 +2610,8 @@ BEGIN
     (688, 167, NULL, NULL, NULL, N''Allow user to Reboot VPS'', N''PROXMOX.RebootAllowed'', 17, 1, CAST(0 AS bit)),
     (689, 167, NULL, NULL, NULL, N''Allow user to Reset VPS'', N''PROXMOX.ResetAlowed'', 18, 1, CAST(0 AS bit)),
     (690, 167, NULL, NULL, NULL, N''Allow user to Re-install VPS'', N''PROXMOX.ReinstallAllowed'', 19, 1, CAST(0 AS bit)),
-    (691, 167, NULL, NULL, NULL, N''Monthly bandwidth, GB'', N''PROXMOX.Bandwidth'', 12, 2, CAST(0 AS bit));
-    INSERT INTO [Quotas] ([QuotaID], [GroupID], [HideQuota], [ItemTypeID], [PerOrganization], [QuotaDescription], [QuotaName], [QuotaOrder], [QuotaTypeID], [ServiceQuota])
-    VALUES (692, 167, NULL, NULL, NULL, N''Allow user to Replication'', N''PROXMOX.ReplicationEnabled'', 20, 1, CAST(0 AS bit)),
+    (691, 167, NULL, NULL, NULL, N''Monthly bandwidth, GB'', N''PROXMOX.Bandwidth'', 12, 2, CAST(0 AS bit)),
+    (692, 167, NULL, NULL, NULL, N''Allow user to Replication'', N''PROXMOX.ReplicationEnabled'', 20, 1, CAST(0 AS bit)),
     (703, 71, NULL, NULL, NULL, N''Max Database Size'', N''MsSQL2016.MaxDatabaseSize'', 3, 3, CAST(0 AS bit)),
     (704, 71, NULL, NULL, NULL, N''Database Backups'', N''MsSQL2016.Backup'', 5, 1, CAST(0 AS bit)),
     (705, 71, NULL, NULL, NULL, N''Database Restores'', N''MsSQL2016.Restore'', 6, 1, CAST(0 AS bit)),
@@ -2626,8 +2620,9 @@ BEGIN
     (713, 72, NULL, NULL, NULL, N''Max Database Size'', N''MsSQL2017.MaxDatabaseSize'', 3, 3, CAST(0 AS bit)),
     (714, 72, NULL, NULL, NULL, N''Database Backups'', N''MsSQL2017.Backup'', 5, 1, CAST(0 AS bit)),
     (715, 72, NULL, NULL, NULL, N''Database Restores'', N''MsSQL2017.Restore'', 6, 1, CAST(0 AS bit)),
-    (716, 72, NULL, NULL, NULL, N''Database Truncate'', N''MsSQL2017.Truncate'', 7, 1, CAST(0 AS bit)),
-    (717, 72, NULL, NULL, NULL, N''Max Log Size'', N''MsSQL2017.MaxLogSize'', 4, 3, CAST(0 AS bit)),
+    (716, 72, NULL, NULL, NULL, N''Database Truncate'', N''MsSQL2017.Truncate'', 7, 1, CAST(0 AS bit));
+    INSERT INTO [Quotas] ([QuotaID], [GroupID], [HideQuota], [ItemTypeID], [PerOrganization], [QuotaDescription], [QuotaName], [QuotaOrder], [QuotaTypeID], [ServiceQuota])
+    VALUES (717, 72, NULL, NULL, NULL, N''Max Log Size'', N''MsSQL2017.MaxLogSize'', 4, 3, CAST(0 AS bit)),
     (723, 74, NULL, NULL, NULL, N''Max Database Size'', N''MsSQL2019.MaxDatabaseSize'', 3, 3, CAST(0 AS bit)),
     (724, 74, NULL, NULL, NULL, N''Database Backups'', N''MsSQL2019.Backup'', 5, 1, CAST(0 AS bit)),
     (725, 74, NULL, NULL, NULL, N''Database Restores'', N''MsSQL2019.Restore'', 6, 1, CAST(0 AS bit)),
@@ -2729,7 +2724,7 @@ BEGIN
     (N''FTP_SERVER'', N''SCHEDULE_TASK_FTP_FILES'', N''String'', N''ftp.myserver.com'', 2),
     (N''FTP_USERNAME'', N''SCHEDULE_TASK_FTP_FILES'', N''String'', NULL, 3);
     INSERT INTO [ScheduleTaskParameters] ([ParameterID], [TaskID], [DataTypeID], [DefaultValue], [ParameterOrder])
-    (N''EMAIL'', N''SCHEDULE_TASK_HOSTED_SOLUTION_REPORT'', N''String'', NULL, 1),
+    VALUES (N''EMAIL'', N''SCHEDULE_TASK_HOSTED_SOLUTION_REPORT'', N''String'', NULL, 1),
     (N''EXCHANGE_REPORT'', N''SCHEDULE_TASK_HOSTED_SOLUTION_REPORT'', N''Boolean'', N''true'', 2),
     (N''LYNC_REPORT'', N''SCHEDULE_TASK_HOSTED_SOLUTION_REPORT'', N''Boolean'', N''true'', 4),
     (N''ORGANIZATION_REPORT'', N''SCHEDULE_TASK_HOSTED_SOLUTION_REPORT'', N''Boolean'', N''true'', 7),
@@ -2769,10 +2764,10 @@ BEGIN
     (N''SUSPENSION_USAGE_THRESHOLD'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', N''100'', 1),
     (N''WARNING_MAIL_BCC'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', NULL, 1),
     (N''WARNING_MAIL_BODY'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', NULL, 1),
-    (N''WARNING_MAIL_FROM'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', NULL, 1);
+    (N''WARNING_MAIL_FROM'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', NULL, 1),
+    (N''WARNING_MAIL_SUBJECT'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', NULL, 1);
     INSERT INTO [ScheduleTaskParameters] ([ParameterID], [TaskID], [DataTypeID], [DefaultValue], [ParameterOrder])
-    VALUES (N''WARNING_MAIL_SUBJECT'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', NULL, 1),
-    (N''WARNING_USAGE_THRESHOLD'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', N''80'', 1),
+    VALUES (N''WARNING_USAGE_THRESHOLD'', N''SCHEDULE_TASK_SUSPEND_PACKAGES'', N''String'', N''80'', 1),
     (N''DAYS_BEFORE_EXPIRATION'', N''SCHEDULE_TASK_USER_PASSWORD_EXPIRATION_NOTIFICATION'', N''String'', NULL, 1),
     (N''FOLDER'', N''SCHEDULE_TASK_ZIP_FILES'', N''String'', NULL, 1),
     (N''ZIP_FILE'', N''SCHEDULE_TASK_ZIP_FILES'', N''String'', N''\archive.zip'', 2)');
@@ -3415,18 +3410,6 @@ BEGIN
     (N''RootPassword'', 17, N''''),
     (N''AdminPassword'', 22, N''''),
     (N''AdminUsername'', 22, N''Administrator''),
-    (N''BindConfigPath'', 24, N''c:\BIND\dns\etc\named.conf''),
-    (N''BindReloadBatch'', 24, N''c:\BIND\dns\reload.bat''),
-    (N''ExpireLimit'', 24, N''1209600''),
-    (N''MinimumTTL'', 24, N''86400''),
-    (N''NameServers'', 24, N''ns1.yourdomain.com;ns2.yourdomain.com''),
-    (N''RecordDefaultTTL'', 24, N''86400''),
-    (N''RecordMinimumTTL'', 24, N''3600''),
-    (N''RefreshInterval'', 24, N''3600''),
-    (N''ResponsiblePerson'', 24, N''hostmaster.[DOMAIN_NAME]''),
-    (N''RetryDelay'', 24, N''600''),
-    (N''ZoneFileNameTemplate'', 24, N''db.[domain_name].txt''),
-    (N''ZonesFolderPath'', 24, N''c:\BIND\dns\zones''),
     (N''DomainId'', 25, N''1''),
     (N''KeepDeletedItemsDays'', 27, N''14''),
     (N''KeepDeletedMailboxesDays'', 27, N''30''),
@@ -3434,17 +3417,6 @@ BEGIN
     (N''RootOU'', 27, N''FCP Hosting''),
     (N''StorageGroup'', 27, N''Hosted Exchange Storage Group''),
     (N''TempDomain'', 27, N''my-temp-domain.com''),
-    (N''AdminLogin'', 28, N''Admin''),
-    (N''ExpireLimit'', 28, N''1209600''),
-    (N''MinimumTTL'', 28, N''86400''),
-    (N''NameServers'', 28, N''ns1.yourdomain.com;ns2.yourdomain.com''),
-    (N''RecordDefaultTTL'', 28, N''86400'');
-    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
-    VALUES (N''RecordMinimumTTL'', 28, N''3600''),
-    (N''RefreshInterval'', 28, N''3600''),
-    (N''ResponsiblePerson'', 28, N''hostmaster.[DOMAIN_NAME]''),
-    (N''RetryDelay'', 28, N''600''),
-    (N''SimpleDnsUrl'', 28, N''http://127.0.0.1:8053''),
     (N''AdminPassword'', 29, N'' ''),
     (N''AdminUsername'', 29, N''admin''),
     (N''defaultdomainhostname'', 29, N''mail.[DOMAIN_NAME]''),
@@ -3461,8 +3433,9 @@ BEGIN
     (N''LogWildcard'', 31, N''*.log''),
     (N''Password'', 31, N''''),
     (N''ServerID'', 31, N''1''),
-    (N''SmarterLogDeleteMonths'', 31, N''0''),
-    (N''SmarterLogsPath'', 31, N''%SYSTEMDRIVE%\SmarterLogs''),
+    (N''SmarterLogDeleteMonths'', 31, N''0'');
+    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
+    VALUES (N''SmarterLogsPath'', 31, N''%SYSTEMDRIVE%\SmarterLogs''),
     (N''SmarterUrl'', 31, N''http://127.0.0.1:9999/services''),
     (N''StatisticsURL'', 31, N''http://127.0.0.1:9999/Login.aspx?txtSiteID=[site_id]&txtUser=[username]&txtPass=[password]&shortcutLink=autologin''),
     (N''TimeZoneId'', 31, N''27''),
@@ -3472,8 +3445,6 @@ BEGIN
     (N''MailboxDatabase'', 32, N''Hosted Exchange Database''),
     (N''RootOU'', 32, N''FCP Hosting''),
     (N''TempDomain'', 32, N''my-temp-domain.com''),
-    (N''RecordDefaultTTL'', 55, N''86400''),
-    (N''RecordMinimumTTL'', 55, N''3600''),
     (N''ExpireLimit'', 56, N''1209600''),
     (N''MinimumTTL'', 56, N''86400''),
     (N''NameServers'', 56, N''ns1.yourdomain.com;ns2.yourdomain.com''),
@@ -3481,9 +3452,8 @@ BEGIN
     (N''PDNSDbPort'', 56, N''3306''),
     (N''PDNSDbServer'', 56, N''localhost''),
     (N''PDNSDbUser'', 56, N''root''),
-    (N''RecordDefaultTTL'', 56, N''86400'');
-    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
-    VALUES (N''RecordMinimumTTL'', 56, N''3600''),
+    (N''RecordDefaultTTL'', 56, N''86400''),
+    (N''RecordMinimumTTL'', 56, N''3600''),
     (N''RefreshInterval'', 56, N''3600''),
     (N''ResponsiblePerson'', 56, N''hostmaster.[DOMAIN_NAME]''),
     (N''RetryDelay'', 56, N''600''),
@@ -3506,8 +3476,9 @@ BEGIN
     (N''Username'', 62, N''Admin''),
     (N''AdminPassword'', 63, N''''),
     (N''AdminUsername'', 63, N''Administrator''),
-    (N''AdminPassword'', 64, N''''),
-    (N''AdminUsername'', 64, N''admin''),
+    (N''AdminPassword'', 64, N'''');
+    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
+    VALUES (N''AdminUsername'', 64, N''admin''),
     (N''defaultdomainhostname'', 64, N''mail.[DOMAIN_NAME]''),
     (N''DomainsPath'', 64, N''%SYSTEMDRIVE%\SmarterMail''),
     (N''ServerIPAddress'', 64, N''127.0.0.1;127.0.0.1''),
@@ -3524,9 +3495,8 @@ BEGIN
     (N''DomainsPath'', 66, N''%SYSTEMDRIVE%\SmarterMail''),
     (N''ServerIPAddress'', 66, N''127.0.0.1;127.0.0.1''),
     (N''ServiceUrl'', 66, N''http://localhost:9998/services/''),
-    (N''AdminPassword'', 67, N'''');
-    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
-    VALUES (N''AdminUsername'', 67, N''admin''),
+    (N''AdminPassword'', 67, N''''),
+    (N''AdminUsername'', 67, N''admin''),
     (N''defaultdomainhostname'', 67, N''mail.[DOMAIN_NAME]''),
     (N''DomainsPath'', 67, N''%SYSTEMDRIVE%\SmarterMail\Domains''),
     (N''ServerIPAddress'', 67, N''127.0.0.1;127.0.0.1''),
@@ -3549,8 +3519,9 @@ BEGIN
     (N''PhpMode'', 101, N''FastCGI''),
     (N''PhpPath'', 101, N''%PROGRAMFILES(x86)%\PHP\php-cgi.exe''),
     (N''ProtectedGroupsFile'', 101, N''.htgroup''),
-    (N''ProtectedUsersFile'', 101, N''.htpasswd''),
-    (N''SecureFoldersModuleAssembly'', 101, N''FuseCP.IIsModules.SecureFolders, FuseCP.IIsModules, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=37f9c58a0aa32ff0''),
+    (N''ProtectedUsersFile'', 101, N''.htpasswd'');
+    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
+    VALUES (N''SecureFoldersModuleAssembly'', 101, N''FuseCP.IIsModules.SecureFolders, FuseCP.IIsModules, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=37f9c58a0aa32ff0''),
     (N''WebGroupName'', 101, N''FCP_IUSRS''),
     (N''WmSvc.CredentialsMode'', 101, N''WINDOWS''),
     (N''WmSvc.Port'', 101, N''8172''),
@@ -3567,9 +3538,8 @@ BEGIN
     (N''ClassicAspNet40Pool'', 105, N''ASP.NET 4.0 (Classic)''),
     (N''ColdFusionPath'', 105, N''C:\ColdFusion9\runtime\lib\wsconfig\jrun_iis6.dll''),
     (N''GalleryXmlFeedUrl'', 105, N''''),
-    (N''IntegratedAspNet20Pool'', 105, N''ASP.NET 2.0 (Integrated)'');
-    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
-    VALUES (N''IntegratedAspNet40Pool'', 105, N''ASP.NET 4.0 (Integrated)''),
+    (N''IntegratedAspNet20Pool'', 105, N''ASP.NET 2.0 (Integrated)''),
+    (N''IntegratedAspNet40Pool'', 105, N''ASP.NET 4.0 (Integrated)''),
     (N''PerlPath'', 105, N''%SYSTEMDRIVE%\Perl\bin\PerlEx30.dll''),
     (N''Php4Path'', 105, N''%PROGRAMFILES(x86)%\PHP\php.exe''),
     (N''PhpMode'', 105, N''FastCGI''),
@@ -3592,8 +3562,9 @@ BEGIN
     (N''CFFlashRemotingDirectory'', 112, N''C:\ColdFusion9\runtime\lib\wsconfig\1''),
     (N''CFScriptsDirectory'', 112, N''C:\Inetpub\wwwroot\CFIDE''),
     (N''ClassicAspNet20Pool'', 112, N''ASP.NET 2.0 (Classic)''),
-    (N''ClassicAspNet40Pool'', 112, N''ASP.NET 4.0 (Classic)''),
-    (N''ColdFusionPath'', 112, N''C:\ColdFusion9\runtime\lib\wsconfig\jrun_iis6.dll''),
+    (N''ClassicAspNet40Pool'', 112, N''ASP.NET 4.0 (Classic)'');
+    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
+    VALUES (N''ColdFusionPath'', 112, N''C:\ColdFusion9\runtime\lib\wsconfig\jrun_iis6.dll''),
     (N''GalleryXmlFeedUrl'', 112, N''''),
     (N''IntegratedAspNet20Pool'', 112, N''ASP.NET 2.0 (Integrated)''),
     (N''IntegratedAspNet40Pool'', 112, N''ASP.NET 4.0 (Integrated)''),
@@ -3610,9 +3581,8 @@ BEGIN
     (N''WmSvc.Port'', 112, N''8172''),
     (N''FtpGroupName'', 113, N''FCPFtpUsers''),
     (N''SiteId'', 113, N''Default FTP Site''),
-    (N''sslusesni'', 113, N''False'');
-    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
-    VALUES (N''RootWebApplicationIpAddress'', 200, N''''),
+    (N''sslusesni'', 113, N''False''),
+    (N''RootWebApplicationIpAddress'', 200, N''''),
     (N''UserName'', 204, N''admin''),
     (N''UtilityPath'', 204, N''C:\Program Files\Research In Motion\BlackBerry Enterprise Server Resource Kit\BlackBerry Enterprise Server User Administration Tool''),
     (N''CpuLimit'', 300, N''100''),
@@ -3635,8 +3605,9 @@ BEGIN
     (N''RootPassword'', 301, N''''),
     (N''ExternalAddress'', 304, N''localhost''),
     (N''InstallFolder'', 304, N''%PROGRAMFILES%\MySQL\MySQL Server 8.0''),
-    (N''InternalAddress'', 304, N''localhost,3306''),
-    (N''RootLogin'', 304, N''root''),
+    (N''InternalAddress'', 304, N''localhost,3306'');
+    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
+    VALUES (N''RootLogin'', 304, N''root''),
     (N''RootPassword'', 304, N''''),
     (N''sslmode'', 304, N''True''),
     (N''admode'', 410, N''False''),
@@ -3653,9 +3624,8 @@ BEGIN
     (N''InternalAddress'', 1550, N''localhost''),
     (N''RootLogin'', 1550, N''root''),
     (N''RootPassword'', 1550, N''''),
-    (N''ExternalAddress'', 1570, N''localhost'');
-    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
-    VALUES (N''InstallFolder'', 1570, N''%PROGRAMFILES%\MariaDB 10.3''),
+    (N''ExternalAddress'', 1570, N''localhost''),
+    (N''InstallFolder'', 1570, N''%PROGRAMFILES%\MariaDB 10.3''),
     (N''InternalAddress'', 1570, N''localhost''),
     (N''RootLogin'', 1570, N''root''),
     (N''RootPassword'', 1570, N''''),
@@ -3678,8 +3648,9 @@ BEGIN
     (N''ExpireLimit'', 1901, N''1209600''),
     (N''MinimumTTL'', 1901, N''86400''),
     (N''NameServers'', 1901, N''ns1.yourdomain.com;ns2.yourdomain.com''),
-    (N''RecordDefaultTTL'', 1901, N''86400''),
-    (N''RecordMinimumTTL'', 1901, N''3600''),
+    (N''RecordDefaultTTL'', 1901, N''86400'');
+    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
+    VALUES (N''RecordMinimumTTL'', 1901, N''3600''),
     (N''RefreshInterval'', 1901, N''3600''),
     (N''ResponsiblePerson'', 1901, N''hostmaster.[DOMAIN_NAME]''),
     (N''RetryDelay'', 1901, N''600''),
@@ -3696,9 +3667,8 @@ BEGIN
     (N''AdminLogin'', 1903, N''Admin''),
     (N''ExpireLimit'', 1903, N''1209600''),
     (N''NameServers'', 1903, N''ns1.yourdomain.com;ns2.yourdomain.com''),
-    (N''RecordDefaultTTL'', 1903, N''86400'');
-    INSERT INTO [ServiceDefaultProperties] ([PropertyName], [ProviderID], [PropertyValue])
-    VALUES (N''RecordMinimumTTL'', 1903, N''3600''),
+    (N''RecordDefaultTTL'', 1903, N''86400''),
+    (N''RecordMinimumTTL'', 1903, N''3600''),
     (N''RefreshInterval'', 1903, N''3600''),
     (N''ResponsiblePerson'', 1903, N''hostmaster.[DOMAIN_NAME]''),
     (N''RetryDelay'', 1903, N''600''),
@@ -76542,6 +76512,215 @@ IF NOT EXISTS (
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
     VALUES (N'20251113211343_Run_Migrate_msSQL_Script', N'9.0.9');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Providers]
+    WHERE [ProviderID] = 201;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Providers]
+    WHERE [ProviderID] = 1201;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Providers]
+    WHERE [ProviderID] = 1202;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Providers]
+    WHERE [ProviderID] = 1205;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Providers]
+    WHERE [ProviderID] = 1206;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 209;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 210;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 460;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 461;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 462;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 463;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 464;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 465;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 466;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [Quotas]
+    WHERE [QuotaID] = 467;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [ScheduleTaskParameters]
+    WHERE [ParameterID] = N''CRM_REPORT'' AND [TaskID] = N''SCHEDULE_TASK_HOSTED_SOLUTION_REPORT'';
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [ServiceDefaultProperties]
+    WHERE [PropertyName] = N''RecordDefaultTTL'' AND [ProviderID] = 55;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [ServiceDefaultProperties]
+    WHERE [PropertyName] = N''RecordMinimumTTL'' AND [ProviderID] = 55;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [ResourceGroups]
+    WHERE [GroupID] = 21;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    EXEC(N'DELETE FROM [ResourceGroups]
+    WHERE [GroupID] = 24;
+    SELECT @@ROWCOUNT');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20260315123641_RemoveLegacyCrmAndNetticaSeeds', N'9.0.9');
 END;
 
 COMMIT;
