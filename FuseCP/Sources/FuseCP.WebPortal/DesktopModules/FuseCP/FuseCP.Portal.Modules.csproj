@@ -5797,7 +5797,6 @@
         <Content Include="VPS2012\App_LocalResources\VpsDetailsAddDmzAddress.ascx.resx" />
         <Content Include="VPS2012\App_LocalResources\VpsDetailsAddDmzAddress.ascx.de-DE.resx" />
         <None Include="App.config" />
-        <None Include="packages.config" />
         <None Include="Resources\PlusSign.ico" />
         <Content Include="SettingsMariaDBPolicy.ascx" />
         <Content Include="SettingsSfBUserPlansPolicy.ascx" />

@@ -199,7 +199,6 @@
             <FilesToMove Include="bin\Newtonsoft.Json.*" />
             <FilesToMove Include="bin\Microsoft.IdentityModel.*" />
             <FilesToMove Include="bin\Microsoft.Web.Administration.*" />
-            <FilesToMove Include="bin\Microsoft.ReportViewer.*" />
             <FilesToMove Include="bin\Microsoft.Extensions.*" />
             <FilesToMove Include="bin\Microsoft.Web.*" />
             <FilesToMove Include="bin\FuseCP.Server.Client.*" />
