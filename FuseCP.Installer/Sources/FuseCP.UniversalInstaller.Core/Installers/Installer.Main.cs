@@ -63,11 +63,28 @@ namespace FuseCP.UniversalInstaller
 		{
 			if (!OSInfo.IsWindows) return;
 
-			if (!OSInfo.Current.WebServer.IsInstalled())
+			IOperatingSystem operatingSystem = null;
+			try
+			{
+				operatingSystem = OSInfo.Current;
+			}
+			catch (Exception ex)
+			{
+				Log.WriteInfo("Unable to resolve Windows OS provider: {0}", ex.Message);
+				return;
+			}
+
+			if (operatingSystem?.WebServer == null)
+			{
+				Log.WriteInfo("Skipping IIS detection because the OS provider did not expose a web server.");
+				return;
+			}
+
+			if (!operatingSystem.WebServer.IsInstalled())
 				Log.WriteError("IIS not found.");
 			else
 			{
-				var version = OSInfo.Current.WebServer.Version;
+				var version = operatingSystem.WebServer.Version;
 				Log.WriteInfo("IIS {0} detected", version);
 			}
 		}

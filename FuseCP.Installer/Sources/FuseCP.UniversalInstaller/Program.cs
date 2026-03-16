@@ -148,7 +148,14 @@ public class Program
 			Installer.Current.OnExit += Loader.Unload;
 
 			EndWaitCursor();
-			Console.Clear();
+			try
+			{
+				Console.Clear();
+			}
+			catch
+			{
+				// Running without an attached console (GUI context)
+			}
 
 			Installer.Current.UI.PrintInstallerVersion();
 			Installer.Current.StartMain();

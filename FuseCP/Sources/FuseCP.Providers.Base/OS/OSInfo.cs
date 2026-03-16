@@ -256,6 +256,22 @@ namespace FuseCP.Providers.OS
 		public static OS.IUnixOperatingSystem Unix => (IUnixOperatingSystem)Current;
 		public static IWindowsOperatingSystem Windows => (IWindowsOperatingSystem)Current;
 
+		static Providers.OS.IOperatingSystem CreateOperatingSystem(params string[] typeNames)
+		{
+			foreach (var typeName in typeNames)
+			{
+				var type = Type.GetType(typeName);
+				if (type != null)
+				{
+					var instance = Activator.CreateInstance(type) as Providers.OS.IOperatingSystem;
+					if (instance != null)
+						return instance;
+				}
+			}
+
+			return null;
+		}
+
 		static Providers.OS.IOperatingSystem os = null;
 		public static Providers.OS.IOperatingSystem Current
 		{
@@ -269,42 +285,69 @@ namespace FuseCP.Providers.OS
 						switch (version)
 						{
 							case WindowsVersion.WindowsServer2025:
-								os = Activator.CreateInstance(Type.GetType("FuseCP.Providers.OS.Windows2025, FuseCP.Providers.OS.Windows2025")) as Providers.OS.IOperatingSystem;
+								os = CreateOperatingSystem(
+									"FuseCP.Providers.OS.Windows2025, FuseCP.Providers.OS.Windows2025",
+									"FuseCP.Providers.OS.Windows2022, FuseCP.Providers.OS.Windows2022",
+									"FuseCP.Providers.OS.Windows2019, FuseCP.Providers.OS.Windows2019",
+									"FuseCP.Providers.OS.Windows2016, FuseCP.Providers.OS.Windows2016");
 								break;
 							case WindowsVersion.WindowsServer2022:
 							case WindowsVersion.Windows11:
-								os = Activator.CreateInstance(Type.GetType("FuseCP.Providers.OS.Windows2022, FuseCP.Providers.OS.Windows2022")) as Providers.OS.IOperatingSystem;
+								os = CreateOperatingSystem(
+									"FuseCP.Providers.OS.Windows2022, FuseCP.Providers.OS.Windows2022",
+									"FuseCP.Providers.OS.Windows2019, FuseCP.Providers.OS.Windows2019",
+									"FuseCP.Providers.OS.Windows2016, FuseCP.Providers.OS.Windows2016");
 								break;
 							case WindowsVersion.Windows10:
 							case WindowsVersion.WindowsServer2019:
-								os = Activator.CreateInstance(Type.GetType("FuseCP.Providers.OS.Windows2019, FuseCP.Providers.OS.Windows2019")) as Providers.OS.IOperatingSystem;
+								os = CreateOperatingSystem(
+									"FuseCP.Providers.OS.Windows2019, FuseCP.Providers.OS.Windows2019",
+									"FuseCP.Providers.OS.Windows2016, FuseCP.Providers.OS.Windows2016");
 								break;
 							case WindowsVersion.WindowsServer2016:
-								os = Activator.CreateInstance(Type.GetType("FuseCP.Providers.OS.Windows2016, FuseCP.Providers.OS.Windows2016")) as Providers.OS.IOperatingSystem;
+								os = CreateOperatingSystem(
+									"FuseCP.Providers.OS.Windows2016, FuseCP.Providers.OS.Windows2016",
+									"FuseCP.Providers.OS.Windows2012, FuseCP.Providers.OS.Windows2012");
 								break;
 							case WindowsVersion.WindowsServer2012:
 							case WindowsVersion.Windows8:
 							case WindowsVersion.WindowsServer2012R2:
 							case WindowsVersion.Windows81:
-								os = Activator.CreateInstance(Type.GetType("FuseCP.Providers.OS.Windows2012, FuseCP.Providers.OS.Windows2012")) as Providers.OS.IOperatingSystem;
+								os = CreateOperatingSystem(
+									"FuseCP.Providers.OS.Windows2012, FuseCP.Providers.OS.Windows2012",
+									"FuseCP.Providers.OS.Windows2008, FuseCP.Providers.OS.Windows2008");
 								break;
 							case WindowsVersion.WindowsServer2008:
 							case WindowsVersion.WindowsServer2008R2:
 							case WindowsVersion.Vista:
 							case WindowsVersion.Windows7:
-								os = Activator.CreateInstance(Type.GetType("FuseCP.Providers.OS.Windows2008, FuseCP.Providers.OS.Windows2008")) as Providers.OS.IOperatingSystem;
+								os = CreateOperatingSystem(
+									"FuseCP.Providers.OS.Windows2008, FuseCP.Providers.OS.Windows2008",
+									"FuseCP.Providers.OS.Windows2003, FuseCP.Providers.OS.Windows2003");
 								break;
 
 							case WindowsVersion.WindowsServer2003:
 							case WindowsVersion.WindowsXP:
 							case WindowsVersion.WindowsNT4:
-								os = Activator.CreateInstance(Type.GetType("FuseCP.Providers.OS.Windows2003, FuseCP.Providers.OS.Windows2003")) as Providers.OS.IOperatingSystem;
+								os = CreateOperatingSystem("FuseCP.Providers.OS.Windows2003, FuseCP.Providers.OS.Windows2003");
 								break;
+						}
+
+						if (os == null)
+						{
+							os = CreateOperatingSystem(
+								"FuseCP.Providers.OS.Windows2025, FuseCP.Providers.OS.Windows2025",
+								"FuseCP.Providers.OS.Windows2022, FuseCP.Providers.OS.Windows2022",
+								"FuseCP.Providers.OS.Windows2019, FuseCP.Providers.OS.Windows2019",
+								"FuseCP.Providers.OS.Windows2016, FuseCP.Providers.OS.Windows2016",
+								"FuseCP.Providers.OS.Windows2012, FuseCP.Providers.OS.Windows2012",
+								"FuseCP.Providers.OS.Windows2008, FuseCP.Providers.OS.Windows2008",
+								"FuseCP.Providers.OS.Windows2003, FuseCP.Providers.OS.Windows2003");
 						}
 					}
 					else if (IsUnix)
 					{
-						os = Activator.CreateInstance(Type.GetType("FuseCP.Providers.OS.Unix, FuseCP.Providers.OS.Unix")) as Providers.OS.IOperatingSystem;
+						os = CreateOperatingSystem("FuseCP.Providers.OS.Unix, FuseCP.Providers.OS.Unix");
 					}
 				}
 				return os;

@@ -198,16 +198,23 @@ public class AssemblyLoader
 		if (IsCore)
 		{
 			var ctxType = Type.GetType("System.Runtime.Loader.AssemblyLoadContext, System.Runtime.Loader");
-			var getContext = ctxType.GetMethod("GetLoadContext", BindingFlags.Public | BindingFlags.Static);
-			var loadContext = getContext.Invoke(null, new[] { mainAssembly });
+			var getContext = ctxType?.GetMethod("GetLoadContext", BindingFlags.Public | BindingFlags.Static);
+			var loadContext = getContext?.Invoke(null, new[] { mainAssembly });
 			loader.AssemblyLoadContext = loadContext;
 
 			var core = loader.ResolveAssembly(null, new AssemblyName("FuseCP.UniversalInstaller.Core"));
 			var runtime = loader.ResolveAssembly(null, new AssemblyName($"FuseCP.UniversalInstaller.Runtime.{(IsCore ? "NetCore" : "NetFX")}"));
-			var loaderRuntimeType = runtime.GetType("FuseCP.UniversalInstaller.AssemblyLoader");
-			loader.LoaderRuntime = Activator.CreateInstance(loaderRuntimeType);
-			var assCtx = loaderRuntimeType.GetMethod("InitAssemblyLoadContext");
-			assCtx.Invoke(loader.LoaderRuntime, new object[] { loader.AssembliesPath, loader.MainAssembly });
+
+			if (runtime != null)
+			{
+				var loaderRuntimeType = runtime.GetType("FuseCP.UniversalInstaller.AssemblyLoader");
+				if (loaderRuntimeType != null)
+				{
+					loader.LoaderRuntime = Activator.CreateInstance(loaderRuntimeType);
+					var assCtx = loaderRuntimeType.GetMethod("InitAssemblyLoadContext");
+					assCtx?.Invoke(loader.LoaderRuntime, new object[] { loader.AssembliesPath, loader.MainAssembly });
+				}
+			}
 		} else
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => loader.ResolveAssembly(null, new AssemblyName(args.Name));
@@ -303,7 +310,7 @@ public class AssemblyLoader
 			if (File.Exists(file)) return file;
 		}
 
-		if (IsCore && IsWindows && defaultContext)
+		if (IsCore && IsWindows && defaultContext && !string.IsNullOrWhiteSpace(DesktopRuntimePath))
 		{
 			file = Path.Combine(DesktopRuntimePath, name);
 			if (File.Exists(file)) return file;
