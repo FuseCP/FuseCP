@@ -16,6 +16,10 @@
 		<DebugType>pdbonly</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
+		<Compile Remove="VersionInfo.cs" />
+		<Compile Include="..\VersionInfo.cs" Link="VersionInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
 		<Reference Include="System.DirectoryServices" />
 		<Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
 			<HintPath>..\..\Lib\References\Microsoft\Windows2012\System.Management.Automation.dll</HintPath>

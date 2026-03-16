@@ -150,10 +150,16 @@ namespace FuseCP.EnterpriseServer.Data
 
         public static string GetNativeConnectionString(string connectionString)
         {
+			if (string.IsNullOrWhiteSpace(connectionString))
+				return string.Empty;
+
             return Regex.Replace(connectionString, @$"^\s*{nameof(DbType)}\s*=[^;$]*;|;\s*{nameof(DbType)}\s*=[^;$]*", "", RegexOptions.IgnoreCase);
 		}
 		public static DbType GetDbType(string connectionString)
         {
+			if (string.IsNullOrWhiteSpace(connectionString))
+				return DbType.Unknown;
+
             DbType dbType = DbType.Unknown;
             var dbTypeName = Regex.Match(connectionString, @$"(?<=(?:;|^)\s*{nameof(DbType)}\s*=\s*)[^;$]*", RegexOptions.IgnoreCase)?.Value.Trim();
 			if (!string.IsNullOrEmpty(dbTypeName) && !Enum.TryParse<DbType>(dbTypeName, true, out dbType)) dbType = DbType.Other;

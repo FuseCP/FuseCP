@@ -1,8 +1,12 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
 	<PropertyGroup>
-		<Version>$(Version)</Version>
-		<FileVersion>$(BUILD_NUMBER)</FileVersion>
-		<VersionLabel>$(BUILD_NUMBER)</VersionLabel>
+		<Version Condition="'$(Version)' == ''">2.0.0</Version>
+		<Version Condition="'$(Version)' != ''">$(Version)</Version>
+		<FileVersion Condition="'$(FileVersion)' == '' and '$(BUILD_NUMBER)' == ''">2.0.0.0</FileVersion>
+		<FileVersion Condition="'$(FileVersion)' == '' and '$(BUILD_NUMBER)' != ''">$(BUILD_NUMBER)</FileVersion>
+		<FileVersion Condition="'$(FileVersion)' != ''">$(FileVersion)</FileVersion>
+		<VersionLabel Condition="'$(VersionLabel)' == ''">$(FileVersion)</VersionLabel>
+		<VersionLabel Condition="'$(VersionLabel)' != ''">$(VersionLabel)</VersionLabel>
 		<ReleaseDate>2024-12-17</ReleaseDate>
 		<BuildConfiguration></BuildConfiguration>
 		<RootFolder>..</RootFolder>
@@ -351,6 +355,11 @@
 		</ItemGroup>
 
 		<Copy SourceFiles="@(PortalBuildFiles)" DestinationFolder="$(PortalBuild)\%(RecursiveDir)" Condition=" '$(UseAspNetPrecompile)' != 'true' " />
+
+		<!-- net10 host: root Web.config should boot AspNetCoreModule against bin_dotnet output -->
+		<Copy SourceFiles="$(PortalBuild)\bin_dotnet\Web.config" DestinationFiles="$(PortalBuild)\Web.config" OverwriteReadOnlyFiles="true" Condition="Exists('$(PortalBuild)\bin_dotnet\Web.config')" />
+		<Exec Command="powershell &quot;$p='$(PortalBuild)\Web.config'; $c=[System.IO.File]::ReadAllText($p); $c=$c.Replace('arguments=&quot;.\FuseCP.WebPortal.dll&quot;','arguments=&quot;.\bin_dotnet\FuseCP.WebPortal.dll&quot;'); $c=$c.Replace('stdoutLogFile=&quot;..\App_Data\logs\stdout&quot;','stdoutLogFile=&quot;.\App_Data\logs\stdout&quot;'); [System.IO.File]::WriteAllText($p,$c)&quot;" Condition="Exists('$(PortalBuild)\Web.config')" />
+		<Delete Files="$(PortalBuild)\Global.asax" Condition="Exists('$(PortalBuild)\Global.asax')" />
 
 		<!-- Use aspnet_compiler to percompile WebPortal if UseAspNetPrecompile is set to true -->
 		<MSBuild Projects="$(TrunkFolder)\Sources\FuseCP.WebPortal\FuseCP.WebPortal.csproj" Properties="Configuration=$(BuildConfiguration);Platform=$(Platform)" Targets="DeployWithPrecompile" 
