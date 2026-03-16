@@ -1150,8 +1150,12 @@
 
 	<Target Name="ZipInstaller" DependsOnTargets="ZipUpdates">
 		<Message Text="Zip Installer" Importance="high" />
-		<Warning Condition="!Exists('$(InstallerBuild)')" Text="Skipping installer archive because '$(InstallerBuild)' was not found." />
-		<Exec Command="$(ZipCmd)$(ZipLevel) a &quot;$(DeployFolder)\FuseCP-Installer.zip&quot; &quot;$(InstallerBuild)\*&quot;" Condition="Exists('$(InstallerBuild)')" />
+		<ItemGroup>
+			<InstallerBuildFiles Include="$(InstallerBuild)\**\*.*" />
+		</ItemGroup>
+		<Delete Files="$(DeployFolder)\FuseCP-Installer.zip" Condition="'@(InstallerBuildFiles)' == '' and Exists('$(DeployFolder)\FuseCP-Installer.zip')" />
+		<Warning Condition="'@(InstallerBuildFiles)' == ''" Text="Skipping installer archive because no installer files were produced in '$(InstallerBuild)'. Enable /p:BuildInstallerSolution=true (and optionally /p:BuildInstallerMsi=true) to package installer artifacts." />
+		<Exec Command="$(ZipCmd)$(ZipLevel) a &quot;$(DeployFolder)\FuseCP-Installer.zip&quot; &quot;$(InstallerBuild)\*&quot;" Condition="'@(InstallerBuildFiles)' != ''" />
 
 		<!-- zip tools
 		<Zip Files="@(ImportCsvInstallFiles)" ZipFileName="$(ToolsFolder)\FuseCP-Import-CsvBulk-$(Version).zip" WorkingDirectory="$(ImportCsvInstall)" />
@@ -1193,7 +1197,7 @@
 		<Exec Command="$(ZipCmd)$(ZipLevel) a &quot;$(ToolsFolder)\FuseCP-dSHeuristics$(ZipExt)&quot; &quot;$(FuseCP-dSHeuristicsInstall)\*&quot;" Condition="Exists('$(FuseCP-dSHeuristicsInstall)')" />
   </Target>
 
-  <Target Name="Deploy" DependsOnTargets="CreateInstallPackages" />
+	<Target Name="Deploy" DependsOnTargets="ZipTools;CreateInstallPackages" />
 	
   <Target Name="uploadwebpi" DependsOnTargets="BuildWebPlatformInstallerFeed">
 		  <FtpUpload Username="$(ftpUsername)" password="$(ftpPassword)" RemoteUri="ftp://$(ftphost)/FuseCPFeed-$(Version).xml" LocalFile="$(DeployFolder)\FuseCPFeed.xml" />

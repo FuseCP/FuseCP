@@ -1,5 +1,5 @@
 Name: fusecp
-Version:2.0.0
+Version:2.0.0.0
 Release: 1%{?dist}
 Summary: This is the FuseCP Server component
 License: Creative Commons Share-alike    

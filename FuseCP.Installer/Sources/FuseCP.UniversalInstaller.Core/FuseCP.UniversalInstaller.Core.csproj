@@ -33,16 +33,6 @@
         <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.EnterpriseServer.Base\FuseCP.EnterpriseServer.Base.csproj" />
         <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.EnterpriseServer.Data\FuseCP.EnterpriseServer.Data.csproj" />
         <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.Base\FuseCP.Providers.Base.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.OS.Unix\FuseCP.Providers.OS.Unix.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.OS.Windows2016\FuseCP.Providers.OS.Windows2016.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.OS.Windows2019\FuseCP.Providers.OS.Windows2019.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.OS.Windows2022\FuseCP.Providers.OS.Windows2022.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.OS.Windows2025\FuseCP.Providers.OS.Windows2025.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.Web.IIs100\FuseCP.Providers.Web.IIs100.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.Web.IIs60\FuseCP.Providers.Web.IIs60.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.Web.IIS70\FuseCP.Providers.Web.IIs70.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.Web.IIs80\FuseCP.Providers.Web.IIs80.csproj" />
-        <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Providers.Web.LetsEncrypt\FuseCP.Providers.Web.LetsEncrypt.csproj" />
         <ProjectReference Include="..\..\..\FuseCP\Sources\FuseCP.Server.Utils\FuseCP.Server.Utils.csproj" />
     </ItemGroup>
     <ItemGroup>

@@ -51,7 +51,8 @@ public class WindowsInstaller : Installer
 	}
 	public override string InstallWebRootPath { get => base.InstallWebRootPath ?? InstallExeRootPath; set => base.InstallWebRootPath = value; }
 	public override string WebsiteLogsPath => InstallExeRootPath ?? "";
-	WinGet WinGet => (WinGet)((IWindowsOperatingSystem)OSInfo.Current).WinGet;
+	Providers.OS.Installer WinGet => ((IWindowsOperatingSystem)OSInfo.Current).WinGet;
+	Shell PowerShellShell => ((IWindowsOperatingSystem)OSInfo.Current).PowerShell;
 
 	public virtual void InstallWinGet()
 	{
@@ -62,7 +63,7 @@ public class WindowsInstaller : Installer
 		{
 			const string Version = "v1.12.350";
 			var tmpFile = Path.GetTempFileName() + ".msixbundle";
-			PowerShell.Standard.ExecScript($@"
+			PowerShellShell.ExecScript($@"
 Invoke-WebRequest -Uri ""https://github.com/microsoft/winget-cli/releases/download/{Version}/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"" -OutFile ""{tmpFile}""
 Add-AppxPackage ""{tmpFile}""");
 			File.Delete(tmpFile);
