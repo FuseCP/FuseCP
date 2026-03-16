@@ -1711,7 +1711,7 @@ namespace FuseCP.EnterpriseServer
 
             // create item instance and fill other properties
             ServiceProviderItem item = (ServiceProviderItem)ObjectUtils.CreateObjectFromDataTable(
-                Type.GetType(itemTypeName), tProps, "PropertyName", "PropertyValue", true);
+                itemType, tProps, "PropertyName", "PropertyValue", true);
 
             // fill item key properties
             item.Id = (int)drItem["ItemID"];
@@ -1736,7 +1736,7 @@ namespace FuseCP.EnterpriseServer
 
 			// create item instance and fill other properties
 			ServiceProviderItem item = (ServiceProviderItem)ObjectUtils.CreateObjectFromDataView(
-				Type.GetType(itemTypeName), dvProps, "PropertyName", "PropertyValue", true);
+                itemType, dvProps, "PropertyName", "PropertyValue", true);
 
 			// fill item key properties
 			item.Id = (int)drItem["ItemID"];

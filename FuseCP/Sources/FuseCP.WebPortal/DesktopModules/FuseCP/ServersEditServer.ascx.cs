@@ -318,6 +318,12 @@ namespace FuseCP.Portal
 
 		protected void btnChangeServerPassword_Click(object sender, EventArgs e)
 		{
+			Page.Validate("ServerPassword");
+			if (!Page.IsValid)
+			{
+				return;
+			}
+
 			try
 			{
 				int result = ES.Services.Servers.UpdateServerConnectionPassword(
@@ -339,6 +345,12 @@ namespace FuseCP.Portal
 
 		protected void btnChangeADPassword_Click(object sender, EventArgs e)
 		{
+			Page.Validate("ADPassword");
+			if (!Page.IsValid)
+			{
+				return;
+			}
+
 			try
 			{
 				int result = ES.Services.Servers.UpdateServerADPassword(

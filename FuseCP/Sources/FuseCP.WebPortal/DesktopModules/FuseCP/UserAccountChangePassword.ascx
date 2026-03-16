@@ -10,6 +10,11 @@
             </div>
         </div>
         <fcp:PasswordControl ID="userPassword" runat="server" />
+        <div class="row mb-3">
+            <div class="col-sm-10 offset-sm-2">
+                <asp:ValidationSummary ID="valSummaryNewPassword" runat="server" ValidationGroup="NewPassword" ShowSummary="true" ShowMessageBox="false" CssClass="text-danger" />
+            </div>
+        </div>
         <div id="trChangePasswordWarning" runat="server" visible="false" class="row mb-0">
             <div class="col-sm-10 offset-sm-2">
                 <asp:Label ID="lblChangePasswordWarning" runat="server" CssClass="fcp-inline-warning">Warning: This will end the current session.</asp:Label>

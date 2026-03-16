@@ -86,6 +86,35 @@ namespace FuseCP.Portal
             set { txtPassword.Text = value; txtConfirmPassword.Text = value; }
         }
 
+        public bool ValidateInput()
+        {
+            ToggleControls();
+
+            valRequirePassword.Validate();
+            valRequireConfirmPassword.Validate();
+            valRequireEqualPassword.Validate();
+
+            if (valCorrectLength.Enabled)
+                valCorrectLength.Validate();
+
+            if (valRequireNumbers.Enabled)
+                valRequireNumbers.Validate();
+
+            if (valRequireUppercase.Enabled)
+                valRequireUppercase.Validate();
+
+            if (valRequireSymbols.Enabled)
+                valRequireSymbols.Validate();
+
+            return valRequirePassword.IsValid
+                && valRequireConfirmPassword.IsValid
+                && valRequireEqualPassword.IsValid
+                && (!valCorrectLength.Enabled || valCorrectLength.IsValid)
+                && (!valRequireNumbers.Enabled || valRequireNumbers.IsValid)
+                && (!valRequireUppercase.Enabled || valRequireUppercase.IsValid)
+                && (!valRequireSymbols.Enabled || valRequireSymbols.IsValid);
+        }
+
         public bool CheckPasswordLength
         {
             get { return (ViewState["CheckPasswordLength"] != null) ? (bool)ViewState["CheckPasswordLength"] : true; }
@@ -100,7 +129,7 @@ namespace FuseCP.Portal
 
         public int MaximumLength
         {
-            get { return (ViewState["MaximumLength"] != null) ? (int)ViewState["MaximumLength"] : 0; }
+            get { return (ViewState["MaximumLength"] != null) ? (int)ViewState["MaximumLength"] : 50; }
             set
             {
                 {
@@ -297,6 +326,14 @@ namespace FuseCP.Portal
             // require default length
             MinimumLength = Math.Max(MIN_PASSWORD_LENGTH, MinimumLength);
 
+            // default max length when policy does not provide one
+            if (MaximumLength < MIN_PASSWORD_LENGTH)
+            {
+                MaximumLength = Math.Max(50, txtPassword.MaxLength);
+                txtPassword.MaxLength = MaximumLength;
+                txtConfirmPassword.MaxLength = MaximumLength;
+            }
+
             // parse and enforce policy
             if (PolicyValue != null)
             {
@@ -309,13 +346,13 @@ namespace FuseCP.Portal
                 {
                     // parse settings
                     string[] parts = PolicyValue.Split(';');
-                    enabled = Utils.ParseBool(parts[0], false);
-                    minLength = Math.Max(Utils.ParseInt(parts[1], 0), MinimumLength);
-                    maxLength = Math.Max(Utils.ParseInt(parts[2], 0), MaximumLength);
-                    MinimumUppercase = Math.Max(Utils.ParseInt(parts[3], 0), MinimumUppercase);
-                    MinimumNumbers = Math.Max(Utils.ParseInt(parts[4], 0), MinimumNumbers);
-                    MinimumSymbols = Math.Max(Utils.ParseInt(parts[5], 0), MinimumSymbols);
-                    notEqualToUsername = Utils.ParseBool(parts[6], false);
+                    enabled = (parts.Length > 0) && Utils.ParseBool(parts[0], false);
+                    minLength = (parts.Length > 1) ? Math.Max(Utils.ParseInt(parts[1], 0), MinimumLength) : MinimumLength;
+                    maxLength = (parts.Length > 2) ? Math.Max(Utils.ParseInt(parts[2], 0), MaximumLength) : MaximumLength;
+                    MinimumUppercase = (parts.Length > 3) ? Math.Max(Utils.ParseInt(parts[3], 0), MinimumUppercase) : MinimumUppercase;
+                    MinimumNumbers = (parts.Length > 4) ? Math.Max(Utils.ParseInt(parts[4], 0), MinimumNumbers) : MinimumNumbers;
+                    MinimumSymbols = (parts.Length > 5) ? Math.Max(Utils.ParseInt(parts[5], 0), MinimumSymbols) : MinimumSymbols;
+                    notEqualToUsername = (parts.Length > 6) && Utils.ParseBool(parts[6], false);
                 }
                 catch { /* skip */ }
 

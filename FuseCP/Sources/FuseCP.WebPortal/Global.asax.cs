@@ -28,6 +28,7 @@ using System.Web.UI;
 using System.Net;
 using System.Net.Http;
 using System.Timers;
+using System.Security.Cryptography;
 using FuseCP.Portal;
 using System.Threading.Tasks;
 
@@ -54,13 +55,32 @@ namespace FuseCP.WebPortal
 					HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
 					if (authCookie != null)
 					{
-						authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-						Context.Items[FormsAuthentication.FormsCookieName] = authTicket;
+						try
+						{
+							authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+							Context.Items[FormsAuthentication.FormsCookieName] = authTicket;
 
-						int index = authTicket.UserData.IndexOf(Environment.NewLine);
+							int index = authTicket.UserData.IndexOf(Environment.NewLine);
 
-						if (index > -1)
-							roleName = authTicket.UserData.Substring(index + Environment.NewLine.Length);
+							if (index > -1)
+								roleName = authTicket.UserData.Substring(index + Environment.NewLine.Length);
+						}
+						catch (CryptographicException)
+						{
+							// Stale/tampered cookie (e.g. machine key rotation): clear and continue as anonymous.
+							PortalUtils.InvalidateAuthCookieSafe();
+							return;
+						}
+						catch (ArgumentException)
+						{
+							PortalUtils.InvalidateAuthCookieSafe();
+							return;
+						}
+						catch
+						{
+							PortalUtils.InvalidateAuthCookieSafe();
+							return;
+						}
 					}
 				}
 

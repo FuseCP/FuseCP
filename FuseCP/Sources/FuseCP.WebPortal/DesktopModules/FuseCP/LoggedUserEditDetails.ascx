@@ -17,10 +17,15 @@
                     </div>
                 </div>
                 <uc2:PasswordControl ID="userPassword" runat="server" ValidationGroup="NewPassword" />
+                <div class="row mb-3">
+                    <div class="col-sm-10 offset-sm-2">
+                        <asp:ValidationSummary ID="valSummaryNewPassword" runat="server" ValidationGroup="NewPassword" ShowSummary="true" ShowMessageBox="false" CssClass="text-danger" />
+                    </div>
+                </div>
                 <div id="rowChangePassword" runat="server" class="row mb-4">
                     <div class="col-sm-10 offset-sm-2">
                         <div class="fcp-form-actions">
-                            <asp:Button id="cmdChangePassword" runat="server" meta:resourcekey="cmdChangePassword" Text="Change Password" CssClass="btn btn-success" OnClick="cmdChangePassword_Click" ValidationGroup="NewPassword"></asp:Button>
+                            <asp:Button id="cmdChangePassword" runat="server" meta:resourcekey="cmdChangePassword" Text="Change Password" CssClass="btn btn-success" OnClick="cmdChangePassword_Click" CausesValidation="true" ValidationGroup="NewPassword"></asp:Button>
                             <asp:Label ID="lblChangePasswordWarning" runat="server" CssClass="fcp-inline-warning">Warning: This will end the current session.</asp:Label>
                         </div>
                     </div>

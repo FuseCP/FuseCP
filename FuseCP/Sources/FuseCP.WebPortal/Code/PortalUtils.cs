@@ -300,6 +300,22 @@ public class PortalUtils
 		HttpContext.Current.Response.Cookies.Add(rSessionCookie);
 	}
 
+	public static void InvalidateAuthCookieSafe()
+	{
+		try
+		{
+			FormsAuthentication.SignOut();
+
+			HttpCookie rFormsCookie = new HttpCookie(FormsAuthentication.FormsCookieName, "");
+			rFormsCookie.Expires = DateTime.Now.AddYears(-1);
+			HttpContext.Current.Response.Cookies.Add(rFormsCookie);
+		}
+		catch
+		{
+			// Never let auth-cookie cleanup fail the request.
+		}
+	}
+
 	public static MenuItem GetSpaceMenuItem(string menuItemKey)
 	{
 		MenuItem item = new MenuItem();
@@ -331,8 +347,25 @@ public class PortalUtils
 				//
 				if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
 				{
-					authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-					HttpContext.Current.Items[FormsAuthentication.FormsCookieName] = authTicket;
+					try
+					{
+						authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+						HttpContext.Current.Items[FormsAuthentication.FormsCookieName] = authTicket;
+					}
+					catch (CryptographicException)
+					{
+						// Stale/tampered cookie (e.g. machine key rotation): clear and continue as anonymous.
+						UserSignOutOnly();
+					}
+					catch (ArgumentException)
+					{
+						// Malformed cookie payload should not break the request pipeline.
+						InvalidateAuthCookieSafe();
+					}
+					catch
+					{
+						InvalidateAuthCookieSafe();
+					}
 				}
 			}
 
@@ -620,10 +653,30 @@ public class PortalUtils
 		{
 			UserInfo user = usersService.GetUserById(userId);
 
+			// Resolve currently authenticated user by ticket name to avoid stale/mismatched panel user ids.
+			if (AuthTicket != null && !String.IsNullOrEmpty(AuthTicket.Name))
+			{
+				UserInfo authUser = usersService.GetUserByUsername(AuthTicket.Name);
+				if (authUser != null && authUser.UserId > 0 && authUser.UserId != userId)
+				{
+					userId = authUser.UserId;
+					user = authUser;
+				}
+			}
+
 			// change FuseCP account password
 			int result = usersService.ChangeUserPassword(userId, newPassword);
 			if (result < 0)
 				return result;
+
+			// Verify the new password can be used by the authentication service before reporting success.
+			esAuthentication authService = new esAuthentication();
+			ConfigureEnterpriseServerProxy(authService, false);
+			string ipAddress = HttpContext.Current?.Request?.UserHostAddress;
+			string passwordHash = SHA256(newPassword);
+			UserInfo verifiedUser = authService.GetUserByUsernamePassword(user.Username, passwordHash, ipAddress);
+			if (verifiedUser == null)
+				return BusinessErrorCodes.ERROR_USER_WRONG_PASSWORD;
 
 			// change auth cookie
 			if (String.Compare(user.Username, AuthTicket.Name, true) == 0)

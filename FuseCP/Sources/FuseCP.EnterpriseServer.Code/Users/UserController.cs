@@ -534,7 +534,18 @@ namespace FuseCP.EnterpriseServer
 
 			if (user != null)
 			{
-				user.Password = CryptoUtils.Decrypt(user.Password);
+				try
+				{
+					user.Password = CryptoUtils.Decrypt(user.Password);
+				}
+				catch (System.Security.Cryptography.CryptographicException)
+				{
+					// Keep legacy/hash/plain values as-is when decrypt is not applicable.
+				}
+				catch (FormatException)
+				{
+					// Non-cipher payloads can appear in upgraded databases.
+				}
 			}
 
 			return user;
