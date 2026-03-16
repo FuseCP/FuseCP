@@ -26,8 +26,11 @@ including:
 * Credentials, keys, connection strings, and tokens
 * Customer or tenant data
 * Internal infrastructure details not required for the task
+* Environment-specific `Web.config` secrets (for example production/local DB credentials, machineKey values, and private hostnames/endpoints)
 
 Use sanitized examples whenever possible.
+
+When `Web.config` changes are required, commit only structural/runtime-safe updates (for example module wiring, handlers, non-secret defaults), use a sanitized commit-safe file for source control, and restore secret-bearing local values after commit so secrets remain local-only.
 
 ## 4. Code Quality and Testing
 

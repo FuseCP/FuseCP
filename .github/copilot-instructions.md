@@ -32,6 +32,8 @@ These instructions guide AI coding assistants working in this repository.
 * Never expose secrets, credentials, tokens, or private tenant data.
 * Avoid introducing insecure defaults.
 * Flag security-sensitive changes for maintainer review.
+* **Web.config policy**: Commit only required structural/runtime fixes (for example ANCM wiring, handler registration, section definitions, non-secret defaults). Never commit environment-specific secrets in `Web.config` (including real connection strings, usernames/passwords, machine keys, and private endpoints).
+* **When `Web.config` needs functional fixes**: create a sanitized commit-safe variant for git, then restore local secret-bearing values after commit and keep those local-only values out of source control (for example via local git index flags such as `skip-worktree` where appropriate).
 
 ## Testing and Verification
 
