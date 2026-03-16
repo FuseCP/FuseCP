@@ -44,11 +44,12 @@
                 <asp:Panel ID="pnlEditSpace" runat="server" DefaultButton="cmdSave" Visible="false" CssClass="fcp-breadcrumb-edit-panel">
                     <div class="d-flex flex-wrap align-items-center gap-2">
                         <asp:TextBox ID="txtName" runat="server" CssClass="form-control fcp-breadcrumb-name-input"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="valRequireName" runat="server" ControlToValidate="txtName"
+                            ErrorMessage="*" Display="Dynamic" ValidationGroup="SpaceName"></asp:RequiredFieldValidator>
                         <asp:LinkButton ID="cmdSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClick="cmdSave_Click" ValidationGroup="SpaceName" />
                         <asp:LinkButton ID="cmdCancel" runat="server" Text="Cancel" CssClass="btn btn-outline-secondary" OnClick="cmdCancel_Click" CausesValidation="false" />
                     </div>
-                </asp:Panel><asp:RequiredFieldValidator ID="valRequireName" runat="server" ControlToValidate="txtName"
-			        ErrorMessage="*" Display="Dynamic" ValidationGroup="SpaceName"></asp:RequiredFieldValidator></ContentTemplate>
+                </asp:Panel></ContentTemplate>
 		</asp:UpdatePanel>
     </div>
 </div>

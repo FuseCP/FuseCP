@@ -41,13 +41,21 @@ namespace FuseCP.Portal.SkinControls
             // load settings
             if (Page.User.Identity.IsAuthenticated)
             {
-                UserSettings settings = UsersHelper.GetCachedUserSettings(PanelSecurity.EffectiveUserId,
-                                                                          UserSettings.FuseCP_POLICY);
-                if (settings != null)
+                try
                 {
-                    string logoImageURL = settings["LogoImageURL"];
-                    if (!String.IsNullOrEmpty(logoImageURL))
-                        imgLogo.ImageUrl = logoImageURL;
+                    UserSettings settings = UsersHelper.GetCachedUserSettings(PanelSecurity.EffectiveUserId,
+                                                                              UserSettings.FuseCP_POLICY);
+                    if (settings != null)
+                    {
+                        string logoImageURL = settings["LogoImageURL"];
+                        if (!String.IsNullOrEmpty(logoImageURL))
+                            imgLogo.ImageUrl = logoImageURL;
+                    }
+                }
+                catch
+                {
+                    // Auth cookie may be stale after a password change or session expiry;
+                    // fall back to the default logo rather than crashing the page.
                 }
             }
         }

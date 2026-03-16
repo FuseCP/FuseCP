@@ -397,6 +397,7 @@ namespace FuseCP.Portal
 
         private void ChangeUserPassword()
         {
+            Page.Validate("NewPassword");
             if (!Page.IsValid)
                 return;
 
@@ -413,6 +414,17 @@ namespace FuseCP.Portal
                 pnlEdit.Visible = false;
                 string loginClientUrl = Page.ResolveClientUrl(PortalUtils.LoginRedirectUrl);
                 ShowSuccessMessage(Utils.ModuleName, "LOGGED_USER_CHANGE_PASSWORD", loginClientUrl, (redirectTimeout/1000).ToString());
+                // Clear auth cookie explicitly using the same attributes as SetAuthTicket
+                // to avoid leaving a stale cookie when FormsAuthentication.SignOut() uses
+                // different cookie path/domain defaults.
+                HttpCookie expireCookie = new HttpCookie(FormsAuthentication.FormsCookieName);
+                expireCookie.Domain = FormsAuthentication.CookieDomain;
+                expireCookie.Secure = FormsAuthentication.RequireSSL;
+                expireCookie.Path = FormsAuthentication.FormsCookiePath;
+                expireCookie.HttpOnly = true;
+                expireCookie.Expires = DateTime.Now.AddDays(-1);
+                expireCookie.Value = "";
+                Response.Cookies.Set(expireCookie);
                 FormsAuthentication.SignOut();
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "RedirectToLogin", String.Format("setTimeout(\"window.location='{0}'\",{1});", loginClientUrl, redirectTimeout), true); 
             }
