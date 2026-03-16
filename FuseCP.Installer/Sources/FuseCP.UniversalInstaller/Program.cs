@@ -45,8 +45,17 @@ public class Program
 	public static CancellationTokenSource CancelWaitCursor = new CancellationTokenSource();
 	public static void ShowWaitCursor()
 	{
-		Console.CursorVisible = false;
-		Console.Clear();
+		try
+		{
+			Console.CursorVisible = false;
+			Console.Clear();
+		}
+		catch
+		{
+			// No console available (e.g., running as GUI app), skip visual feedback
+			return;
+		}
+
 		var write = (string txt) =>
 		{
 			if (CancelWaitCursor.Token.IsCancellationRequested || File.Exists(CancelFile)) throw new Exception();
