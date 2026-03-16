@@ -554,10 +554,11 @@
         <!-- build MSI package -->
 		<Error Condition="'$(BuildInstallerMsi)' == 'true' and !Exists('$(DevEnv)')" Text="BuildInstallerMsi=true but devenv.com was not found at '$(DevEnv)'. Install full Visual Studio with the Installer Projects extension, or set /p:BuildInstallerMsi=false." />
 		<Message Importance="normal" Condition="'$(BuildInstallerMsi)' != 'true'" Text="Skipping MSI package build (.vdproj). Full Visual Studio + Installer Projects extension is required. Set /p:BuildInstallerMsi=true to force MSI packaging." />
-		<Exec Condition="'$(BuildInstallerMsi)' == 'true'" Command="&quot;$(DevEnv)&quot; &quot;$(InstallerProjectRoot)FuseCP.UniversalInstaller.Msi.sln&quot; /build &quot;$(BuildConfiguration)|$(Platform)&quot;" />
+		<Exec Condition="'$(BuildInstallerMsi)' == 'true'" Command="&quot;$(DevEnv)&quot; &quot;$(InstallerProjectRoot)FuseCP.Installer.sln&quot; /build &quot;$(BuildConfiguration)|$(Platform)&quot; /project &quot;FuseCP.UniversalInstaller.Msi&quot;" />
 		<ItemGroup Condition="'$(BuildInstallerMsi)' == 'true'">
 			<InstallerMsi Include="$(InstallerProjectRoot)\FuseCP.UniversalInstaller.Msi\$(BuildConfiguration)\*.msi" />
 		</ItemGroup>
+		<Error Condition="'$(BuildInstallerMsi)' == 'true' and '@(InstallerMsi)' == ''" Text="BuildInstallerMsi=true but no MSI was produced under '$(InstallerProjectRoot)\FuseCP.UniversalInstaller.Msi\$(BuildConfiguration)'. Ensure the Visual Studio Installer Projects extension is installed and able to load FuseCP.UniversalInstaller.Msi.vdproj." />
 		<Copy Condition="'$(BuildInstallerMsi)' == 'true'" SourceFiles="@(InstallerMsi)" DestinationFolder="$(BuildFolder)" />
 
 	</Target>
@@ -1120,6 +1121,7 @@
 			<InstallerMsiFile Include="$(BuildFolder)\*.msi" />
 		</ItemGroup>
 		
+		<Copy SourceFiles="@(InstallerMsiFile)" DestinationFolder="$(DeployFolder)" />
 		<Copy SourceFiles="@(InstallerMsiFile)" DestinationFiles="$(DeployFolder)\FuseCP.Installer-$(Version).msi" />
 	</Target>
 

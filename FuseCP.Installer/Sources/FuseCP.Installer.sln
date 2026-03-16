@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuseCP.UniversalInstaller.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuseCP.UniversalInstaller.Bootstrapper", "FuseCP.UniversalInstaller.Bootstrapper\FuseCP.UniversalInstaller.Bootstrapper.csproj", "{6850A41F-1819-20D2-B91B-CF080BF59959}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "FuseCP.UniversalInstaller.Msi", "FuseCP.UniversalInstaller.Msi\FuseCP.UniversalInstaller.Msi.vdproj", "{0119D928-758E-46CC-9DD8-B90B7DB027E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -387,6 +389,18 @@ Global
 		{6850A41F-1819-20D2-B91B-CF080BF59959}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6850A41F-1819-20D2-B91B-CF080BF59959}.Release|x86.ActiveCfg = Release|Any CPU
 		{6850A41F-1819-20D2-B91B-CF080BF59959}.Release|x86.Build.0 = Release|Any CPU
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Debug|Any CPU.ActiveCfg = Debug
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Debug|Any CPU.Build.0 = Debug
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Debug|Mixed Platforms.Build.0 = Debug
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Debug|x86.ActiveCfg = Debug
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Debug|x86.Build.0 = Debug
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Release|Any CPU.ActiveCfg = Release
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Release|Any CPU.Build.0 = Release
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Release|Mixed Platforms.ActiveCfg = Release
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Release|Mixed Platforms.Build.0 = Release
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Release|x86.ActiveCfg = Release
+		{0119D928-758E-46CC-9DD8-B90B7DB027E5}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

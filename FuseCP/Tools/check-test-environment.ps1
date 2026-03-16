@@ -72,6 +72,45 @@ function Test-WixCaTargetsAvailable {
     return $null
 }
 
+function Test-LegacyMsiExtensionAvailable {
+    param([string]$DevEnvPath)
+
+    if ([string]::IsNullOrWhiteSpace($DevEnvPath) -or -not (Test-Path $DevEnvPath)) {
+        return $null
+    }
+
+    $ideRoot = Split-Path -Parent $DevEnvPath
+    $vsRoot = Split-Path -Parent (Split-Path -Parent $ideRoot)
+
+    $candidatePaths = @(
+        (Join-Path $vsRoot "Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild\DisableOutOfProcBuild.exe"),
+        (Join-Path $vsRoot "Common7\IDE\CommonExtensions\Microsoft\VSI\Microsoft.VisualStudio.Deployment.dll"),
+        (Join-Path $vsRoot "Common7\IDE\Extensions\Microsoft\Visual Studio Installer Projects\DisableOutOfProcBuild.exe"),
+        (Join-Path $vsRoot "Common7\IDE\Extensions\Microsoft\Visual Studio Installer Projects\Microsoft.VisualStudio.Deployment.dll")
+    )
+
+    foreach ($path in $candidatePaths) {
+        if (Test-Path $path) {
+            return $path
+        }
+    }
+
+    $userExtensionRoot = Join-Path $env:LOCALAPPDATA "Microsoft\VisualStudio"
+    if (Test-Path $userExtensionRoot) {
+        $userMarker = Get-ChildItem $userExtensionRoot -Recurse -ErrorAction SilentlyContinue |
+            Where-Object {
+                $_.Name -in @("DisableOutOfProcBuild.exe", "Microsoft.VisualStudio.Deployment.dll")
+            } |
+            Select-Object -First 1 -ExpandProperty FullName
+
+        if ($userMarker) {
+            return $userMarker
+        }
+    }
+
+    return $null
+}
+
 function Test-IsAdministrator {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = New-Object Security.Principal.WindowsPrincipal($identity)
@@ -280,20 +319,29 @@ if ($needPackage) {
         "C:\Program Files\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.com"
     )
     $hasDevEnv = $null -ne $devEnvPath
+    $legacyMsiExtensionPath = Test-LegacyMsiExtensionAvailable -DevEnvPath $devEnvPath
+    $hasLegacyMsiExtension = $null -ne $legacyMsiExtensionPath
+    $hasLegacyMsiToolchain = $hasDevEnv -and $hasLegacyMsiExtension
 
     if ($RequireLegacyMsi) {
         $details = "Install full Visual Studio + Installer Projects extension for .vdproj MSI build"
-        if ($hasDevEnv) {
-            $details = "devenv.com found at $devEnvPath (ensure Installer Projects extension is installed)"
+        if ($hasLegacyMsiToolchain) {
+            $details = "devenv.com found at $devEnvPath; Installer Projects marker found at $legacyMsiExtensionPath"
         }
-        $results += Add-Result -Name "Legacy MSI toolchain (.vdproj)" -Passed $hasDevEnv -Details $details
+        elseif ($hasDevEnv) {
+            $details = "devenv.com found at $devEnvPath, but no Installer Projects extension marker was found. .vdproj builds may silently no-op until that extension is installed."
+        }
+        $results += Add-Result -Name "Legacy MSI toolchain (.vdproj)" -Passed $hasLegacyMsiToolchain -Details $details
     }
     else {
         $details = "Optional: full Visual Studio + Installer Projects extension needed only when forcing /p:BuildInstallerMsi=true"
-        if ($hasDevEnv) {
-            $details = "Optional tooling present at $devEnvPath"
+        if ($hasLegacyMsiToolchain) {
+            $details = "Optional tooling present at $devEnvPath; Installer Projects marker found at $legacyMsiExtensionPath"
         }
-        $results += Add-Result -Name "Legacy MSI toolchain (.vdproj, optional)" -Passed $hasDevEnv -Details $details -Level "warning"
+        elseif ($hasDevEnv) {
+            $details = "devenv.com found at $devEnvPath, but no Installer Projects extension marker was found"
+        }
+        $results += Add-Result -Name "Legacy MSI toolchain (.vdproj, optional)" -Passed $hasLegacyMsiToolchain -Details $details -Level "warning"
     }
 }
 
