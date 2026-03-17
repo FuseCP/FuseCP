@@ -218,6 +218,7 @@ namespace FuseCP.Web.Services
 				builder.Services.Configure<IISServerOptions>(options =>
 				{
 					options.AllowSynchronousIO = true;
+					options.MaxRequestBodySize = MaxReceivedMessageSize;
 				});
 				builder.WebHost.UseIIS();
 			}
