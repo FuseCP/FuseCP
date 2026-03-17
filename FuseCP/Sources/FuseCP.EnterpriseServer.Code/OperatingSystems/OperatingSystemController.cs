@@ -287,7 +287,15 @@ namespace FuseCP.EnterpriseServer
         private Server.Client.OperatingSystem GetServerService(int serverId)
         {
             Server.Client.OperatingSystem server = new Server.Client.OperatingSystem();
-            ServiceProviderProxy.ServerInit(server, serverId);
+            // Look up the OS service registered on this server so ProviderType is included
+            // in the SOAP header. Without it the FuseCP.Server falls back to OSInfo.Current
+            // which requires the provider assembly to already be in the AppDomain (fragile
+            // under .NET Core assembly loading rules).
+            var osServices = ServerController.GetServicesByServerIdGroupName(serverId, ResourceGroups.Os);
+            if (osServices != null && osServices.Count > 0)
+                ServiceProviderProxy.Init(server, osServices[0].ServiceId);
+            else
+                ServiceProviderProxy.ServerInit(server, serverId);
             return server;
         }
 

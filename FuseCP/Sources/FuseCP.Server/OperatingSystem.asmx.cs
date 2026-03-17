@@ -53,7 +53,15 @@ namespace FuseCP.Server
 		}
 		private IOperatingSystem OSProvider
 		{
-			get { return (IOperatingSystem)Provider; }
+			get
+			{
+				var p = Provider as IOperatingSystem;
+				if (p == null)
+					throw new InvalidOperationException(
+						$"No OS provider is available for this server. " +
+						$"Ensure a compatible OS provider is deployed and the provider type '{ProviderSettings.ProviderType}' can be resolved.");
+				return p;
+			}
 		}
 		private IWindowsOperatingSystem WinProvider
 		{

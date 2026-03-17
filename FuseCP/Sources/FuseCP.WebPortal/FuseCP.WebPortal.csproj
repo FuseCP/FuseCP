@@ -189,6 +189,19 @@
         <Message Text="Copied Core.Web.config" Importance="high" />
     </Target>
 
+    <Target Name="EnsureRuntimeConfigPresent" AfterTargets="Build">
+        <PropertyGroup>
+            <RuntimeConfigFile>$(OutputPath)$(AssemblyName).runtimeconfig.json</RuntimeConfigFile>
+            <RuntimeConfigIntermediate>$(IntermediateOutputPath)$(AssemblyName).runtimeconfig.json</RuntimeConfigIntermediate>
+        </PropertyGroup>
+        <Copy SourceFiles="$(RuntimeConfigIntermediate)"
+              DestinationFiles="$(RuntimeConfigFile)"
+              Condition="!Exists('$(RuntimeConfigFile)') AND Exists('$(RuntimeConfigIntermediate)')"
+              SkipUnchangedFiles="true" />
+        <Error Text="Missing runtimeconfig file: $(RuntimeConfigFile)."
+               Condition="!Exists('$(RuntimeConfigFile)')" />
+    </Target>
+
     <Target Name="DeleteUnusedDlls" AfterTargets="Build">
 
         <!-- move lazy loaded assemblies to bin\Code and delete unused assemblies in bin -->
