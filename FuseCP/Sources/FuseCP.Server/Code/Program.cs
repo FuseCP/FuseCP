@@ -81,6 +81,8 @@ namespace FuseCP.Server
 			var baseDir = AppContext.BaseDirectory;
 			yield return Path.Combine(baseDir, "Providers");
 			yield return Path.GetFullPath(Path.Combine(baseDir, "..", "bin", "Providers"));
+			yield return Path.Combine(baseDir, "netstandard");
+			yield return Path.GetFullPath(Path.Combine(baseDir, "..", "bin", "netstandard"));
 		}
 	}
 }
