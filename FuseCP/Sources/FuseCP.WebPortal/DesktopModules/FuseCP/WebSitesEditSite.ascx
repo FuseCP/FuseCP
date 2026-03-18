@@ -26,12 +26,16 @@
 <script type="text/javascript" src="/DesktopModules/FuseCP/Scripts/websites-edit-site.js"></script>
 <asp:Panel ID="WDeployBuildPublishingProfileWizardPanel" runat="server" CssClass="PopupContainer" DefaultButton="PubProfileWizardOkButton" Style="display: none;">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-list"></i>
+        <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-list"></i>
                 <fcp:PopupHeader runat="server" meta:resourcekey="WDeployBuildPublishingProfileWizard" />
             </h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
         </div>
-        <div class="widget-content Popup">
             <asp:UpdatePanel runat="server" ID="WDeployPubProfilePanel" UpdateMode="Conditional" ChildrenAsTriggers="true">
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="MyDatabaseList" EventName="SelectedIndexChanged" />

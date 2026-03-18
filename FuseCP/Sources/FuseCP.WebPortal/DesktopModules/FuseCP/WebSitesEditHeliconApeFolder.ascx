@@ -54,10 +54,14 @@
 
 <asp:Panel ID="DebuggingPageLinkPanel" runat="server" CssClass="PopupContainer" style="display:none" DefaultButton="btnCancelDebuggingPageLinkPanel">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-list"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblDebuggingPageLink" Text="Debugging Page Link" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-list"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblDebuggingPageLink" Text="Debugging Page Link" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="LabelClickLink" runat="server" meta:resourcekey="lblCLickLink" Text="Click this link to open debugging page"></asp:Label>:
                 <br/>

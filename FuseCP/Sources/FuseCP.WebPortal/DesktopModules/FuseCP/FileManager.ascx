@@ -58,10 +58,14 @@
 
 <asp:Panel ID="UploadFilePanel" runat="server" CssClass="PopupContainer" style="display:none" DefaultButton="btnUpload">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-upload"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblUploadFile" Text="Upload File" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-upload"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblUploadFile" Text="Upload File" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:FileUpload ID="fileUpload1" runat="server" Width="400px" />
 				<asp:FileUpload ID="fileUpload2" runat="server" Width="400px" />
@@ -83,10 +87,14 @@
 
 <asp:Panel ID="CopyFilesPanel" runat="server" CssClass="PopupContainer" style="display:none" DefaultButton="btnCopy">
      <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-files"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblCopySelectedFiles" Text="Copy Selected Files" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-files"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblCopySelectedFiles" Text="Copy Selected Files" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblDestinationFolder1" runat="server" meta:resourcekey="lblDestinationFolder" Text="Destination Folder:"></asp:Label>
 				<uc1:FileLookup ID="copyDestination" runat="server" Width="400px" DropShadow="False" ValidationGroup="CopyFiles" />
@@ -105,10 +113,14 @@
 
 <asp:Panel ID="MoveFilesPanel" runat="server" CssClass="PopupContainer" style="display:none" DefaultButton="btnMove">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-clipboard"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblMoveSelectedFiles" Text="Move Selected Files" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-clipboard"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblMoveSelectedFiles" Text="Move Selected Files" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblDestinationFolder2" runat="server" meta:resourcekey="lblDestinationFolder" Text="Destination Folder:"></asp:Label>
 				<uc1:FileLookup ID="moveDestination" runat="server" Width="400px" DropShadow="False" ValidationGroup="MoveFiles" />
@@ -128,10 +140,14 @@
 
 <asp:Panel ID="CreateFilePanel" runat="server" CssClass="PopupContainer mpeTarget" style="display:none" DefaultButton="btnCreateFile">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-file-earmark-code"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblCreateFile" Text="Create Text File" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-file-earmark-code"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblCreateFile" Text="Create Text File" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblFileName" runat="server" meta:resourcekey="lblFileName" Text="File Name:"></asp:Label>
 				<uc2:FileNameControl ID="txtFileName" runat="server" ValidationGroup="NewFileName" Width="400px" />
@@ -155,10 +171,14 @@
     
 <asp:Panel ID="CreateFolderPanel" runat="server" CssClass="PopupContainer" style="display:none" DefaultButton="btnCreateFolder">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-folder"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblCreateFolder" Text="Create Folder" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-folder"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblCreateFolder" Text="Create Folder" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblFolderName" runat="server" meta:resourcekey="lblFolderName" Text="Folder Name:"></asp:Label>
 				<uc2:FileNameControl ID="txtFolderName" runat="server" ValidationGroup="NewFolderName" Width="400px" />
@@ -177,10 +197,14 @@
 
 <asp:Panel ID="ZipFilesPanel" runat="server" CssClass="PopupContainer" style="display:none" DefaultButton="btnZip">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-file-earmark-zip"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblZipFiles" Text="Zip Selected Files" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-file-earmark-zip"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblZipFiles" Text="Zip Selected Files" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblZIPArchiveName" runat="server" meta:resourcekey="lblZIPArchiveName" Text="ZIP Archive Name:"></asp:Label>
 				<uc2:FileNameControl ID="txtZipName" runat="server" ValidationGroup="ZipName" Width="400px" />
@@ -199,10 +223,14 @@
 
 <asp:Panel ID="CreateDatabasePanel" runat="server" CssClass="PopupContainer" style="display:none" DefaultButton="btnCreateDatabase">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-database"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblCreateAccessDatabase" Text="Create Access Database" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-database"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblCreateAccessDatabase" Text="Create Access Database" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblDatabaseName" runat="server" meta:resourcekey="lblDatabaseName" Text="Database Name:"></asp:Label>
 				<uc2:FileNameControl ID="txtDatabaseName" runat="server" ValidationGroup="DatabaseName" Width="400px" />
@@ -222,10 +250,14 @@
 
 <asp:Panel ID="DeleteFilesPanel" runat="server" CssClass="PopupContainer" style="display:none">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-trash"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblDeleteFiles" Text="Delete Selected Files" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-trash"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblDeleteFiles" Text="Delete Selected Files" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblDeleteConfirmation" runat="server" meta:resourcekey="lblDeleteConfirmation" Text="Do you really want to delete selected files and folders?"></asp:Label>
 			</div>
@@ -341,10 +373,14 @@
 
 <asp:Panel ID="EditFilePanel" runat="server" CssClass="PopupContainer fileeditor" style="display:none" DefaultButton="btnSaveEditFile">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-pencil"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblEditFile" Text="Edit File" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-pencil"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblEditFile" Text="Edit File" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblFileEncoding" runat="server" meta:resourcekey="lblFileEncoding" Text="Encoding:"></asp:Label><br />
 				<asp:DropDownList ID="ddlFileEncodings" runat="server" AutoPostBack="true" CausesValidation="false" OnSelectedIndexChanged="ddlFileEncodings_SelectedIndexChanged"></asp:DropDownList>
@@ -368,10 +404,14 @@
     
 <asp:Panel ID="RenameFilePanel" runat="server" CssClass="PopupContainer" style="display:none" DefaultButton="btnRename">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-pencil"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblRenameFileFolder" Text="Rename File" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-pencil"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblRenameFileFolder" Text="Rename File" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="FormRow">
 				<asp:Label ID="lblNewName" runat="server" meta:resourcekey="lblNewName" Text="New Name:"></asp:Label>
 				<uc2:FileNameControl ID="txtRenameFile" runat="server" ValidationGroup="RenameFile" Width="400px" />
@@ -391,10 +431,14 @@
 
 <asp:Panel ID="PermissionsWindowsFilePanel" runat="server" CssClass="PopupContainer" style="display:none">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-people"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblPermissions" Text="File/Folder Permissions" /></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-people"></i> <fcp:PopupHeader runat="server" meta:resourcekey="lblPermissions" Text="File/Folder Permissions" /></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find(this).get_element().closest('.PopupContainer').style.display='none'; return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
 			<div class="fcp-log-scroll-top">
                 <asp:GridView id="gvFilePermissions" runat="server" AutoGenerateColumns="False"
                         CssSelectorClass="NormalGridView" ShowHeader="false">
