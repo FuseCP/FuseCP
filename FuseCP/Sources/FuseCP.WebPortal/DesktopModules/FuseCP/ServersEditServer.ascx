@@ -261,13 +261,6 @@
                             </asp:HyperLink>
 
                         </li>
-                        <asp:Panel ID="pnPlatformPanel" runat="server">
-                            <li class="list-group-item">
-                                <asp:HyperLink ID="lnkPlatformInstaller" runat="server"
-                                    meta:resourcekey="lnkPlatformInstaller" Text="Web Platform Installer">
-                                </asp:HyperLink>
-                            </li>
-                        </asp:Panel>
                         <li class="list-group-item">
                             <asp:HyperLink ID="lnkServerReboot" runat="server"
                                 meta:resourcekey="lnkServerReboot" Text="Server Reboot">

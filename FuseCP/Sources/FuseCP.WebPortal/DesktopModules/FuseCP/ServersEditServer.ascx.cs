@@ -125,23 +125,37 @@ namespace FuseCP.Portal
 		{
 			try
 			{
-				lnkTerminalSessions.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_termservices");
+				if (lnkTerminalSessions != null)
+					lnkTerminalSessions.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_termservices");
 
-				lnkWindowsServices.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_winservices");
-				lnkUnixServices.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_winservices");
-				lnkWindowsProcesses.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_processes");
-				lnkEventViewer.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_eventviewer");
-				lnkPlatformInstaller.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_platforminstaller");
-				lnkServerReboot.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_reboot");
+				if (lnkWindowsServices != null)
+					lnkWindowsServices.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_winservices");
+				if (lnkUnixServices != null)
+					lnkUnixServices.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_winservices");
+				if (lnkWindowsProcesses != null)
+					lnkWindowsProcesses.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_processes");
+				if (lnkEventViewer != null)
+					lnkEventViewer.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_eventviewer");
+				if (lnkServerReboot != null)
+				{
+					lnkServerReboot.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "edit_reboot");
+					lnkServerReboot.Visible = true;
+				}
 
-				lnkBackup.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "backup");
-				lnkRestore.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "restore");
+				if (lnkBackup != null)
+					lnkBackup.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "backup");
+				if (lnkRestore != null)
+					lnkRestore.NavigateUrl = EditUrl("ServerID", ServerId.ToString(), "restore");
 
-				lnkBackup.Visible = lnkRestore.Visible = PortalUtils.PageExists("Backup");
+				bool hasBackupPage = PortalUtils.PageExists("Backup");
+				if (lnkBackup != null) lnkBackup.Visible = hasBackupPage;
+				if (lnkRestore != null) lnkRestore.Visible = hasBackupPage;
 
 				var serverInfo = await ServerInfo();
-				pnPlatformPanel.Visible = pnTerminalPanel.Visible = pnWindowsServices.Visible = serverInfo.OSPlatform == OSPlatform.Windows;
-				pnUnixServices.Visible = serverInfo.OSPlatform != OSPlatform.Windows;
+				bool isWindows = serverInfo.OSPlatform == OSPlatform.Windows;
+				if (pnTerminalPanel != null) pnTerminalPanel.Visible = isWindows;
+				if (pnWindowsServices != null) pnWindowsServices.Visible = isWindows;
+				if (pnUnixServices != null) pnUnixServices.Visible = !isWindows;
 			}
 			catch (Exception)
 			{
