@@ -385,4 +385,15 @@ namespace FuseCP.EnterpriseServer.Security
             }
         }
     }
-}
+            catch (FormatException)
+
+
+
+            catch (OverflowException)
+            {
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
