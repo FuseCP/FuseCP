@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
+using System.Diagnostics;
+using System.Text;
 using System.Web.UI.WebControls;
 using FuseCP.Providers.HostedSolution;
 using FuseCP.EnterpriseServer;
@@ -95,13 +97,17 @@ namespace FuseCP.Portal.ExchangeServer
 
         private void BindSettings()
         {
+            string currentStep = "mailbox general settings";
+
             try
             {
                 // get settings
+                currentStep = "mailbox general settings";
                 ExchangeMailbox mailbox = ES.Services.ExchangeServer.GetMailboxGeneralSettings(PanelRequest.ItemID,
                     PanelRequest.AccountID);
 
                 //get statistics
+                currentStep = "mailbox statistics";
                 ExchangeMailboxStatistics stats = ES.Services.ExchangeServer.GetMailboxStatistics(PanelRequest.ItemID,
                     PanelRequest.AccountID);
 
@@ -117,9 +123,11 @@ namespace FuseCP.Portal.ExchangeServer
                 lblExchangeGuid.Text = string.IsNullOrEmpty(mailbox.ExchangeGuid) ? "<>" : mailbox.ExchangeGuid ;
 
                 // get account meta
+                currentStep = "mailbox account metadata";
                 ExchangeAccount account = ES.Services.ExchangeServer.GetAccount(PanelRequest.ItemID, PanelRequest.AccountID);
 
                 // get mailbox plan
+                currentStep = "mailbox plan";
                 ExchangeMailboxPlan plan = ES.Services.ExchangeServer.GetExchangeMailboxPlan(PanelRequest.ItemID, account.MailboxPlanId);
 
                 chkPmmAllowed.Checked = (account.MailboxManagerActions & MailboxManagerActions.GeneralSettings) > 0;
@@ -152,6 +160,7 @@ namespace FuseCP.Portal.ExchangeServer
                 trCapacity.Visible = resourceMailbox;
                 if (resourceMailbox)
                 {
+                    currentStep = "resource mailbox settings";
                     ExchangeResourceMailboxSettings resourceSettings = ES.Services.ExchangeServer.GetResourceMailboxSettings(PanelRequest.ItemID, PanelRequest.AccountID);
 
                     txtCapacity.Text = resourceSettings.ResourceCapacity >= 0 ? resourceSettings.ResourceCapacity.ToString() : "";
@@ -197,6 +206,7 @@ namespace FuseCP.Portal.ExchangeServer
 
                 if (Utils.CheckQouta(Quotas.EXCHANGE2007_DISCLAIMERSALLOWED, Cntx))
                 {
+                    currentStep = "mailbox disclaimer";
                     int disclaimerId = ES.Services.ExchangeServer.GetExchangeAccountDisclaimerId(PanelRequest.ItemID, PanelRequest.AccountID);
                     ddDisclaimer.SelectedValue = disclaimerId.ToString();
                 }
@@ -210,6 +220,7 @@ namespace FuseCP.Portal.ExchangeServer
 
                 if (account.LevelId > 0 && Cntx.Groups.ContainsKey(ResourceGroups.ServiceLevels))
                 {
+                    currentStep = "support service level";
                     FuseCP.EnterpriseServer.Base.HostedSolution.ServiceLevel serviceLevel = ES.Services.Organizations.GetSupportServiceLevel(account.LevelId);
 
                     litServiceLevel.Visible = true;
@@ -233,8 +244,28 @@ namespace FuseCP.Portal.ExchangeServer
             }
             catch (Exception ex)
             {
-                messageBox.ShowErrorMessage("EXCHANGE_GET_MAILBOX_SETTINGS", ex);
+                Exception detailedException = BuildBindSettingsException(currentStep, ex);
+                System.Diagnostics.Trace.TraceError(detailedException.ToString());
+                messageBox.ShowErrorMessage("EXCHANGE_GET_MAILBOX_SETTINGS", detailedException);
             }
+        }
+
+        private Exception BuildBindSettingsException(string currentStep, Exception ex)
+        {
+            StringBuilder message = new StringBuilder();
+            message.AppendFormat("Failed while loading {0} for mailbox item {1}, account {2}.", currentStep, PanelRequest.ItemID, PanelRequest.AccountID);
+
+            Exception current = ex;
+            int level = 0;
+            while (current != null)
+            {
+                message.Append(' ');
+                message.AppendFormat("[{0}] {1}", level, current.Message);
+                current = current.InnerException;
+                level++;
+            }
+
+            return new ApplicationException(message.ToString(), ex);
         }
 
         private bool SaveSettings()

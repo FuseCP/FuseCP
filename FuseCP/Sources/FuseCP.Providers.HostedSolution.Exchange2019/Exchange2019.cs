@@ -1411,9 +1411,7 @@ namespace FuseCP.Providers.HostedSolution
                         PSObject mailbox = result[0];
                         ExchangeItemStatistics info = new ExchangeItemStatistics();
                         info.ItemName = (string)GetPSObjectProperty(mailbox, "DisplayName");
-                        Unlimited<ByteQuantifiedSize> totalItemSize =
-                            (Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "TotalItemSize");
-                        info.TotalSizeMB = ConvertUnlimitedToMB(totalItemSize);
+                        info.TotalSizeMB = ConvertByteSizePropertyToMB(GetPSObjectProperty(mailbox, "TotalItemSize"));
                         uint? itemCount = (uint?)GetPSObjectProperty(mailbox, "ItemCount");
                         info.TotalItems = ConvertNullableToInt32(itemCount);
                         DateTime? lastLogoffTime = (DateTime?)GetPSObjectProperty(mailbox, "LastLogoffTime");
@@ -1508,9 +1506,7 @@ namespace FuseCP.Providers.HostedSolution
                 result = ExecuteShellCommand(runSpace, cmd);
                 if (result != null && result.Count > 0)
                 {
-                    Unlimited<ByteQuantifiedSize> totalItemSize =
-                        (Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(result[0], "TotalItemSize");
-                    size += ConvertUnlimitedToBytes(totalItemSize);
+                    size += ConvertByteSizePropertyToBytes(GetPSObjectProperty(result[0], "TotalItemSize"));
                 }
             }
             ExchangeLog.LogEnd("CalculateMailboxDiskSpace");
@@ -1535,9 +1531,7 @@ namespace FuseCP.Providers.HostedSolution
                 if (result != null && result.Count > 0)
                 {
                     PSObject obj = result[0];
-                    Unlimited<ByteQuantifiedSize> totalItemSize =
-                        (Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(obj, "TotalItemSize");
-                    size += ConvertUnlimitedToBytes(totalItemSize);
+                    size += ConvertByteSizePropertyToBytes(GetPSObjectProperty(obj, "TotalItemSize"));
                 }
 
                 cmd = new Command("Get-PublicFolder");
@@ -2878,14 +2872,18 @@ namespace FuseCP.Providers.HostedSolution
             info.AccountName = accountName;
             Runspace runSpace = null;
             Runspace runSpaceEx = null;
+            string currentStep = "opening Exchange runspace";
             try
             {
+                currentStep = "opening Exchange runspace";
                 runSpace = OpenRunspace();
+                currentStep = "opening Exchange litigation runspace";
                 runSpaceEx = OpenRunspaceEx();
 
+                currentStep = "loading mailbox object";
                 Collection<PSObject> result = GetMailboxObject(runSpace, accountName);
-                PSObject mailbox = result[0];
 
+                currentStep = "resolving mailbox directory entry";
                 string id = GetResultObjectDN(result);
                 string path = AddADPrefix(id);
                 DirectoryEntry entry = GetADObject(path);
@@ -2893,53 +2891,49 @@ namespace FuseCP.Providers.HostedSolution
 
                 //ADAccountOptions userFlags = (ADAccountOptions)entry.Properties["userAccountControl"].Value;
                 //info.Disabled = ((userFlags & ADAccountOptions.UF_ACCOUNTDISABLE) != 0);
+                currentStep = "reading mailbox Active Directory flags";
                 info.Disabled = (bool)entry.InvokeGet("AccountDisabled");
 
-                info.DisplayName = (string)GetPSObjectProperty(mailbox, "DisplayName");
-                info.HideFromAddressBook = (bool)GetPSObjectProperty(mailbox, "HiddenFromAddressListsEnabled");
-                info.ExchangeGuid = GetPSObjectProperty(mailbox, "ExchangeGuid").ToString();
-
-                Command cmd = new Command("Get-User");
-                cmd.Parameters.Add("Identity", accountName);
-                result = ExecuteShellCommand(runSpace, cmd);
-                PSObject user = result[0];
-
-                info.FirstName = (string)GetPSObjectProperty(user, "FirstName");
-                info.Initials = (string)GetPSObjectProperty(user, "Initials");
-                info.LastName = (string)GetPSObjectProperty(user, "LastName");
-
-                info.Address = (string)GetPSObjectProperty(user, "StreetAddress");
-                info.City = (string)GetPSObjectProperty(user, "City");
-                info.State = (string)GetPSObjectProperty(user, "StateOrProvince");
-                info.Zip = (string)GetPSObjectProperty(user, "PostalCode");
-                info.Country = CountryInfoToString((CountryInfo)GetPSObjectProperty(user, "CountryOrRegion"));
-                info.JobTitle = (string)GetPSObjectProperty(user, "Title");
-                info.Company = (string)GetPSObjectProperty(user, "Company");
-                info.Department = (string)GetPSObjectProperty(user, "Department");
-                info.Office = (string)GetPSObjectProperty(user, "Office");
-
-
-                info.ManagerAccount = GetManager(entry); //GetExchangeAccount(runSpace, ObjToString(GetPSObjectProperty(user, "Manager")));
-                info.BusinessPhone = (string)GetPSObjectProperty(user, "Phone");
-                info.Fax = (string)GetPSObjectProperty(user, "Fax");
-                info.HomePhone = (string)GetPSObjectProperty(user, "HomePhone");
-                info.MobilePhone = (string)GetPSObjectProperty(user, "MobilePhone");
-                info.Pager = (string)GetPSObjectProperty(user, "Pager");
-                info.WebPage = (string)GetPSObjectProperty(user, "WebPage");
-                info.Notes = (string)GetPSObjectProperty(user, "Notes");
-
-                //Litigation Hold
-                info.EnableLitigationHold = false;
-                cmd = new Command("Get-MailboxSearch");
-                cmd.Parameters.Add("Identity", accountName);
-                result = ExecuteShellCommandEx(runSpaceEx, cmd);
-                if ((result != null) & (result.Count > 0))
+                info.DisplayName = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.DisplayName);
+                object hideFromAddressBook = GetADObjectProperty(entry, "msExchHideFromAddressLists");
+                info.HideFromAddressBook = hideFromAddressBook is bool hidden && hidden;
+                object exchangeGuid = GetADObjectProperty(entry, "msExchMailboxGuid");
+                if (exchangeGuid is byte[] exchangeGuidBytes && exchangeGuidBytes.Length == 16)
                 {
-                    mailbox = result[0];
-                    info.EnableLitigationHold = (bool)GetPSObjectProperty(mailbox, "InPlaceHoldEnabled");
+                    info.ExchangeGuid = new Guid(exchangeGuidBytes).ToString();
                 }
 
+                currentStep = "reading mailbox Active Directory profile";
+                info.FirstName = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.FirstName);
+                info.Initials = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Initials);
+                info.LastName = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.LastName);
+                info.Address = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Address);
+                info.City = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.City);
+                info.State = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.State);
+                info.Zip = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Zip);
+                info.Country = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Country);
+                info.JobTitle = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.JobTitle);
+                info.Company = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Company);
+                info.Department = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Department);
+                info.Office = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Office);
+                info.ManagerAccount = GetManager(entry); //GetExchangeAccount(runSpace, ObjToString(GetPSObjectProperty(user, "Manager")));
+                info.BusinessPhone = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.BusinessPhone);
+                info.Fax = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Fax);
+                info.HomePhone = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.HomePhone);
+                info.MobilePhone = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.MobilePhone);
+                info.Pager = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Pager);
+                info.WebPage = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.WebPage);
+                info.Notes = ActiveDirectoryUtils.GetADObjectStringProperty(entry, ADAttributes.Notes);
 
+                // Litigation hold data is optional; constrained no-language Exchange endpoints can reject this query.
+                currentStep = "loading litigation hold status";
+                info.EnableLitigationHold = IsLitigationEnabled(runSpaceEx, accountName);
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(string.Format("GetMailboxGeneralSettingsInternal failed during {0} for account {1}: {2}", currentStep, accountName, ex.Message), ex);
             }
             finally
             {
@@ -3116,13 +3110,17 @@ namespace FuseCP.Providers.HostedSolution
             ExchangeMailbox info = new ExchangeMailbox();
             info.AccountName = accountName;
             Runspace runSpace = null;
+            string currentStep = "opening Exchange runspace";
             try
             {
+                currentStep = "opening Exchange runspace";
                 runSpace = OpenRunspace();
 
+                currentStep = "loading mailbox object";
                 Collection<PSObject> result = GetMailboxObject(runSpace, accountName);
                 PSObject mailbox = result[0];
 
+                currentStep = "reading forwarding settings";
                 string forwardingAddress = ObjToString(GetPSObjectProperty(mailbox, "ForwardingAddress"));
                 if (string.IsNullOrEmpty(forwardingAddress))
                 {
@@ -3134,10 +3132,11 @@ namespace FuseCP.Providers.HostedSolution
                 {
                     info.EnableForwarding = true;
                     info.ForwardingAccount = GetExchangeAccount(runSpace, forwardingAddress);
-                    info.DoNotDeleteOnForward = (bool)GetPSObjectProperty(mailbox, "DeliverToMailboxAndForward");
+                    info.DoNotDeleteOnForward = ObjToBoolean(GetPSObjectProperty(mailbox, "DeliverToMailboxAndForward"));
                 }
 
-                bool MailboxSaveSentItems = (bool)GetPSObjectProperty(mailbox, "MessageCopyForSendOnBehalfEnabled");
+                currentStep = "reading sent item copy settings";
+                bool MailboxSaveSentItems = ObjToBoolean(GetPSObjectProperty(mailbox, "MessageCopyForSendOnBehalfEnabled"));
 
                 if (MailboxSaveSentItems)
                 {
@@ -3150,16 +3149,22 @@ namespace FuseCP.Providers.HostedSolution
                     info.SaveSentItems = 0;
                 }
 
+                currentStep = "reading delivery restrictions";
                 info.SendOnBehalfAccounts = GetSendOnBehalfAccounts(runSpace, mailbox);
                 info.AcceptAccounts = GetAcceptedAccounts(runSpace, mailbox);
                 info.RejectAccounts = GetRejectedAccounts(runSpace, mailbox);
                 info.MaxRecipients =
-                    ConvertUnlimitedToInt32((Unlimited<int>)GetPSObjectProperty(mailbox, "RecipientLimits"));
+                    ConvertUnlimitedIntPropertyToInt32(GetPSObjectProperty(mailbox, "RecipientLimits"));
                 info.MaxSendMessageSizeKB =
-                    ConvertUnlimitedToKB((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "MaxSendSize"));
+                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "MaxSendSize"));
                 info.MaxReceiveMessageSizeKB =
-                    ConvertUnlimitedToKB((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "MaxReceiveSize"));
-                info.RequireSenderAuthentication = (bool)GetPSObjectProperty(mailbox, "RequireSenderAuthenticationEnabled");
+                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "MaxReceiveSize"));
+                info.RequireSenderAuthentication = ObjToBoolean(GetPSObjectProperty(mailbox, "RequireSenderAuthenticationEnabled"));
+            }
+            catch (Exception ex)
+            {
+                string details = string.IsNullOrWhiteSpace(ex.Message) ? ex.GetType().FullName : ex.Message;
+                throw new ApplicationException(string.Format("GetMailboxMailFlowSettingsInternal failed during {0} for account {1}: {2}", currentStep, accountName, details), ex);
             }
             finally
             {
@@ -3250,18 +3255,18 @@ namespace FuseCP.Providers.HostedSolution
                 PSObject mailbox = result[0];
 
                 info.IssueWarningKB =
-                    ConvertUnlimitedToKB((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "IssueWarningQuota"));
+                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "IssueWarningQuota"));
                 info.ProhibitSendKB =
-                    ConvertUnlimitedToKB((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "ProhibitSendQuota"));
+                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "ProhibitSendQuota"));
                 info.ProhibitSendReceiveKB =
-                    ConvertUnlimitedToKB((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "ProhibitSendReceiveQuota"));
+                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "ProhibitSendReceiveQuota"));
                 info.KeepDeletedItemsDays =
                     ConvertEnhancedTimeSpanToDays((EnhancedTimeSpan)GetPSObjectProperty(mailbox, "RetainDeletedItemsFor"));
 
                 info.RecoverabelItemsSpace =
-                    ConvertUnlimitedToKB((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "RecoverableItemsQuota"));
+                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "RecoverableItemsQuota"));
                 info.RecoverabelItemsWarning =
-                    ConvertUnlimitedToKB((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "RecoverableItemsWarningQuota"));
+                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "RecoverableItemsWarningQuota"));
 
                 //Client Access
                 Command cmd = new Command("Get-CASMailbox");
@@ -3294,9 +3299,7 @@ namespace FuseCP.Providers.HostedSolution
                 if (result.Count > 0)
                 {
                     PSObject statistics = result[0];
-                    Unlimited<ByteQuantifiedSize> totalItemSize =
-                        (Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(statistics, "TotalItemSize");
-                    info.TotalSizeMB = ConvertUnlimitedToMB(totalItemSize);
+                    info.TotalSizeMB = ConvertByteSizePropertyToMB(GetPSObjectProperty(statistics, "TotalItemSize"));
                     uint? itemCount = (uint?)GetPSObjectProperty(statistics, "ItemCount");
                     info.TotalItems = ConvertNullableToInt32(itemCount);
                     DateTime? lastLogoffTime = (DateTime?)GetPSObjectProperty(statistics, "LastLogoffTime"); ;
@@ -3409,8 +3412,7 @@ namespace FuseCP.Providers.HostedSolution
                 string primaryEmail = null;
                 string windowsEmail = null;
 
-                SmtpAddress smtpAddress = (SmtpAddress)GetPSObjectProperty(mailbox, "PrimarySmtpAddress");
-                primaryEmail = smtpAddress.ToString();
+                primaryEmail = ObjToString(GetPSObjectProperty(mailbox, "PrimarySmtpAddress"));
 
                 //SmtpAddress winAddress = (SmtpAddress)GetPSObjectProperty(mailbox, "WindowsEmailAddress");
                 windowsEmail = ObjToString(GetPSObjectProperty(mailbox, "CustomAttribute3"));
@@ -3754,13 +3756,12 @@ namespace FuseCP.Providers.HostedSolution
                 info.Enabled = !(bool)entry.InvokeGet("AccountDisabled");
 
                 info.DisplayName = (string)GetPSObjectProperty(mailbox, "DisplayName");
-                SmtpAddress smtpAddress = (SmtpAddress)GetPSObjectProperty(mailbox, "PrimarySmtpAddress");
-                info.PrimaryEmailAddress = smtpAddress.ToString();
+                info.PrimaryEmailAddress = ObjToString(GetPSObjectProperty(mailbox, "PrimarySmtpAddress"));
 
-                info.MaxSize = ConvertUnlimitedToBytes((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "ProhibitSendReceiveQuota"));
+                info.MaxSize = ConvertByteSizePropertyToBytes(GetPSObjectProperty(mailbox, "ProhibitSendReceiveQuota"));
                 DateTime? whenCreated = (DateTime?)GetPSObjectProperty(mailbox, "WhenCreated");
                 info.AccountCreated = ConvertNullableToDateTime(whenCreated);
-                info.LitigationHoldMaxSize = ConvertUnlimitedToBytes((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(mailbox, "RecoverableItemsQuota"));
+                info.LitigationHoldMaxSize = ConvertByteSizePropertyToBytes(GetPSObjectProperty(mailbox, "RecoverableItemsQuota"));
 
                 //Client Access
                 Command cmd = new Command("Get-CASMailbox");
@@ -3784,9 +3785,7 @@ namespace FuseCP.Providers.HostedSolution
                 if (result.Count > 0)
                 {
                     PSObject statistics = result[0];
-                    Unlimited<ByteQuantifiedSize> totalItemSize =
-                        (Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(statistics, "TotalItemSize");
-                    info.TotalSize = ConvertUnlimitedToBytes(totalItemSize);
+                    info.TotalSize = ConvertByteSizePropertyToBytes(GetPSObjectProperty(statistics, "TotalItemSize"));
 
                     uint? itemCount = (uint?)GetPSObjectProperty(statistics, "ItemCount");
                     info.TotalItems = ConvertNullableToInt32(itemCount);
@@ -3811,9 +3810,7 @@ namespace FuseCP.Providers.HostedSolution
                 if (result.Count > 0)
                 {
                     PSObject statistics = result[0];
-                    Unlimited<ByteQuantifiedSize> totalItemSize =
-                        (Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(statistics, "TotalItemSize");
-                    info.ArchivingTotalSize = ConvertUnlimitedToBytes(totalItemSize);
+                    info.ArchivingTotalSize = ConvertByteSizePropertyToBytes(GetPSObjectProperty(statistics, "TotalItemSize"));
                 }
                 else
                 {
@@ -3829,8 +3826,7 @@ namespace FuseCP.Providers.HostedSolution
                     if (result.Count > 0)
                     {
                         PSObject statistics = result[0];
-                        ByteQuantifiedSize totalItemSize = (ByteQuantifiedSize)GetPSObjectProperty(statistics, "FolderAndSubfolderSize");
-                        info.LitigationHoldTotalSize = ConvertUnlimitedToBytes(totalItemSize);
+                        info.LitigationHoldTotalSize = ConvertByteSizePropertyToBytes(GetPSObjectProperty(statistics, "FolderAndSubfolderSize"));
 
                         Int32 itemCount = (Int32)GetPSObjectProperty(statistics, "ItemsInFolder");
                         info.LitigationHoldTotalItems = (itemCount == 0) ? 0 : itemCount;
@@ -3862,14 +3858,43 @@ namespace FuseCP.Providers.HostedSolution
 
         private bool IsLitigationEnabled(Runspace runSpaceEx, string id)
         {
-            var cmd = new Command("Get-MailboxSearch");
-            cmd.Parameters.Add("Identity", id);
-            var result = ExecuteShellCommandEx(runSpaceEx, cmd);
-
-            if ((result != null) && (result.Count > 0))
+            try
             {
-                var mailbox = result[0];
-                return (bool)GetPSObjectProperty(mailbox, "InPlaceHoldEnabled");
+                var cmd = new Command("Get-MailboxSearch");
+                cmd.Parameters.Add("Identity", id);
+                var result = ExecuteShellCommandEx(runSpaceEx, cmd);
+
+                if ((result != null) && (result.Count > 0))
+                {
+                    var mailbox = result[0];
+                    return (bool)GetPSObjectProperty(mailbox, "InPlaceHoldEnabled");
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                if (IsNoLanguageScriptInvocationError(ex))
+                {
+                    ExchangeLog.LogWarning("Get-MailboxSearch is not available in the current Exchange session configuration; defaulting litigation hold to false.");
+                    return false;
+                }
+
+                throw;
+            }
+        }
+
+        private static bool IsNoLanguageScriptInvocationError(Exception ex)
+        {
+            while (ex != null)
+            {
+                if (!string.IsNullOrEmpty(ex.Message) &&
+                    ex.Message.IndexOf("Script invocation is not supported in this session configuration", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+
+                ex = ex.InnerException;
             }
 
             return false;
@@ -4129,7 +4154,7 @@ namespace FuseCP.Providers.HostedSolution
                 Collection<PSObject> result = ExecuteShellCommand(runSpace, cmd);
 
                 string id = GetResultObjectDN(result);
-                string tempEmail = SmtpAddressToString((SmtpAddress)GetPSObjectProperty(result[0], "PrimarySmtpAddress"));
+                string tempEmail = ObjToString(GetPSObjectProperty(result[0], "PrimarySmtpAddress"));
                 string[] parts = tempEmail.Split('@');
                 if (parts != null && parts.Length > 0)
                     tempEmail = parts[0] + '@' + defaultDomain;
@@ -4883,8 +4908,7 @@ namespace FuseCP.Providers.HostedSolution
                 string primaryEmail = null;
                 string windowsEmail = null;
 
-                SmtpAddress smtpAddress = (SmtpAddress)GetPSObjectProperty(group, "PrimarySmtpAddress");
-                primaryEmail = smtpAddress.ToString();
+                primaryEmail = ObjToString(GetPSObjectProperty(group, "PrimarySmtpAddress"));
 
                 //SmtpAddress winAddress = (SmtpAddress)GetPSObjectProperty(group, "WindowsEmailAddress");
                 //if (winAddress != null)
@@ -5842,8 +5866,7 @@ namespace FuseCP.Providers.HostedSolution
                 string primaryEmail = null;
                 string windowsEmail = null;
 
-                SmtpAddress smtpAddress = (SmtpAddress)GetPSObjectProperty(publicFolder, "PrimarySmtpAddress");
-                primaryEmail = smtpAddress.ToString();
+                primaryEmail = ObjToString(GetPSObjectProperty(publicFolder, "PrimarySmtpAddress"));
 
                 windowsEmail = ObjToString(GetPSObjectProperty(publicFolder, "CustomAttribute3"));
 
@@ -5971,9 +5994,7 @@ namespace FuseCP.Providers.HostedSolution
                         obj = result[0];
                         ExchangeItemStatistics info = new ExchangeItemStatistics();
                         info.ItemName = (string)GetPSObjectProperty(obj, "FolderPath");
-                        Unlimited<ByteQuantifiedSize> totalItemSize =
-                            (Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(obj, "TotalItemSize");
-                        info.TotalSizeMB = ConvertUnlimitedToMB(totalItemSize);
+                        info.TotalSizeMB = ConvertByteSizePropertyToMB(GetPSObjectProperty(obj, "TotalItemSize"));
                         uint? itemCount = (uint?)GetPSObjectProperty(obj, "ItemCount");
                         info.TotalItems = ConvertNullableToInt32(itemCount);
 
@@ -6838,7 +6859,21 @@ namespace FuseCP.Providers.HostedSolution
             // Use the WSMan Exchange endpoint path for compatibility with modern SMA runtime.
             Runspace runSpace = OpenRunspaceEx();
 
-            runSpace.SessionStateProxy.SetVariable("ConfirmPreference", "none");
+            try
+            {
+                runSpace.SessionStateProxy.SetVariable("ConfirmPreference", "none");
+            }
+            catch (Exception ex)
+            {
+                if (IsNoLanguageScriptInvocationError(ex))
+                {
+                    ExchangeLog.LogWarning("ConfirmPreference could not be set because the Exchange session is running in no-language mode.");
+                }
+                else
+                {
+                    throw;
+                }
+            }
             ExchangeLog.LogEnd("OpenRunspace");
             return runSpace;
         }
@@ -7093,7 +7128,7 @@ namespace FuseCP.Providers.HostedSolution
             if (result.Count > 1)
                 throw new ArgumentException("Execution result contains more than one object");
 
-            PSMemberInfo info = result[0].Members["DistinguishedName"];
+            PSPropertyInfo info = GetPSObjectPropertyInfo(result[0], "DistinguishedName");
             if (info == null)
                 throw new ArgumentException("Execution result does not contain DistinguishedName property", "result");
 
@@ -7117,7 +7152,7 @@ namespace FuseCP.Providers.HostedSolution
             if (result.Count < 1)
                 return null;
 
-            PSMemberInfo info = result[0].Members["DistinguishedName"];
+            PSPropertyInfo info = GetPSObjectPropertyInfo(result[0], "DistinguishedName");
             if (info == null)
                 throw new ArgumentException("Execution result does not contain DistinguishedName property", "result");
 
@@ -7143,7 +7178,7 @@ namespace FuseCP.Providers.HostedSolution
             if (result.Count > 1)
                 throw new ArgumentException("Execution result contains more than one object", "result");
 
-            PSMemberInfo info = result[0].Members["Identity"];
+            PSPropertyInfo info = GetPSObjectPropertyInfo(result[0], "Identity");
             if (info == null)
                 throw new ArgumentException("Execution result does not contain Identity property", "result");
 
@@ -7164,7 +7199,7 @@ namespace FuseCP.Providers.HostedSolution
                 throw new ArgumentNullException("obj", "PSObject is not specified");
 
 
-            PSMemberInfo info = obj.Members["Identity"];
+            PSPropertyInfo info = GetPSObjectPropertyInfo(obj, "Identity");
             if (info == null)
                 throw new ArgumentException("PSObject does not contain Identity property", "obj");
 
@@ -7175,7 +7210,26 @@ namespace FuseCP.Providers.HostedSolution
 
         internal object GetPSObjectProperty(PSObject obj, string name)
         {
-            return obj.Members[name].Value;
+            PSPropertyInfo info = GetPSObjectPropertyInfo(obj, name);
+            if (info == null)
+                throw new ArgumentException(string.Format("PSObject does not contain {0} property", name), "name");
+
+            return info.Value;
+        }
+
+        private static PSPropertyInfo GetPSObjectPropertyInfo(PSObject obj, string name)
+        {
+            if (obj == null)
+                throw new ArgumentNullException("obj", "PSObject is not specified");
+
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("Property name is not specified", "name");
+
+            PSPropertyInfo property = obj.Properties[name];
+            if (property != null)
+                return property;
+
+            return obj.Members[name] as PSPropertyInfo;
         }
 
         #endregion
@@ -7451,7 +7505,7 @@ namespace FuseCP.Providers.HostedSolution
                     info.AllowNonProvisionableDevices = (bool)GetPSObjectProperty(policy, "AllowNonProvisionableDevices");
                     info.AttachmentsEnabled = (bool)GetPSObjectProperty(policy, "AttachmentsEnabled");
                     info.MaxAttachmentSizeKB =
-                        ConvertUnlimitedToKB((Unlimited<ByteQuantifiedSize>)GetPSObjectProperty(policy, "MaxAttachmentSize"));
+                        ConvertByteSizePropertyToKB(GetPSObjectProperty(policy, "MaxAttachmentSize"));
                     info.UNCAccessEnabled = (bool)GetPSObjectProperty(policy, "UNCAccessEnabled");
                     info.WSSAccessEnabled = (bool)GetPSObjectProperty(policy, "WSSAccessEnabled");
 
@@ -7785,6 +7839,28 @@ namespace FuseCP.Providers.HostedSolution
             return ret;
         }
 
+        internal int ConvertUnlimitedIntPropertyToInt32(object value)
+        {
+            if (value == null)
+                return 0;
+
+            if (value is Unlimited<int> unlimited)
+                return ConvertUnlimitedToInt32(unlimited);
+
+            string raw = ObjToString(value);
+            if (string.IsNullOrWhiteSpace(raw))
+                return 0;
+
+            if (raw.IndexOf("unlimited", StringComparison.OrdinalIgnoreCase) >= 0)
+                return -1;
+
+            string numeric = new string(raw.Where(char.IsDigit).ToArray());
+            if (int.TryParse(numeric, NumberStyles.Integer, CultureInfo.InvariantCulture, out int parsed))
+                return parsed;
+
+            return 0;
+        }
+
         internal Unlimited<int> ConvertInt32ToUnlimited(int value)
         {
             if (value == -1)
@@ -7809,6 +7885,61 @@ namespace FuseCP.Providers.HostedSolution
                 ret = Convert.ToInt64(value.Value.ToBytes());
             }
             return ret;
+        }
+
+        internal long ConvertByteSizePropertyToBytes(object value)
+        {
+            if (value == null)
+                return 0;
+
+            if (value is Unlimited<ByteQuantifiedSize> unlimited)
+                return ConvertUnlimitedToBytes(unlimited);
+
+            if (value is ByteQuantifiedSize quantified)
+                return Convert.ToInt64(quantified.ToBytes());
+
+            string raw = ObjToString(value);
+            if (string.IsNullOrWhiteSpace(raw))
+                return 0;
+
+            if (raw.IndexOf("unlimited", StringComparison.OrdinalIgnoreCase) >= 0)
+                return -1;
+
+            int openParen = raw.LastIndexOf('(');
+            int bytesWord = raw.LastIndexOf("bytes", StringComparison.OrdinalIgnoreCase);
+            if (openParen >= 0 && bytesWord > openParen)
+            {
+                string bytesSection = raw.Substring(openParen + 1, bytesWord - openParen - 1);
+                string numeric = new string(bytesSection.Where(char.IsDigit).ToArray());
+                if (long.TryParse(numeric, NumberStyles.Integer, CultureInfo.InvariantCulture, out long parsedBytes))
+                    return parsedBytes;
+            }
+
+            string fallback = new string(raw.Where(char.IsDigit).ToArray());
+            if (long.TryParse(fallback, NumberStyles.Integer, CultureInfo.InvariantCulture, out long parsedFallback))
+                return parsedFallback;
+
+            return 0;
+        }
+
+        internal int ConvertByteSizePropertyToKB(object value)
+        {
+            long bytes = ConvertByteSizePropertyToBytes(value);
+            if (bytes < 0)
+                return -1;
+
+            long kilobytes = bytes / 1024;
+            return kilobytes > int.MaxValue ? int.MaxValue : Convert.ToInt32(kilobytes);
+        }
+
+        internal int ConvertByteSizePropertyToMB(object value)
+        {
+            long bytes = ConvertByteSizePropertyToBytes(value);
+            if (bytes < 0)
+                return -1;
+
+            long megabytes = bytes / (1024 * 1024);
+            return megabytes > int.MaxValue ? int.MaxValue : Convert.ToInt32(megabytes);
         }
 
         internal int ConvertUnlimitedToKB(Unlimited<ByteQuantifiedSize> value)

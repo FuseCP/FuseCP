@@ -15639,7 +15639,7 @@ namespace FuseCP.EnterpriseServer
 			else
 			{
 				object objReturn = SqlHelper.ExecuteScalar(
-					ConnectionString,
+					NativeConnectionString,
 					CommandType.StoredProcedure,
 					"GetExchangeAccountDisclaimerId",
 					new SqlParameter("@AccountID", AccountID));
