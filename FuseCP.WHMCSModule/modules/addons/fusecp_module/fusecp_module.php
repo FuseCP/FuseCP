@@ -38,11 +38,7 @@
  * @link https://fusecp.com/
  * @access public
  * @name FuseCP
- * @version 1.1.4
- * @package WHMCS
- * @final
- */
-require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/addonautomation.php');
+ * @version 2.0.0
 require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/configurableoptions.php');
 require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/database.php');
 require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/migration.php');
@@ -58,7 +54,7 @@ function fusecp_module_config()
 {
     return array('name' => 'FuseCP Module',
                  'description' => 'FuseCP Module for automating product configurable options, addons and sync to FuseCP',
-                 'version' => '1.1.4',
+                 'version' => '2.0.0',
                  'author' => '<a href="https://fusecp.com/" target="_blank">FuseCP</a>',
                  'language' => 'english');
 }
@@ -81,6 +77,10 @@ function fusecp_module_activate()
     
     // Create the FuseCP Configurable Options table
     $e = fusecp_database::createConfigurableOptionsTable();
+    if($e['status']!='success') return $e;
+
+    // Create the FuseCP Audit Log table (v2.0.0+)
+    $e = fusecp_database::createAuditLogTable();
     if($e['status']!='success') return $e;
     
     return array('status' => 'success', 'description' => 'The module has been activated successfully');
@@ -108,6 +108,10 @@ function fusecp_module_deactivate()
 
         // Delete the FuseCP Configurable Options table
         $e = fusecp_database::deleteConfigurableOptionsTable();
+        if($e['status']!='success') return $e;
+
+        // Delete the FuseCP Audit Log table (v2.0.0+)
+        $e = fusecp_database::deleteAuditLogTable();
         if($e['status']!='success') return $e;
         
         return array('status' => 'success', 'description' => 'The module has been deactivated and the tables have been deleted successfully');
