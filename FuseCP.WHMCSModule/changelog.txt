@@ -1,3 +1,24 @@
+v. 2.0.0 - 18 March 2026
+Security & Compatibility Overhaul
+Security Fixes:
+- [Security] Remove phpinfo() from index.php, phpinfo.php, and test.php (CVE-class: information disclosure)
+- [Security] Add .htaccess protection to modules/servers/FuseCP/ and modules/addons/fusecp_module/ directories
+- [Security] Fix SQL injection vulnerabilities: parameterize all raw Capsule::select() queries in database.php
+- [Security] Replace deprecated decrypt() function with WHMCS-version-aware fusecp_decrypt_password() wrapper
+- [Security] Add SSL peer-certificate verification option to FuseCP_EnterpriseServer (verifySsl parameter)
+New Features:
+- [Feature] New audit_logger.php: centralized audit trail for all API operations and security events
+- [Feature] New error_handler.php: exponential back-off retry logic for transient SOAP/network failures
+- [Feature] New input_validator.php: centralised input sanitisation and validation
+- [Feature] New rest_api_client.php: REST client stub with HMAC-SHA256 authentication for FuseCP v2+
+- [Feature] New fusecp_audit_log database table created on module activation
+- [Feature] New hook: ClientLoginFailed — logs failed WHMCS client logins to FuseCP audit trail
+Compatibility:
+- [Compat] WHMCS 9.x support confirmed (tested)
+- [Compat] PHP 8.2 support (deprecated functions replaced)
+- [Compat] Updated module version to 2.0.0
+
+
 v. 1.1.4 - 12 April 2023
 Changelog
 - MFA Implementation

@@ -1,7 +1,21 @@
-Supported WHMCS version: 6.x and 7.x (versions <= 5.x are not supported and not working anymore)
-Supported PHP version: >= 5.4 and 7.x
-If you are running WHMCS 5.x (which is not recommended), you can find the latest compatible plugin here:
-http://installer.fusecp.com/Files/plugins/FuseCP.WHMCS-v5-Module.zip (this module is not maintained anymore)
+Supported WHMCS version: 7.x, 8.x, 9.x (versions <= 6.x are not supported)
+Supported PHP version: 7.4, 8.0, 8.1, 8.2 (PHP < 7.4 is NOT supported)
+
+PHP/WHMCS Compatibility Matrix:
++----------+---------+---------+---------+
+| Module   | WHMCS 7 | WHMCS 8 | WHMCS 9 |
++----------+---------+---------+---------+
+| v2.0.0   |   ✓     |   ✓     |   ✓     |
+| v1.1.4   |   ✓     |   ✓     |   -     |
++----------+---------+---------+---------+
+
+PHP Version Matrix:
++----------+---------+---------+---------+---------+
+| Module   | PHP 7.4 | PHP 8.0 | PHP 8.1 | PHP 8.2 |
++----------+---------+---------+---------+---------+
+| v2.0.0   |   ✓     |   ✓     |   ✓     |   ✓     |
+| v1.1.4   |   ✓     |   ✓     |   ✓     |   -     |
++----------+---------+---------+---------+---------+
 
 Installation instruction:
 - Unpack the zip file
@@ -15,16 +29,19 @@ Installation instruction:
 - Configure your products/services with the "FuseCP" module in Module Settings tab.
 - Done!
 
-Update instruction:
-Please note, that due to structure changes in the database, there is no possibility to use old modules (< 1.1.0) after a successful migration.
+Update instruction (from v1.1.4):
+Please see MIGRATION_GUIDE_v2.0.0.md for full migration instructions.
 - Make a full backup of your entire WHMCS database.
 - Unpack the zip file
 - Upload to your WHMCS root directory, overwrite existing files
 - In Admin Panel go to "System" -> "Addon Modules"
 - Activate "FuseCP Module"
-- Configurate "FuseCP Module" and grant access to "Full Administrator"
+- Configure "FuseCP Module" and grant access to "Full Administrator"
 - In the main menu go to "Addons" -> "FuseCP Module"
 - Follow migration instructions.
 - When migration is finished, the Settings page will be shown automatically.
 - Adjust your settings and check if Addons and Configurable Options were migrated successfully (when used in previous version)
 - Done!
+
+v. 2.0.0 - 18 March 2026
+See changelog.txt for full details.

@@ -64,6 +64,12 @@ namespace FuseCP.EnterpriseServer.Data
 		DbSet<BlackBerryUser> blackBerryUsers = null;
 		public virtual DbSet<BlackBerryUser> BlackBerryUsers => blackBerryUsers ??= Set<BlackBerryUser>();
 
+		DbSet<BruteForceLog> bruteForceLogs = null;
+		public virtual DbSet<BruteForceLog> BruteForceLogs => bruteForceLogs ??= Set<BruteForceLog>();
+
+		DbSet<IpSecurityPolicy> ipSecurityPolicies = null;
+		public virtual DbSet<IpSecurityPolicy> IpSecurityPolicies => ipSecurityPolicies ??= Set<IpSecurityPolicy>();
+
 		DbSet<Cluster> clusters = null;
 		public virtual DbSet<Cluster> Clusters => clusters ??= Set<Cluster>();
 

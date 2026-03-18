@@ -39,7 +39,7 @@
  * @link https://fusecp.com/
  * @access public
  * @name FuseCP
- * @version 1.1.4
+ * @version 2.0.0
  * @package WHMCS
  */
 $_MOD_LANG['FuseCP_clientarea_oneclicklogin'] = 'Login to Control Panel (One-Click Login)';

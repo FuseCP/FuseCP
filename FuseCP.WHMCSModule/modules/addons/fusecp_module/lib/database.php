@@ -38,7 +38,7 @@
  * @link https://fusecp.com/
  * @access public
  * @name FuseCP
- * @version 1.1.4
+ * @version 2.0.0
  * @package WHMCS
  * @final
  */
@@ -255,12 +255,12 @@ Class fusecp_database{
                     `tblservers` AS s,
                     `tblproducts` AS p
                 WHERE
-                    h.userid = ".$userid."
+                    h.userid = ?
                     AND h.packageid = p.id
                     AND h.server = s.id
                     AND s.type = 'FuseCP'
                     AND h.domainstatus IN ('Active', 'Suspended')
-            ");
+            ", [(int)$userid]);
             return $fcpaccounts;
         }
         catch (Exception $e){
@@ -292,16 +292,16 @@ Class fusecp_database{
                     `".SOLIDCP_ADDONS_TABLE."` AS w
                 WHERE
                     h.packageid = p.id
-                    AND w.whmcs_id = ".$addonid."
-                    AND h.id = ".$serviceid."
+                    AND w.whmcs_id = ?
+                    AND h.id = ?
                     AND h.server = s.id
                     AND s.type = 'FuseCP'
-            ");
+            ", [(int)$addonid, (int)$serviceid]);
             if(count($fcpaccounts)>0) return $fcpaccounts[0];
             else return $fcpaccounts;
         }
         catch (Exception $e){
-            return array('status' => 'error', 'description' => "Couldn't get FuseCP accounts for Userid {$userid} from WHMCS database: (Code: {$e->getCode()}, Message: {$e->getMessage()}");
+            return array('status' => 'error', 'description' => "Couldn't get FuseCP accounts for ServiceID {$serviceid} from WHMCS database: (Code: {$e->getCode()}, Message: {$e->getMessage()}");
         }
     }
 
@@ -330,8 +330,8 @@ Class fusecp_database{
                     tblhosting as h on h.id=o.relid
                 WHERE
                     (co.gid IN (SELECT cl.gid FROM tblproductconfiglinks AS cl WHERE cl.pid=h.packageid))
-                    AND o.relid = ".$serviceid."
-            ");
+                    AND o.relid = ?
+            ", [(int)$serviceid]);
             return $configurableoptions;
         }
         catch (Exception $e){
@@ -355,8 +355,8 @@ Class fusecp_database{
                     ".SOLIDCP_ADDONS_TABLE." as s
                 WHERE 
                     a.addonid = s.whmcs_id
-                    AND a.hostingid = ".$serviceid."
-            ");
+                    AND a.hostingid = ?
+            ", [(int)$serviceid]);
             return $addons;
         }
         catch (Exception $e){
@@ -384,11 +384,11 @@ Class fusecp_database{
                     `tblhosting` AS h,
                     `tblproducts` AS p
                 WHERE
-                    h.server = ".$serverid."
+                    h.server = ?
                     AND h.packageid = p.id
                     AND p.configoption15 = 'on'
                     AND h.domainstatus IN ('Active', 'Suspended')
-            ");
+            ", [(int)$serverid]);
             return $services;
         }
         catch (Exception $e){
@@ -413,6 +413,54 @@ Class fusecp_database{
         }
         catch (Exception $e){
             return array('status' => 'error', 'description' => "Couldn't set the usage in WHMCS database: (Code: {$e->getCode()}, Message: {$e->getMessage()}");
+        }
+    }
+
+    /**
+     * Creates the audit log table in the WHMCS database (v2.0.0+).
+     * @return array
+     */
+    public static function createAuditLogTable(){
+        try{
+            if(!Capsule::schema()->hasTable(FUSECP_AUDIT_LOG_TABLE)){
+                Capsule::schema()->create(FUSECP_AUDIT_LOG_TABLE,
+                    function ($table){
+                        $table->engine = 'InnoDB';
+                        $table->increments('id');
+                        $table->string('action', 100)->index();
+                        $table->integer('userid')->default(0)->index();
+                        $table->string('status', 20);
+                        $table->string('detail', 500)->nullable();
+                        $table->string('api_method', 100)->nullable();
+                        $table->integer('service_id')->default(0);
+                        $table->integer('duration_ms')->default(0);
+                        $table->string('ip_address', 45)->nullable();
+                        $table->timestamps();
+                    }
+                );
+                return array('status' => 'success', 'description' => "FuseCP audit log table successfully created.");
+            }
+            else{
+                return array('status' => 'success', 'description' => "FuseCP audit log table already exists.");
+            }
+        }
+        catch (Exception $e){
+            Capsule::schema()->dropIfExists(FUSECP_AUDIT_LOG_TABLE);
+            return array('status' => 'error', 'description' => "Couldn't create audit log table in database: (Code: {$e->getCode()}, Message: {$e->getMessage()}");
+        }
+    }
+
+    /**
+     * Delete the audit log table from the WHMCS database.
+     * @return array
+     */
+    public static function deleteAuditLogTable(){
+        try{
+            Capsule::schema()->dropIfExists(FUSECP_AUDIT_LOG_TABLE);
+            return array('status' => 'success', 'description' => "FuseCP audit log table successfully deleted.");
+        }
+        catch (Exception $e){
+            return array('status' => 'error', 'description' => "Couldn't delete audit log table from database: (Code: {$e->getCode()}, Message: {$e->getMessage()}");
         }
     }
 

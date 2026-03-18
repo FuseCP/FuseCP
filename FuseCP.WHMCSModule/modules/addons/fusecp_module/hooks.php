@@ -38,7 +38,7 @@
  * @link https://fusecp.com/
  * @access public
  * @name FuseCP
- * @version 1.1.4
+ * @version 2.0.0
  * @package WHMCS
  */
 
@@ -46,6 +46,30 @@ require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/enterpriseserver.php')
 require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/var_definition.php');
 require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/database.php');
 require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/settings.php');
+require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/audit_logger.php');
+require_once (ROOTDIR. '/modules/addons/fusecp_module/lib/input_validator.php');
+
+/**
+ * Decrypt a server password using the WHMCS Capsule / localAPI helper.
+ * Replaces the deprecated global decrypt() function removed in WHMCS 8.x.
+ *
+ * @param string $encrypted Encrypted password from tblservers.password
+ * @return string Plaintext password
+ */
+function fusecp_decrypt_password(string $encrypted): string
+{
+    // WHMCS 8.x+: use the Crypt helper
+    if (class_exists('\\WHMCS\\Crypt\\Hash')) {
+        return \WHMCS\Crypt\Hash::decrypt($encrypted);
+    }
+    // WHMCS 7.x fallback: the global decrypt() function is still available
+    if (function_exists('decrypt')) {
+        return decrypt($encrypted);
+    }
+    // Last-resort: return as-is and log a warning
+    logactivity('FuseCP hooks: could not decrypt server password – no decryption method available.', 0);
+    return $encrypted;
+}
 
 /**
  * Handles updating FuseCP account details when a client or administrator updates a client's details
@@ -77,13 +101,11 @@ function fusecp_module_ClientEdit($params)
             $serviceid = $fcpaccount->serviceid;
             $username = $fcpaccount->username;
             $serverUsername = $fcpaccount->serverusername;
-            $serverPassword = decrypt($fcpaccount->serverpassword);
+            $serverPassword = fusecp_decrypt_password($fcpaccount->serverpassword);
             $serverPort = empty($fcpaccount->serverport) ? '9002' : $fcpaccount->serverport;
             $serverHost = empty($fcpaccount->serverhostname) ? $fcpaccount->serverip : $fcpaccount->serverhostname;
             $serverSecure = $fcpaccount->serversecure == 'on' ? TRUE : FALSE;
             $clientsDetails = $params;
-
-            try
             {
                 // Create the FuseCP Enterprise Server Client object instance
                 $fcp = new FuseCP_EnterpriseServer($serverUsername, $serverPassword, $serverHost, $serverPort, $serverSecure);
@@ -136,6 +158,7 @@ function fusecp_module_ClientEdit($params)
 
                 // Add log entry to client log
                 logactivity("FuseCP Sync - Account {$username} contact details updated successfully", $userid);
+                FuseCP_AuditLogger::success('SYNC_CLIENT_EDIT', $userid, "Account {$username} contact details updated", ['service_id' => $serviceid]);
             }
             catch (Exception $e)
             {
@@ -144,6 +167,7 @@ function fusecp_module_ClientEdit($params)
 
                 // Log to WHMCS
                 logactivity($errorMessage, $userid);
+                FuseCP_AuditLogger::failure('SYNC_CLIENT_EDIT', $userid, $errorMessage, ['service_id' => $serviceid]);
             }
         }
     }
@@ -180,7 +204,7 @@ function fusecp_module_AddonActivation($params)
             // Start processing the users addon
             $username = $fcpaccount->username;
             $serverUsername = $fcpaccount->serverusername;
-            $serverPassword = decrypt($fcpaccount->serverpassword);
+            $serverPassword = fusecp_decrypt_password($fcpaccount->serverpassword);
             $serverPort = empty($fcpaccount->serverport) ? '9002' : $fcpaccount->serverport;
             $serverHost = empty($fcpaccount->serverhostname) ? $fcpaccount->serverip : $fcpaccount->serverhostname;
             $serverSecure = $fcpaccount->serversecure == 'on' ? TRUE : FALSE;
@@ -222,6 +246,7 @@ function fusecp_module_AddonActivation($params)
                 
                 // Add log entry to client log
                 logactivity("FuseCP Addon - Account {$username} addon successfully completed - Addon ID: {$addonid}", $userid);
+                FuseCP_AuditLogger::success('ADDON_ACTIVATION', $userid, "Addon {$addonid} activated for account {$username}", ['service_id' => $serviceid]);
             }
             else
             {
@@ -237,6 +262,7 @@ function fusecp_module_AddonActivation($params)
 
         // Log to WHMCS
         logactivity($errorMessage, $userid);
+        FuseCP_AuditLogger::failure('ADDON_ACTIVATION', $userid, $errorMessage, ['service_id' => $serviceid]);
     }
 }
 
@@ -278,3 +304,26 @@ add_hook('ClientEdit', 1, 'fusecp_module_ClientEdit');
 add_hook('AddonActivation', 1, 'fusecp_module_AddonActivation');
 add_hook('AddonAdd', 1, 'fusecp_module_AddonActivation');
 //add_hook('AddonDeleted', 1, 'fusecp_module_AddonDeleted');
+
+/**
+ * Hook: Log failed client login attempts for FuseCP account awareness.
+ * Records failed logins in the FuseCP audit log so administrators can
+ * correlate WHMCS login failures with FuseCP access patterns.
+ *
+ * @param array $params WHMCS hook parameters
+ */
+function fusecp_module_ClientLoginFailed(array $params): void
+{
+    $userId = (int)($params['userid'] ?? 0);
+    $email  = $params['email'] ?? $params['username'] ?? '';
+
+    FuseCP_AuditLogger::failure(
+        'CLIENT_LOGIN_FAILED',
+        $userId,
+        "Failed login attempt for account: {$email}",
+        ['ip_address' => $_SERVER['REMOTE_ADDR'] ?? '']
+    );
+}
+
+add_hook('ClientLoginFailed', 1, 'fusecp_module_ClientLoginFailed');
+

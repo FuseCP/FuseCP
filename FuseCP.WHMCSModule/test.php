@@ -1,10 +1,5 @@
-<?php 
-ini_set('log_errors', 'On');
-ini_set('error_log', 'C:\bin\php_errors.log');
-//define('WHMCS');
-
-require_once('C:/GitHub/FuseCP/FuseCP.WHMCSModule/modules/addons/fusecp_module/lib/enterpriseserver.php');
-
-?>
-
-<?php echo("hallo") ?>
+<?php
+// Copyright (C) 2026 FuseCP
+// Debug file removed for security.
+header('HTTP/1.0 403 Forbidden');
+exit('Access Denied');
