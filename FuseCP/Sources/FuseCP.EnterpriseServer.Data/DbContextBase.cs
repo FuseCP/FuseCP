@@ -374,6 +374,7 @@ namespace FuseCP.EnterpriseServer.Context
 			ApplyConfiguration(model, new BackgroundTaskParameterConfiguration());
 			ApplyConfiguration(model, new BackgroundTaskStackConfiguration());
 			ApplyConfiguration(model, new BlackBerryUserConfiguration());
+			ApplyConfiguration(model, new BruteForceLogConfiguration());
 			ApplyConfiguration(model, new ClusterConfiguration());
 			ApplyConfiguration(model, new CommentConfiguration());
 			ApplyConfiguration(model, new CrmUserConfiguration());
@@ -398,6 +399,7 @@ namespace FuseCP.EnterpriseServer.Context
 			ApplyConfiguration(model, new HostingPlanQuotaConfiguration());
 			ApplyConfiguration(model, new HostingPlanResourceConfiguration());
 			ApplyConfiguration(model, new IpAddressConfiguration());
+			ApplyConfiguration(model, new IpSecurityPolicyConfiguration());
 			ApplyConfiguration(model, new LyncUserConfiguration());
 			ApplyConfiguration(model, new LyncUserPlanConfiguration());
 			ApplyConfiguration(model, new OcsUserConfiguration());

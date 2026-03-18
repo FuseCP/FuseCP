@@ -10,6 +10,8 @@ param(
     [string]$BaseRef = "HEAD",
     [switch]$DisableNuGetAudit,
     [switch]$NoRestore,
+    [switch]$SkipEfWorkflowGuards,
+    [switch]$SkipDatabaseWorkflow,
     [string]$JsonOutputPath,
     [string]$ScopeMapPath
 )
@@ -26,7 +28,8 @@ function Invoke-Step {
         [string]$Name,
         [string]$DisplayCommand,
         [string[]]$CommandArgs,
-        [scriptblock]$Action
+        [scriptblock]$Action,
+        [switch]$ContinueOnError
     )
 
     Write-Host "Running: $Name" -ForegroundColor Yellow
@@ -40,7 +43,11 @@ function Invoke-Step {
 
     & $Action
     if ($LASTEXITCODE -ne 0) {
-        throw "Step failed: $Name"
+        if ($ContinueOnError) {
+            Write-Host "  (continuing despite error)" -ForegroundColor Yellow
+        } else {
+            throw "Step failed: $Name"
+        }
     }
 }
 
@@ -209,6 +216,7 @@ $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $fuseCpDir = Resolve-Path (Join-Path $scriptDir "..")
 $repoRoot = Resolve-Path (Join-Path $fuseCpDir "..")
 $sourcesDir = Join-Path $fuseCpDir "Sources"
+$toolsDir = $scriptDir
 $script:ExecutedCommands = @()
 $script:ExecutedArgs = @()
 $scopeExplicitlyProvided = $PSBoundParameters.ContainsKey("Scope")
@@ -276,6 +284,15 @@ if ($PSBoundParameters.ContainsKey("Scope")) {
 }
 
 try {
+    if (-not $SkipDatabaseWorkflow) {
+        $dbOrchestratorScript = Join-Path $toolsDir "Orchestrate-Database-Workflow.ps1"
+        if (Test-Path $dbOrchestratorScript) {
+            Invoke-Step -Name "Database workflow automation" -DisplayCommand "pwsh -NoProfile -File FuseCP/Tools/Orchestrate-Database-Workflow.ps1 -Mode Full" -CommandArgs @("pwsh", "-NoProfile", "-File", $dbOrchestratorScript, "-Mode", "Full") -Action {
+                & pwsh -NoProfile -File $dbOrchestratorScript -Mode Full
+            } -ContinueOnError
+        }
+    }
+
     if ($skipBuild) {
         Write-Host "Skipping build execution." -ForegroundColor Gray
     }
@@ -446,3 +463,7 @@ finally {
 
 Write-Host "`nValidation completed successfully." -ForegroundColor Green
 exit 0
+
+
+
+

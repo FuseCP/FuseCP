@@ -43,7 +43,7 @@ on:
   push:
     branches: [ "release", "main" ]
   pull_request:
-    branches: [ "release" ]
+    branches: [ "release", "main" ]
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -115,6 +115,19 @@ jobs:
       run: |
         pwsh -NoProfile -File .\FuseCP\Tools\check-sln-scope-sync.ps1
 
+    - name: Automated Database Workflow Verification
+      shell: pwsh
+      run: |
+        pwsh -NoProfile -File .\FuseCP\Tools\Orchestrate-Database-Workflow.ps1 -Mode Full -BlockBuildOnFailure -JsonOutputPath db-workflow-report.json
+
+    - name: Upload Database Verification Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: Database-Workflow-Report
+        path: db-workflow-report.json
+        retention-days: 7
+
     - name: Build Server & EnterpriseServer
       working-directory: FuseCP\Sources
       run: |
@@ -154,3 +167,5 @@ jobs:
       run: |
         echo "Tests failed, failing the job"
         exit 1
+
+
