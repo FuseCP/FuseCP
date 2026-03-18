@@ -159,13 +159,7 @@ namespace FuseCP.EnterpriseServer.Security
                 .Select(p => p.IpRange)
                 .ToList();
 
-            foreach (var entry in whitelistEntries)
-            {
-                if (IpMatchesEntry(ipAddress, entry))
-                    return true;
-            }
-
-            return false;
+            return whitelistEntries.Any(entry => IpMatchesEntry(ipAddress, entry));
         }
 
         /// <summary>
