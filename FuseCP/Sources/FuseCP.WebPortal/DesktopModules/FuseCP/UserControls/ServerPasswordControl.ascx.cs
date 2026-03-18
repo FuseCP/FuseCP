@@ -65,7 +65,41 @@ namespace FuseCP.Portal
 
         public string Password
         {
-            get { return (txtPassword.Text == EMPTY_PASSWORD) ? "" : txtPassword.Text; }
+            get
+            {
+                // Password textboxes can lose Text in some postback/lifecycle paths,
+                // so fall back to the posted form value when needed.
+                string value = txtPassword.Text;
+
+                if (string.IsNullOrEmpty(value) && Page?.Request != null)
+                {
+                    value = Page.Request.Form[txtPassword.UniqueID]
+                        ?? Page.Request.Form[txtPassword.ClientID];
+
+                    // Last-resort: scan all form keys for any ending in "$txtPassword"
+                    // (handles cases where the NamingContainer path differs at runtime)
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        string tail = "$" + txtPassword.ID;
+                        foreach (string key in Page.Request.Form.AllKeys ?? [])
+                        {
+                            if (key != null && key.EndsWith(tail, StringComparison.OrdinalIgnoreCase))
+                            {
+                                string candidate = Page.Request.Form[key];
+                                if (!string.IsNullOrEmpty(candidate))
+                                {
+                                    value = candidate;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    value ??= string.Empty;
+                }
+
+                return (value == EMPTY_PASSWORD) ? "" : value;
+            }
             set { txtPassword.Text = value; }
         }
 

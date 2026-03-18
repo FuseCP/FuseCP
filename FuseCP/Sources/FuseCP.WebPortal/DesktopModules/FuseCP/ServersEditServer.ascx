@@ -57,7 +57,7 @@
                         <tr>
                             <td class="Normal"></td>
                             <td class="Normal">
-                                <asp:Button ID="btnChangeServerPassword" meta:resourcekey="btnChangeServerPassword" runat="server" CssClass="btn btn-primary" CausesValidation="false" OnClick="btnChangeServerPassword_Click" ValidationGroup="ServerPassword" />
+                                <asp:Button ID="btnChangeServerPassword" meta:resourcekey="btnChangeServerPassword" runat="server" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" OnClick="btnChangeServerPassword_Click" ValidationGroup="ServerPassword" />
                             </td>
                         </tr>
                     </table>
@@ -147,7 +147,7 @@
                         <tr id="trAdButton" runat="server">
                             <td class="Normal"></td>
                             <td class="Normal">
-                                <asp:Button ID="btnChangeADPassword" meta:resourcekey="btnChangeADPassword" runat="server" CssClass="btn btn-primary" CausesValidation="false" OnClick="btnChangeADPassword_Click" ValidationGroup="ADPassword" />
+                                <asp:Button ID="btnChangeADPassword" meta:resourcekey="btnChangeADPassword" runat="server" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" OnClick="btnChangeADPassword_Click" ValidationGroup="ADPassword" />
                             </td>
                         </tr>
                     </table>

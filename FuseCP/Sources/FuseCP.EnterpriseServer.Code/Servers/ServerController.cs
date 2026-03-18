@@ -554,8 +554,10 @@ namespace FuseCP.EnterpriseServer
 			// set password
 			server.Password = password;
 			var passwordIsSHA256 = GetServerPasswordIsSHA256(server.ServerUrl);
-			if (passwordIsSHA256 != null) server.PasswordIsSHA256 = (bool)passwordIsSHA256;
-			else return -1;
+			if (passwordIsSHA256 != null)
+			{
+				server.PasswordIsSHA256 = (bool)passwordIsSHA256;
+			}
 
 			var serverUrl = CryptoUtils.EncryptServerUrl(server.ServerUrl);
 

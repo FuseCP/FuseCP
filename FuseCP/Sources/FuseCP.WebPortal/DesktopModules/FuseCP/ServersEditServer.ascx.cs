@@ -318,16 +318,18 @@ namespace FuseCP.Portal
 
 		protected void btnChangeServerPassword_Click(object sender, EventArgs e)
 		{
-			Page.Validate("ServerPassword");
-			if (!Page.IsValid)
-			{
-				return;
-			}
-
 			try
 			{
+				string password = serverPassword.Password;
+
+				if (string.IsNullOrEmpty(password))
+				{
+					ShowErrorMessage("SERVER_UPDATE_SERVER_PSW", new InvalidOperationException("Password field was empty in postback."));
+					return;
+				}
+
 				int result = ES.Services.Servers.UpdateServerConnectionPassword(
-					 PanelRequest.ServerId, serverPassword.Password);
+					 PanelRequest.ServerId, password);
 				if (result < 0)
 				{
 					ShowResultMessage(result);
