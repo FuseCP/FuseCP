@@ -23,11 +23,6 @@
 			<HintPath>..\..\Lib\References\Microsoft\Microsoft.Storage.Vds.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="FuseCP.Providers.Virtualization.HyperV2019, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-			<HintPath>..\FuseCP.Server\bin\HyperV2012R2\FuseCP.Providers.Virtualization.HyperV2019.dll</HintPath>
-			<Private>False</Private>
-			<SpecificVersion>False</SpecificVersion>
-		</Reference>
 		<Reference Include="System.Management" />
 	</ItemGroup>
 	<ItemGroup>
