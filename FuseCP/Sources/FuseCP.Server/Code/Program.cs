@@ -83,6 +83,7 @@ namespace FuseCP.Server
 			yield return Path.GetFullPath(Path.Combine(baseDir, "..", "bin", "Providers"));
 			yield return Path.Combine(baseDir, "netstandard");
 			yield return Path.GetFullPath(Path.Combine(baseDir, "..", "bin", "netstandard"));
+			yield return Path.GetFullPath(Path.Combine(baseDir, "..", "bin"));
 		}
 	}
 }
