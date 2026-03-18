@@ -47,6 +47,10 @@ class FuseCP_ErrorHandler
             try {
                 return $callable();
             } catch (SoapFault $e) {
+                // Only retry transient SOAP faults; permanent faults (auth, invalid params) should not be retried
+                if (!self::isTransientSoapFault($e)) {
+                    throw $e;
+                }
                 $lastException = $e;
             } catch (Exception $e) {
                 // Only retry on transient / connection-related errors
@@ -92,10 +96,37 @@ class FuseCP_ErrorHandler
                 return true;
             }
         }
-        // SoapFaults from network issues have faultcode starting with HTTP or Client
-        if ($e instanceof SoapFault) {
-            return true;
-        }
         return false;
+    }
+
+    /**
+     * Determine whether a SoapFault is transient (connection/timeout) vs. permanent (auth, invalid params).
+     *
+     * Permanent fault codes include 'Client', 'VersionMismatch', 'MustUnderstand', 'DataEncodingUnknown'.
+     * Server-side faults starting with 'Server' may be transient (upstream errors).
+     */
+    private static function isTransientSoapFault(SoapFault $e): bool
+    {
+        $permanentFaultCodes = ['Client', 'VersionMismatch', 'MustUnderstand', 'DataEncodingUnknown'];
+        $faultCode = (string)$e->faultcode;
+
+        // Permanent fault codes indicate the request itself is invalid; do not retry
+        foreach ($permanentFaultCodes as $code) {
+            if (stripos($faultCode, $code) !== false) {
+                return false;
+            }
+        }
+
+        // Authentication / authorization errors — permanent, do not retry
+        $permanentPhrases = ['unauthorized', 'authentication', 'forbidden', 'access denied', 'invalid credentials'];
+        $msg = strtolower($e->getMessage());
+        foreach ($permanentPhrases as $phrase) {
+            if (strpos($msg, $phrase) !== false) {
+                return false;
+            }
+        }
+
+        // Everything else (HTTP 5xx, network, timeouts) is considered transient
+        return true;
     }
 }

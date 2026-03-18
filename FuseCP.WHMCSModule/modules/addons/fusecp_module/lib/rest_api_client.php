@@ -28,6 +28,9 @@ require_once(ROOTDIR . '/modules/addons/fusecp_module/lib/enterpriseserver.php')
 
 class FuseCPRestClient
 {
+    /** Module version – kept in sync with fusecp_module.php */
+    const MODULE_VERSION = '2.0.0';
+
     /** @var string */
     private $host;
 
@@ -99,15 +102,11 @@ class FuseCPRestClient
     public function call(string $endpoint, string $method = 'GET', array $payload = []): array
     {
         if ($this->authMethod === 'soap' || empty($this->apiKeyId)) {
-            // Emit a deprecation notice and continue with SOAP
-            logactivity(
-                'FuseCP RestClient: SOAP authentication is deprecated. '
-                . 'Please configure HMAC API credentials in FuseCP Module settings.',
-                0
-            );
+            // SOAP is not supported through this REST client; callers must use FuseCP_EnterpriseServer.
             throw new RuntimeException(
-                'Direct SOAP passthrough from FuseCPRestClient is not supported; '
-                . 'use FuseCP_EnterpriseServer directly for SOAP calls.'
+                'FuseCPRestClient requires HMAC API credentials. '
+                . 'Configure an API Key ID and Secret in FuseCP Module settings, '
+                . 'or use FuseCP_EnterpriseServer directly for SOAP-based calls.'
             );
         }
 
@@ -185,7 +184,7 @@ class FuseCPRestClient
             'Authorization: ' . $authHeader,
             'Content-Type: application/json',
             'Accept: application/json',
-            'X-FuseCP-Client: WHMCS-Module/2.0.0',
+            'X-FuseCP-Client: WHMCS-Module/' . self::MODULE_VERSION,
         ];
     }
 

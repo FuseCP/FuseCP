@@ -61,7 +61,7 @@ class FuseCP_AuditLogger
                     'service_id'   => (int)($extra['service_id'] ?? 0),
                     'duration_ms'  => (int)($extra['duration_ms'] ?? 0),
                     'ip_address'   => substr((string)($extra['ip_address'] ?? self::getClientIp()), 0, 45),
-                    'created_at'   => date('Y-m-d H:i:s'),
+                    'created_at'   => Capsule::raw('NOW()'),
                 ]);
             }
         } catch (Exception $e) {
