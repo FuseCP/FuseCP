@@ -76,8 +76,6 @@ namespace FuseCP.EnterpriseServer.Security
             if (IsIpWhitelisted(ipAddress))
                 return false;
 
-            using var db = new DataProvider();
-
             // Persist the log entry.
             var log = new BruteForceLog
             {
@@ -88,15 +86,15 @@ namespace FuseCP.EnterpriseServer.Security
                 Succeeded = succeeded,
                 UserAgent = userAgent
             };
-            db.BruteForceLogs.Add(log);
-            db.SaveChanges();
+            Database.BruteForceLogs.Add(log);
+            Database.SaveChanges();
 
             if (succeeded)
                 return false;
 
             // Count recent failures from this IP on this layer.
             var windowStart = DateTime.UtcNow.Subtract(DefaultWindow);
-            var recentFailures = db.BruteForceLogs
+            var recentFailures = Database.BruteForceLogs
                 .Count(l => l.IpAddress == ipAddress
                          && l.Layer == layer
                          && !l.Succeeded
@@ -105,7 +103,7 @@ namespace FuseCP.EnterpriseServer.Security
             // Critical threshold → permanent (high severity) blacklist.
             if (recentFailures >= CriticalAttemptThreshold)
             {
-                EnsureBlacklisted(db, ipAddress, "Auto-blacklisted: critical attempt threshold exceeded",
+                EnsureBlacklisted(ipAddress, "Auto-blacklisted: critical attempt threshold exceeded",
                     severityLevel: 3, expiry: null);
                 return true;
             }
@@ -113,7 +111,7 @@ namespace FuseCP.EnterpriseServer.Security
             // Standard threshold → timed lockout.
             if (recentFailures >= DefaultMaxFailedAttempts)
             {
-                EnsureBlacklisted(db, ipAddress, $"Auto-blocked after {recentFailures} failed {layer} attempts",
+                EnsureBlacklisted(ipAddress, $"Auto-blocked after {recentFailures} failed {layer} attempts",
                     severityLevel: 1, expiry: DateTime.UtcNow.Add(DefaultIpLockoutDuration));
                 return true;
             }
@@ -134,10 +132,9 @@ namespace FuseCP.EnterpriseServer.Security
             if (IsIpWhitelisted(ipAddress))
                 return false;
 
-            using var db = new DataProvider();
             var now = DateTime.UtcNow;
 
-            return db.IpSecurityPolicies.Any(p =>
+            return Database.IpSecurityPolicies.Any(p =>
                 p.IpRange == ipAddress
                 && !p.IsWhitelist
                 && p.IsActive
@@ -155,10 +152,9 @@ namespace FuseCP.EnterpriseServer.Security
             if (string.IsNullOrWhiteSpace(ipAddress))
                 return false;
 
-            using var db = new DataProvider();
             var now = DateTime.UtcNow;
 
-            var whitelistEntries = db.IpSecurityPolicies
+            var whitelistEntries = Database.IpSecurityPolicies
                 .Where(p => p.IsWhitelist && p.IsActive && (p.ExpiresDate == null || p.ExpiresDate > now))
                 .Select(p => p.IpRange)
                 .ToList();
@@ -185,8 +181,7 @@ namespace FuseCP.EnterpriseServer.Security
             if (string.IsNullOrWhiteSpace(ipAddress))
                 return;
 
-            using var db = new DataProvider();
-            EnsureBlacklisted(db, ipAddress, reason, severityLevel: 2, expiry: expiry,
+            EnsureBlacklisted(ipAddress, reason, severityLevel: 2, expiry: expiry,
                 createdBy: createdBy);
         }
 
@@ -199,15 +194,14 @@ namespace FuseCP.EnterpriseServer.Security
             if (string.IsNullOrWhiteSpace(ipAddress))
                 return;
 
-            using var db = new DataProvider();
-            var entries = db.IpSecurityPolicies
+            var entries = Database.IpSecurityPolicies
                 .Where(p => p.IpRange == ipAddress && !p.IsWhitelist && p.IsActive)
                 .ToList();
 
             foreach (var e in entries)
                 e.IsActive = false;
 
-            db.SaveChanges();
+            Database.SaveChanges();
         }
 
         /// <summary>
@@ -223,22 +217,20 @@ namespace FuseCP.EnterpriseServer.Security
             if (string.IsNullOrWhiteSpace(ipRange))
                 return;
 
-            using var db = new DataProvider();
-
             // Remove any active blacklist entries for this range first.
-            var blocked = db.IpSecurityPolicies
+            var blocked = Database.IpSecurityPolicies
                 .Where(p => p.IpRange == ipRange && !p.IsWhitelist && p.IsActive)
                 .ToList();
             foreach (var b in blocked)
                 b.IsActive = false;
 
             // Add whitelist entry if one doesn't already exist.
-            var existing = db.IpSecurityPolicies
+            var existing = Database.IpSecurityPolicies
                 .FirstOrDefault(p => p.IpRange == ipRange && p.IsWhitelist && p.IsActive);
 
             if (existing == null)
             {
-                db.IpSecurityPolicies.Add(new IpSecurityPolicy
+                Database.IpSecurityPolicies.Add(new IpSecurityPolicy
                 {
                     IpRange = ipRange,
                     IsWhitelist = true,
@@ -251,7 +243,7 @@ namespace FuseCP.EnterpriseServer.Security
                 });
             }
 
-            db.SaveChanges();
+            Database.SaveChanges();
         }
 
         /// <summary>
@@ -265,8 +257,7 @@ namespace FuseCP.EnterpriseServer.Security
         public List<BruteForceLog> GetAttempts(string ipAddress = null, string layer = null,
             bool failedOnly = false, int skip = 0, int take = 50)
         {
-            using var db = new DataProvider();
-            IQueryable<BruteForceLog> query = db.BruteForceLogs;
+            IQueryable<BruteForceLog> query = Database.BruteForceLogs;
 
             if (!string.IsNullOrEmpty(ipAddress))
                 query = query.Where(l => l.IpAddress == ipAddress);
@@ -290,10 +281,9 @@ namespace FuseCP.EnterpriseServer.Security
         /// <param name="blacklistOnly">When true, returns only blacklist entries.</param>
         public List<IpSecurityPolicy> GetPolicies(bool whitelistOnly = false, bool blacklistOnly = false)
         {
-            using var db = new DataProvider();
             var now = DateTime.UtcNow;
 
-            IQueryable<IpSecurityPolicy> query = db.IpSecurityPolicies
+            IQueryable<IpSecurityPolicy> query = Database.IpSecurityPolicies
                 .Where(p => p.IsActive && (p.ExpiresDate == null || p.ExpiresDate > now));
 
             if (whitelistOnly) query = query.Where(p => p.IsWhitelist);
@@ -306,11 +296,11 @@ namespace FuseCP.EnterpriseServer.Security
         // Private helpers
         // ------------------------------------------------------------------ //
 
-        private static void EnsureBlacklisted(DataProvider db, string ipAddress, string reason,
+        private void EnsureBlacklisted(string ipAddress, string reason,
             int severityLevel, DateTime? expiry, string createdBy = "system")
         {
             // Update the existing entry if there is one; otherwise insert.
-            var existing = db.IpSecurityPolicies
+            var existing = Database.IpSecurityPolicies
                 .FirstOrDefault(p => p.IpRange == ipAddress && !p.IsWhitelist && p.IsActive);
 
             if (existing != null)
@@ -323,7 +313,7 @@ namespace FuseCP.EnterpriseServer.Security
             }
             else
             {
-                db.IpSecurityPolicies.Add(new IpSecurityPolicy
+                Database.IpSecurityPolicies.Add(new IpSecurityPolicy
                 {
                     IpRange = ipAddress,
                     IsWhitelist = false,
@@ -336,7 +326,7 @@ namespace FuseCP.EnterpriseServer.Security
                 });
             }
 
-            db.SaveChanges();
+            Database.SaveChanges();
         }
 
         /// <summary>

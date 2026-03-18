@@ -105,7 +105,7 @@ namespace FuseCP.Tests
             using var db = new FuseCP.EnterpriseServer.DataProvider(connStr);
             var svc = new BruteForceProtectionService(new FuseCP.EnterpriseServer.ControllerBase(db));
 
-            var ip = $"10.1.1.{new Random().Next(10, 200)}";
+            var ip = $"10.1.1.{Random.Shared.Next(10, 200)}";
 
             var blocked = svc.RecordAttempt(ip, "testuser", BruteForceProtectionService.Layers.Portal,
                 succeeded: false);
@@ -121,7 +121,7 @@ namespace FuseCP.Tests
             using var db = new FuseCP.EnterpriseServer.DataProvider(connStr);
             var svc = new BruteForceProtectionService(new FuseCP.EnterpriseServer.ControllerBase(db));
 
-            var ip = $"10.2.1.{new Random().Next(10, 200)}";
+            var ip = $"10.2.1.{Random.Shared.Next(10, 200)}";
 
             svc.RecordAttempt(ip, "testuser", BruteForceProtectionService.Layers.Portal, succeeded: false);
             var blocked = svc.RecordAttempt(ip, "testuser", BruteForceProtectionService.Layers.Portal,
@@ -138,7 +138,7 @@ namespace FuseCP.Tests
             using var db = new FuseCP.EnterpriseServer.DataProvider(connStr);
             var svc = new BruteForceProtectionService(new FuseCP.EnterpriseServer.ControllerBase(db));
 
-            var ip = $"10.3.1.{new Random().Next(10, 200)}";
+            var ip = $"10.3.1.{Random.Shared.Next(10, 200)}";
 
             svc.BlockIp(ip, "manual block test", "unit-test");
 
@@ -153,7 +153,7 @@ namespace FuseCP.Tests
             using var db = new FuseCP.EnterpriseServer.DataProvider(connStr);
             var svc = new BruteForceProtectionService(new FuseCP.EnterpriseServer.ControllerBase(db));
 
-            var ip = $"10.4.1.{new Random().Next(10, 200)}";
+            var ip = $"10.4.1.{Random.Shared.Next(10, 200)}";
 
             svc.BlockIp(ip, "to be unblocked", "unit-test");
             svc.UnblockIp(ip);
@@ -169,7 +169,7 @@ namespace FuseCP.Tests
             using var db = new FuseCP.EnterpriseServer.DataProvider(connStr);
             var svc = new BruteForceProtectionService(new FuseCP.EnterpriseServer.ControllerBase(db));
 
-            var ip = $"10.5.1.{new Random().Next(10, 200)}";
+            var ip = $"10.5.1.{Random.Shared.Next(10, 200)}";
 
             svc.WhitelistIp(ip, "trusted server", "unit-test");
 
@@ -184,7 +184,7 @@ namespace FuseCP.Tests
             using var db = new FuseCP.EnterpriseServer.DataProvider(connStr);
             var svc = new BruteForceProtectionService(new FuseCP.EnterpriseServer.ControllerBase(db));
 
-            var ip = $"10.6.1.{new Random().Next(10, 200)}";
+            var ip = $"10.6.1.{Random.Shared.Next(10, 200)}";
             svc.WhitelistIp(ip, "trusted server", "unit-test");
 
             // Even manually blocking should be overridden by whitelist check.
@@ -201,7 +201,7 @@ namespace FuseCP.Tests
             using var db = new FuseCP.EnterpriseServer.DataProvider(connStr);
             var svc = new BruteForceProtectionService(new FuseCP.EnterpriseServer.ControllerBase(db));
 
-            var ip = $"10.7.1.{new Random().Next(10, 200)}";
+            var ip = $"10.7.1.{Random.Shared.Next(10, 200)}";
             svc.RecordAttempt(ip, "getuser", BruteForceProtectionService.Layers.Api, succeeded: false);
             svc.RecordAttempt(ip, "getuser", BruteForceProtectionService.Layers.Api, succeeded: false);
 
@@ -219,7 +219,7 @@ namespace FuseCP.Tests
             using var db = new FuseCP.EnterpriseServer.DataProvider(connStr);
             var svc = new BruteForceProtectionService(new FuseCP.EnterpriseServer.ControllerBase(db));
 
-            var ip = $"10.8.1.{new Random().Next(10, 200)}";
+            var ip = $"10.8.1.{Random.Shared.Next(10, 200)}";
             svc.BlockIp(ip, "policy test", "unit-test");
 
             var policies = svc.GetPolicies(blacklistOnly: true);
