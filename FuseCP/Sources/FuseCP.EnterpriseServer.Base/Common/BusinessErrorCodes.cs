@@ -57,6 +57,9 @@ namespace FuseCP.EnterpriseServer
 
         public const int ERROR_USER_EXPIRED_ONETIMEPASSWORD = -116;
 
+        /// <summary>The originating IP address has been blocked by brute force protection.</summary>
+        public const int ERROR_USER_IP_BLOCKED = -117;
+
         #endregion
 
         #region Packages

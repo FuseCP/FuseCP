@@ -27,6 +27,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Authenticator;
 using FuseCP.EnterpriseServer.Data;
+using FuseCP.EnterpriseServer.Security;
 
 namespace FuseCP.EnterpriseServer
 {
@@ -53,6 +54,14 @@ namespace FuseCP.EnterpriseServer
 			try
 			{
 				int result = 0;
+
+				// Check brute force protection: block requests from known-bad IPs.
+				var bruteForce = new BruteForceProtectionService(this);
+				if (!string.IsNullOrEmpty(ip) && bruteForce.IsIpBlocked(ip))
+				{
+					TaskManager.WriteWarning("IP address blocked by brute force protection");
+					return BusinessErrorCodes.ERROR_USER_IP_BLOCKED;
+				}
 
 				// try to get user from database
 				UserInfoInternal user = GetUserInternally(username);
@@ -123,10 +132,17 @@ namespace FuseCP.EnterpriseServer
 					if (lockOut >= 0)
 						Database.UpdateUserFailedLoginAttempt(user.UserId, lockOut, false);
 
+					// Record failed attempt for IP-level brute force protection.
+					bruteForce.RecordAttempt(ip, username, BruteForceProtectionService.Layers.Portal,
+						succeeded: false);
+
 					TaskManager.WriteWarning("Wrong password");
 					return BusinessErrorCodes.ERROR_USER_WRONG_PASSWORD;
 				}
 
+				// Record successful authentication to reset IP failure window.
+				bruteForce.RecordAttempt(ip, username, BruteForceProtectionService.Layers.Portal,
+					succeeded: true);
 				Database.UpdateUserFailedLoginAttempt(user.UserId, lockOut, true);
 
 				// check status
