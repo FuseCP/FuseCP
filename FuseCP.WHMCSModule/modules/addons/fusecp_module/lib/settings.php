@@ -38,7 +38,7 @@
  * @link https://fusecp.com/
  * @access public
  * @name FuseCP
- * @version 1.1.4
+ * @version 2.0.0
  * @package WHMCS
  * @final
  */

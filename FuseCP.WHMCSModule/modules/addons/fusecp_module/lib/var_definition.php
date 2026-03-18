@@ -38,7 +38,7 @@
  * @link https://fusecp.com/
  * @access public
  * @name FuseCP
- * @version 1.1.4
+ * @version 2.0.0
  * @package WHMCS
  * @final
  */
@@ -47,3 +47,8 @@ define('SOLIDCP_ENTERPRISE_SERVER_PORT', '9002');
 define('SOLIDCP_SETTINGS_TABLE', 'fusecp_settings');
 define('SOLIDCP_ADDONS_TABLE', 'fusecp_addons');
 define('SOLIDCP_CONFIGURABLE_OPTIONS_TABLE', 'fusecp_configurable');
+
+// v2.0.0 additions
+if (!defined('FUSECP_AUDIT_LOG_TABLE')) {
+    define('FUSECP_AUDIT_LOG_TABLE', 'fusecp_audit_log');
+}

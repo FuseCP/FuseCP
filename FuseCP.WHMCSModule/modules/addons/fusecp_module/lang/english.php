@@ -39,7 +39,7 @@
  * @link https://fusecp.com/
  * @access public
  * @name FuseCP
- * @version 1.1.4
+ * @version 2.0.0
  * @package WHMCS
  */
 $_ADDONLANG['FuseCP_migration'] = 'Migration';
@@ -109,3 +109,32 @@ $_ADDONLANG['FuseCP_cancel_changes'] = 'Cancel Changes';
 $_ADDONLANG['FuseCP_edit'] = 'Edit';
 $_ADDONLANG['FuseCP_cancel'] = 'Cancel';
 $_ADDONLANG['FuseCP_saving'] = 'Saving in progress';
+
+// v2.0.0 additions
+$_ADDONLANG['FuseCP_audit_log'] = 'Audit Log';
+$_ADDONLANG['FuseCP_audit_log_action'] = 'Action';
+$_ADDONLANG['FuseCP_audit_log_status'] = 'Status';
+$_ADDONLANG['FuseCP_audit_log_detail'] = 'Detail';
+$_ADDONLANG['FuseCP_audit_log_user'] = 'User ID';
+$_ADDONLANG['FuseCP_audit_log_date'] = 'Date';
+$_ADDONLANG['FuseCP_audit_log_ip'] = 'IP Address';
+$_ADDONLANG['FuseCP_audit_log_service'] = 'Service ID';
+$_ADDONLANG['FuseCP_audit_log_duration'] = 'Duration (ms)';
+$_ADDONLANG['FuseCP_security_settings'] = 'Security Settings';
+$_ADDONLANG['FuseCP_setting_EnforceHttps'] = 'Enforce HTTPS for Enterprise Server';
+$_ADDONLANG['FuseCP_setting_EnforceHttps_tooltip'] = 'When enabled, connections to the FuseCP Enterprise Server will always use HTTPS. Recommended for production environments.';
+$_ADDONLANG['FuseCP_setting_VerifySslCert'] = 'Verify SSL certificate';
+$_ADDONLANG['FuseCP_setting_VerifySslCert_tooltip'] = 'Validate the TLS certificate of the FuseCP Enterprise Server. Disable only in development/test environments.';
+$_ADDONLANG['FuseCP_api_credentials'] = 'API Credentials';
+$_ADDONLANG['FuseCP_api_key_id'] = 'API Key ID';
+$_ADDONLANG['FuseCP_api_key_secret'] = 'API Key Secret';
+$_ADDONLANG['FuseCP_api_auth_method'] = 'Authentication Method';
+$_ADDONLANG['FuseCP_api_auth_hmac'] = 'HMAC-SHA256 (Recommended)';
+$_ADDONLANG['FuseCP_api_auth_soap'] = 'SOAP (Legacy – Deprecated)';
+$_ADDONLANG['FuseCP_error_retry_enabled'] = 'Enable retry on transient errors';
+$_ADDONLANG['FuseCP_error_retry_enabled_tooltip'] = 'Automatically retry failed API calls using exponential back-off. Recommended for production environments.';
+$_ADDONLANG['FuseCP_error_max_retries'] = 'Maximum retries';
+$_ADDONLANG['FuseCP_error_max_retries_tooltip'] = 'Number of retry attempts before a provisioning error is reported (1–5).';
+$_ADDONLANG['FuseCP_soap_deprecation_notice'] = 'Warning: SOAP authentication is deprecated and will be removed in a future release. Please migrate to HMAC-SHA256.';
+$_ADDONLANG['FuseCP_version'] = 'Module Version';
+$_ADDONLANG['FuseCP_compatibility'] = 'WHMCS 7.x, 8.x, 9.x | PHP 7.4, 8.0, 8.1, 8.2';

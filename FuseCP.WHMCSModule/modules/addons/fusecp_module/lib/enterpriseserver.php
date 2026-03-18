@@ -39,11 +39,7 @@
  * @link https://fusecp.com/
  * @access public
  * @name FuseCP
- * @version 1.1.4
- * @package WHMCS
- * @final
- */
-final class FuseCP_EnterpriseServer
+ * @version 2.0.0
 {
 	/**
      * FuseCP user account statuses / states
@@ -120,7 +116,16 @@ final class FuseCP_EnterpriseServer
 	 * @var boolean
 	 */
 	private $_compression;
-	
+
+	/**
+	 * Verify SSL peer certificate when using HTTPS.
+	 * Disable only for development/testing environments.
+	 *
+	 * @access private
+	 * @var boolean
+	 */
+	private $_verifySsl;
+
 	/**
 	 * Class constructor
 	 * 
@@ -132,8 +137,9 @@ final class FuseCP_EnterpriseServer
 	 * @param boolean $secured
 	 * @param boolean $caching
 	 * @param boolean $compression
+	 * @param boolean $verifySsl  Verify SSL peer certificate (default TRUE when $secured is TRUE)
 	 */
-	function __construct($username, $password, $host, $port = 9002, $secured = FALSE, $caching = FALSE, $compression = TRUE)
+	function __construct($username, $password, $host, $port = 9002, $secured = FALSE, $caching = FALSE, $compression = TRUE, $verifySsl = TRUE)
 	{
 		$this->_username = $username;
 		$this->_password = $password;
@@ -142,6 +148,7 @@ final class FuseCP_EnterpriseServer
 		$this->_secured = $secured;
 		$this->_caching = $caching;
 		$this->_compression = $compression;
+		$this->_verifySsl = $verifySsl;
 	}
 	
 	/**
@@ -520,10 +527,32 @@ final class FuseCP_EnterpriseServer
 	{
 		// Set the Enterprise Server full URL
 		$host = (($this->_secured) ? 'https' : 'http') . "://{$this->_host}:{$this->_port}/{$service}?WSDL";
+
+		// Build SSL stream context for certificate verification
+		$sslContext = null;
+		if ($this->_secured) {
+			$sslContext = stream_context_create([
+				'ssl' => [
+					'verify_peer'       => $this->_verifySsl,
+					'verify_peer_name'  => $this->_verifySsl,
+					'allow_self_signed' => !$this->_verifySsl,
+				],
+			]);
+		}
+
+		$clientOptions = array(
+			'compression' => (($this->_compression) ? (SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP) : ''),
+			'keep_alive'  => false,
+			'cache_wsdl'  => ($this->_caching) ? 1 : 0,
+		);
+		if ($sslContext !== null) {
+			$clientOptions['stream_context'] = $sslContext;
+		}
+
 		try
 		{
 			// Create the SoapClient
-			$client = new SoapClient($host, array('compression' => (($this->_compression) ? (SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP) : ''), 'keep_alive' => false, 'cache_wsdl' => ($this->_caching) ? 1 : 0));
+			$client = new SoapClient($host, $clientOptions);
 
 			$hasUser = !empty($this->_password);
 			if ($hasUser) {
@@ -539,8 +568,9 @@ final class FuseCP_EnterpriseServer
 		} catch (SoapFault $ex) {
 			// Old version of FuseCP
 			$host = (($this->_secured) ? 'https' : 'http') . "://{$this->_host}:{$this->_port}/{$service}.asmx?WSDL";
+			$legacyOptions = array_merge($clientOptions, array('login' => $this->_username, 'password' => $this->_password));
 			// Create the SoapClient
-			$client = new SoapClient($host, array('login' => $this->_username, 'password' => $this->_password, 'compression' => (($this->_compression) ? (SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP) : ''), 'keep_alive' => false, 'cache_wsdl' => ($this->_caching) ? 1 : 0));
+			$client = new SoapClient($host, $legacyOptions);
 		}
 		
 		try {
