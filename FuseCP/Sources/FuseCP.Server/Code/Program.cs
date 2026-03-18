@@ -60,6 +60,7 @@ namespace FuseCP.Server
 		private static Dictionary<string, string> BuildProviderAssemblyMap()
 		{
 			var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+			var versionMap = new Dictionary<string, Version>(StringComparer.OrdinalIgnoreCase);
 			foreach (var providerRoot in GetProviderProbeRoots())
 			{
 				if (!Directory.Exists(providerRoot))
@@ -68,8 +69,31 @@ namespace FuseCP.Server
 				foreach (var file in Directory.EnumerateFiles(providerRoot, "*.dll", SearchOption.AllDirectories))
 				{
 					var name = Path.GetFileNameWithoutExtension(file);
-					if (!map.ContainsKey(name))
+					Version version;
+					try
+					{
+						version = AssemblyName.GetAssemblyName(file).Version ?? new Version(0, 0, 0, 0);
+					}
+					catch
+					{
+						continue;
+					}
+
+					if (!map.TryGetValue(name, out var existingPath))
+					{
 						map[name] = file;
+						versionMap[name] = version;
+						continue;
+					}
+
+					if (!versionMap.TryGetValue(name, out var existingVersion))
+						existingVersion = new Version(0, 0, 0, 0);
+
+					if (version > existingVersion)
+					{
+						map[name] = file;
+						versionMap[name] = version;
+					}
 				}
 			}
 
