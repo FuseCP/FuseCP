@@ -170,10 +170,14 @@
 
 <asp:Panel ID="pnlTaskDetails" runat="server" CssClass="PopupContainer" style="display:none">
     <div class="widget">
-        <div class="widget-header clearfix">
-            <h3><i class="bi bi-book"></i> <asp:Localize ID="TaskDetailsHeader" runat="server" Text="Task Details" meta:resourcekey="TaskDetailsHeader"></asp:Localize></h3>
-        </div>
         <div class="widget-content Popup">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <h3 class="m-0 fs-6 text-secondary"><i class="bi bi-book"></i> <asp:Localize ID="TaskDetailsHeader" runat="server" Text="Task Details" meta:resourcekey="TaskDetailsHeader"></asp:Localize></h3>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$find('<%= modalTaskDetailsProperties.ClientID %>').hide(); return false;">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <span class="ms-1">Close</span>
+            </button>
+        </div>
         <table class="table">
             <tr>
                 <td >
