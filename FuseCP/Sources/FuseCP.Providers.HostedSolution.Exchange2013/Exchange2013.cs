@@ -6762,7 +6762,6 @@ namespace FuseCP.Providers.HostedSolution
         #endregion
 
         #region PowerShell integration
-        private static RunspaceConfiguration runspaceConfiguration = null;
         private static WSManConnectionInfo connectionInfo = null;
         private static string ExchangePath = null;
 
@@ -6810,28 +6809,17 @@ namespace FuseCP.Providers.HostedSolution
         {
             ExchangeLog.LogStart("OpenRunspace");
 
-            if (runspaceConfiguration == null)
+            if (string.IsNullOrWhiteSpace(PowerShellUrl))
             {
-                runspaceConfiguration = RunspaceConfiguration.Create();
-                PSSnapInException exception = null;
-
-                PSSnapInInfo info = runspaceConfiguration.AddPSSnapIn(ExchangeSnapInName, out exception);
-
-                if (exception != null)
-                {
-                    ExchangeLog.LogWarning("SnapIn error", exception);
-                }
+                throw new Exception("PowerShellUrl is not configured for Exchange2013 provider.");
             }
-            Runspace runSpace = RunspaceFactory.CreateRunspace(runspaceConfiguration);
-            //
-            runSpace.Open();
-            //
+
+            // PowerShell 7+ removed RunspaceConfiguration and legacy snap-in initialization.
+            // Use the WSMan Exchange endpoint path for compatibility with modern SMA runtime.
+            Runspace runSpace = OpenRunspaceEx();
+
             runSpace.SessionStateProxy.SetVariable("ConfirmPreference", "none");
             ExchangeLog.LogEnd("OpenRunspace");
-
-            Command cmd = new Command("Set-ADServerSettings");
-            cmd.Parameters.Add("PreferredServer", PrimaryDomainController);
-            ExecuteShellCommand(runSpace, cmd, false);
             return runSpace;
         }
 

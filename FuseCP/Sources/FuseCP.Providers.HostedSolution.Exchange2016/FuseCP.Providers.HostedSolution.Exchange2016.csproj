@@ -4,6 +4,9 @@
 		<OutputPath>..\FuseCP.Server\bin\Exchange2016\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<UseRidGraph>true</UseRidGraph>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<ProduceReferenceAssembly>true</ProduceReferenceAssembly>
 		<LangVersion>11</LangVersion>
@@ -52,35 +55,13 @@
 			<SpecificVersion>False</SpecificVersion>
 		</Reference>
 		<Reference Include="System.DirectoryServices" />
-		<Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-			<HintPath>..\..\Lib\References\Microsoft\Windows2012\System.Management.Automation.dll</HintPath>
-			<SpecificVersion>False</SpecificVersion>
-			<Private>false</Private>
-		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Management.Automation" Version="7.5.5" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\FuseCP.Providers.Base\FuseCP.Providers.Base.csproj" />
 		<ProjectReference Include="..\FuseCP.Providers.HostedSolution\FuseCP.Providers.HostedSolution.csproj" />
 		<ProjectReference Include="..\FuseCP.Server.Utils\FuseCP.Server.Utils.csproj" />
 	</ItemGroup>
-
-    <Target Name="DeleteUnusedDlls" AfterTargets="Build">
-        <ItemGroup>
-            <FilesToDelete Include="$(OutputPath)System.*" />
-            <FilesToDelete Include="$(OutputPath)Renci.*" />
-            <FilesToDelete Include="$(OutputPath)Newtonsoft.*" />
-            <FilesToDelete Include="$(OutputPath)Standard.*" />
-            <FilesToDelete Include="$(OutputPath)BouncyCastle.*" />
-            <FilesToDelete Include="$(OutputPath)Microsoft.Bcl.*" />
-            <FilesToDelete Include="$(OutputPath)Microsoft.Extensions.*" />
-            <FilesToDelete Include="$(OutputPath)Mono.*" />
-            <FilesToDelete Include="$(OutputPath)FuseCP.Providers.Base.*" />
-            <FilesToDelete Include="$(OutputPath)FuseCP.Server.Utils.*" />
-            <FilesToDelete Include="$(OutputPath)Microsoft.Win32.*" />
-            <FilesToDelete Include="$(OutputPath)FuseCP.Providers.HostedSolution.dll" />
-            <FilesToDelete Include="$(OutputPath)FuseCP.Providers.HostedSolution.pdb" />
-        </ItemGroup>
-        <Delete Files="@(FilesToDelete)" />
-    </Target>
-
 </Project>
