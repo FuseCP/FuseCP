@@ -3120,46 +3120,146 @@ namespace FuseCP.Providers.HostedSolution
                 Collection<PSObject> result = GetMailboxObject(runSpace, accountName);
                 PSObject mailbox = result[0];
 
-                currentStep = "reading forwarding settings";
-                string forwardingAddress = ObjToString(GetPSObjectProperty(mailbox, "ForwardingAddress"));
-                if (string.IsNullOrEmpty(forwardingAddress))
+                try
                 {
-                    info.EnableForwarding = false;
-                    info.ForwardingAccount = null;
-                    info.DoNotDeleteOnForward = false;
+                    currentStep = "reading ForwardingAddress property";
+                    object forwardingAddressObj = GetPSObjectProperty(mailbox, "ForwardingAddress");
+                    string forwardingAddressType = forwardingAddressObj?.GetType().Name ?? "null";
+                    ExchangeLog.DebugInfo("ForwardingAddress raw value: {0} (type: {1})", forwardingAddressObj, forwardingAddressType);
+                    
+                    string forwardingAddress = ObjToString(forwardingAddressObj);
+                    if (string.IsNullOrEmpty(forwardingAddress))
+                    {
+                        info.EnableForwarding = false;
+                        info.ForwardingAccount = null;
+                        info.DoNotDeleteOnForward = false;
+                    }
+                    else
+                    {
+                        info.EnableForwarding = true;
+                        currentStep = "resolving forwarding account";
+                        info.ForwardingAccount = GetExchangeAccount(runSpace, forwardingAddress);
+                        
+                        currentStep = "reading DeliverToMailboxAndForward property";
+                        object deliverObj = GetPSObjectProperty(mailbox, "DeliverToMailboxAndForward");
+                        string deliverType = deliverObj?.GetType().Name ?? "null";
+                        ExchangeLog.DebugInfo("DeliverToMailboxAndForward raw value: {0} (type: {1})", deliverObj, deliverType);
+                        info.DoNotDeleteOnForward = ObjToBoolean(deliverObj);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    info.EnableForwarding = true;
-                    info.ForwardingAccount = GetExchangeAccount(runSpace, forwardingAddress);
-                    info.DoNotDeleteOnForward = ObjToBoolean(GetPSObjectProperty(mailbox, "DeliverToMailboxAndForward"));
+                    ExchangeLog.LogError("Error during forwarding settings", ex);
+                    throw;
                 }
 
-                currentStep = "reading sent item copy settings";
-                bool MailboxSaveSentItems = ObjToBoolean(GetPSObjectProperty(mailbox, "MessageCopyForSendOnBehalfEnabled"));
-
-                if (MailboxSaveSentItems)
+                try
                 {
-                    // Enabled
-                    info.SaveSentItems = 1;
+                    currentStep = "reading MessageCopyForSendOnBehalfEnabled property";
+                    object msgCopyObj = GetPSObjectProperty(mailbox, "MessageCopyForSendOnBehalfEnabled");
+                    string msgCopyType = msgCopyObj?.GetType().Name ?? "null";
+                    ExchangeLog.DebugInfo("MessageCopyForSendOnBehalfEnabled raw value: {0} (type: {1})", msgCopyObj, msgCopyType);
+                    
+                    bool MailboxSaveSentItems = ObjToBoolean(msgCopyObj);
+
+                    if (MailboxSaveSentItems)
+                    {
+                        // Enabled
+                        info.SaveSentItems = 1;
+                    }
+                    else
+                    {
+                        // Disabled
+                        info.SaveSentItems = 0;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Disabled
-                    info.SaveSentItems = 0;
+                    ExchangeLog.LogError("Error during sent items copy settings", ex);
+                    throw;
                 }
 
-                currentStep = "reading delivery restrictions";
-                info.SendOnBehalfAccounts = GetSendOnBehalfAccounts(runSpace, mailbox);
-                info.AcceptAccounts = GetAcceptedAccounts(runSpace, mailbox);
-                info.RejectAccounts = GetRejectedAccounts(runSpace, mailbox);
-                info.MaxRecipients =
-                    ConvertUnlimitedIntPropertyToInt32(GetPSObjectProperty(mailbox, "RecipientLimits"));
-                info.MaxSendMessageSizeKB =
-                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "MaxSendSize"));
-                info.MaxReceiveMessageSizeKB =
-                    ConvertByteSizePropertyToKB(GetPSObjectProperty(mailbox, "MaxReceiveSize"));
-                info.RequireSenderAuthentication = ObjToBoolean(GetPSObjectProperty(mailbox, "RequireSenderAuthenticationEnabled"));
+                try
+                {
+                    currentStep = "reading delivery restriction accounts";
+                    info.SendOnBehalfAccounts = GetSendOnBehalfAccounts(runSpace, mailbox);
+                    int sendOnBehalfCount = info.SendOnBehalfAccounts != null ? info.SendOnBehalfAccounts.Length : 0;
+                    ExchangeLog.DebugInfo("SendOnBehalfAccounts count: {0}", sendOnBehalfCount);
+                    
+                    currentStep = "reading accept accounts";
+                    info.AcceptAccounts = GetAcceptedAccounts(runSpace, mailbox);
+                    int acceptCount = info.AcceptAccounts != null ? info.AcceptAccounts.Length : 0;
+                    ExchangeLog.DebugInfo("AcceptAccounts count: {0}", acceptCount);
+                    
+                    currentStep = "reading reject accounts";
+                    info.RejectAccounts = GetRejectedAccounts(runSpace, mailbox);
+                    int rejectCount = info.RejectAccounts != null ? info.RejectAccounts.Length : 0;
+                    ExchangeLog.DebugInfo("RejectAccounts count: {0}", rejectCount);
+                }
+                catch (Exception ex)
+                {
+                    ExchangeLog.LogError("Error during delivery restriction accounts", ex);
+                    throw;
+                }
+
+                try
+                {
+                    currentStep = "reading RecipientLimits property";
+                    object recipientLimitsObj = GetPSObjectProperty(mailbox, "RecipientLimits");
+                    string recipientLimitsType = recipientLimitsObj?.GetType().Name ?? "null";
+                    ExchangeLog.DebugInfo("RecipientLimits raw value: {0} (type: {1})", recipientLimitsObj, recipientLimitsType);
+                    info.MaxRecipients = ConvertUnlimitedIntPropertyToInt32(recipientLimitsObj);
+                    ExchangeLog.DebugInfo("RecipientLimits converted: {0}", info.MaxRecipients);
+                }
+                catch (Exception ex)
+                {
+                    ExchangeLog.LogError("Error during RecipientLimits conversion", ex);
+                    throw;
+                }
+
+                try
+                {
+                    currentStep = "reading MaxSendSize property";
+                    object maxSendSizeObj = GetPSObjectProperty(mailbox, "MaxSendSize");
+                    string maxSendSizeType = maxSendSizeObj?.GetType().Name ?? "null";
+                    ExchangeLog.DebugInfo("MaxSendSize raw value: {0} (type: {1})", maxSendSizeObj, maxSendSizeType);
+                    info.MaxSendMessageSizeKB = ConvertByteSizePropertyToKB(maxSendSizeObj);
+                    ExchangeLog.DebugInfo("MaxSendSize converted: {0} KB", info.MaxSendMessageSizeKB);
+                }
+                catch (Exception ex)
+                {
+                    ExchangeLog.LogError("Error during MaxSendSize conversion", ex);
+                    throw;
+                }
+
+                try
+                {
+                    currentStep = "reading MaxReceiveSize property";
+                    object maxReceiveSizeObj = GetPSObjectProperty(mailbox, "MaxReceiveSize");
+                    string maxReceiveSizeType = maxReceiveSizeObj?.GetType().Name ?? "null";
+                    ExchangeLog.DebugInfo("MaxReceiveSize raw value: {0} (type: {1})", maxReceiveSizeObj, maxReceiveSizeType);
+                    info.MaxReceiveMessageSizeKB = ConvertByteSizePropertyToKB(maxReceiveSizeObj);
+                    ExchangeLog.DebugInfo("MaxReceiveSize converted: {0} KB", info.MaxReceiveMessageSizeKB);
+                }
+                catch (Exception ex)
+                {
+                    ExchangeLog.LogError("Error during MaxReceiveSize conversion", ex);
+                    throw;
+                }
+
+                try
+                {
+                    currentStep = "reading RequireSenderAuthenticationEnabled property";
+                    object requireAuthObj = GetPSObjectProperty(mailbox, "RequireSenderAuthenticationEnabled");
+                    string requireAuthType = requireAuthObj?.GetType().Name ?? "null";
+                    ExchangeLog.DebugInfo("RequireSenderAuthenticationEnabled raw value: {0} (type: {1})", requireAuthObj, requireAuthType);
+                    info.RequireSenderAuthentication = ObjToBoolean(requireAuthObj);
+                }
+                catch (Exception ex)
+                {
+                    ExchangeLog.LogError("Error during RequireSenderAuthenticationEnabled conversion", ex);
+                    throw;
+                }
             }
             catch (Exception ex)
             {
