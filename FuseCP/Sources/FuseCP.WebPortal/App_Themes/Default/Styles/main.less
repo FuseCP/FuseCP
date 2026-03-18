@@ -12618,7 +12618,7 @@ html.dark-theme .fcp-exchange-title-icon {
 
 .fcp-system-settings .mb-3 {
     display: grid;
-    grid-template-columns: minmax(220px, 30%) minmax(0, 1fr);
+    grid-template-columns: minmax(280px, 34%) minmax(0, 1fr);
     gap: 10px 16px;
     align-items: start;
     margin-bottom: 12px !important;
@@ -12626,11 +12626,19 @@ html.dark-theme .fcp-exchange-title-icon {
 
 .fcp-system-settings .mb-3 > .form-label,
 .fcp-system-settings .mb-3 > .col-sm-2.form-label {
+    grid-column: 1;
     margin: 0;
-    padding-top: 8px;
+    width: auto;
+    min-width: 0;
+    max-width: none !important;
+    flex: none !important;
+    padding: 8px 12px 0 0;
     font-weight: 600;
     font-size: 0.9375rem;
     line-height: 1.4;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
     color: var(--fcp-settings-label);
 }
 
@@ -12641,8 +12649,11 @@ html.dark-theme .fcp-exchange-title-icon {
 
 .fcp-system-settings .mb-3 > .col-sm-6,
 .fcp-system-settings .mb-3 > .col-sm-4 {
-    width: 100%;
-    max-width: none;
+    grid-column: 2;
+    width: auto;
+    min-width: 0;
+    max-width: none !important;
+    flex: none !important;
     padding-left: 0;
     padding-right: 0;
 }
@@ -12780,7 +12791,14 @@ html.dark-theme .fcp-exchange-title-icon {
 
     .fcp-system-settings .mb-3 > .form-label,
     .fcp-system-settings .mb-3 > .col-sm-2.form-label {
+        grid-column: auto;
         padding-top: 0;
+        padding-right: 0;
+    }
+
+    .fcp-system-settings .mb-3 > .col-sm-6,
+    .fcp-system-settings .mb-3 > .col-sm-4 {
+        grid-column: auto;
     }
 
     .fcp-system-settings .accordion-collapse > .card-body > .btn.btn-success.w-100 {
