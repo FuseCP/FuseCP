@@ -576,4 +576,76 @@
   <data name="PageTitle.APIDocumentation" xml:space="preserve">
     <value>وثائق واجهة برمجة التطبيقات</value>
   </data>
+  <data name="PageName.Infrastructure" xml:space="preserve">
+    <value>البنية التحتية</value>
+  </data>
+  <data name="PageTitle.Infrastructure" xml:space="preserve">
+    <value>البنية التحتية</value>
+  </data>
+  <data name="PageName.Security" xml:space="preserve">
+    <value>الأمان</value>
+  </data>
+  <data name="PageTitle.Security" xml:space="preserve">
+    <value>الأمان</value>
+  </data>
+  <data name="PageName.PoliciesAndTemplates" xml:space="preserve">
+    <value>السياسات والقوالب</value>
+  </data>
+  <data name="PageTitle.PoliciesAndTemplates" xml:space="preserve">
+    <value>السياسات والقوالب</value>
+  </data>
+  <data name="PageName.AppearanceBranding" xml:space="preserve">
+    <value>المظهر والهوية</value>
+  </data>
+  <data name="PageTitle.AppearanceBranding" xml:space="preserve">
+    <value>المظهر والهوية</value>
+  </data>
+  <data name="PageName.SecurityBruteForceAttempts" xml:space="preserve">
+    <value>محاولات القوة الغاشمة</value>
+  </data>
+  <data name="PageTitle.SecurityBruteForceAttempts" xml:space="preserve">
+    <value>محاولات القوة الغاشمة</value>
+  </data>
+  <data name="PageName.SecurityIpSecurityPolicies" xml:space="preserve">
+    <value>سياسات أمان IP</value>
+  </data>
+  <data name="PageTitle.SecurityIpSecurityPolicies" xml:space="preserve">
+    <value>سياسات أمان IP</value>
+  </data>
+  <data name="PageName.ConfigurationPolicies" xml:space="preserve">
+    <value>السياسات</value>
+  </data>
+  <data name="PageTitle.ConfigurationPolicies" xml:space="preserve">
+    <value>السياسات</value>
+  </data>
+  <data name="PageName.ConfigurationMailTemplates" xml:space="preserve">
+    <value>قوالب البريد</value>
+  </data>
+  <data name="PageTitle.ConfigurationMailTemplates" xml:space="preserve">
+    <value>قوالب البريد</value>
+  </data>
+  <data name="PageName.ConfigurationAppearance" xml:space="preserve">
+    <value>إعدادات المظهر</value>
+  </data>
+  <data name="PageTitle.ConfigurationAppearance" xml:space="preserve">
+    <value>إعدادات المظهر</value>
+  </data>
+  <data name="PageName.SecurityPortalAuthentication" xml:space="preserve">
+    <value>مصادقة البوابة</value>
+  </data>
+  <data name="PageTitle.SecurityPortalAuthentication" xml:space="preserve">
+    <value>مصادقة البوابة</value>
+  </data>
+  <data name="PageName.SecurityCredentialHardening" xml:space="preserve">
+    <value>تقوية بيانات الاعتماد</value>
+  </data>
+  <data name="PageTitle.SecurityCredentialHardening" xml:space="preserve">
+    <value>تقوية بيانات الاعتماد</value>
+  </data>
+  <data name="PageName.SecurityPasswordLifecycle" xml:space="preserve">
+    <value>تقوية بيانات الاعتماد</value>
+  </data>
+  <data name="PageTitle.SecurityPasswordLifecycle" xml:space="preserve">
+    <value>تقوية بيانات الاعتماد</value>
+  </data>
 </root>

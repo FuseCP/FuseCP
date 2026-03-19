@@ -28,6 +28,14 @@ namespace FuseCP.Portal
 {
     public partial class UserAccountMailTemplateSettings : FuseCPModuleBase
     {
+        private int SettingsUserId
+        {
+            get
+            {
+                int selectedUserId = PanelSecurity.SelectedUserId;
+                return selectedUserId > 0 ? selectedUserId : PanelSecurity.EffectiveUserId;
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,12 +44,12 @@ namespace FuseCP.Portal
 
         public string GetSettingsLink(string settingsName, string settingsControl)
         {
-            return EditUrl("SettingsControl", settingsControl, "edit_settings", "SettingsName=" + settingsName, "UserID=" + PanelSecurity.SelectedUserId.ToString());
+            return EditUrl("SettingsControl", settingsControl, "edit_settings", "SettingsName=" + settingsName, "UserID=" + SettingsUserId.ToString());
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(NavigateURL(PortalUtils.USER_ID_PARAM, PanelSecurity.SelectedUserId.ToString()));
+            Response.Redirect(NavigateURL(PortalUtils.USER_ID_PARAM, SettingsUserId.ToString()));
         }
     }
 }

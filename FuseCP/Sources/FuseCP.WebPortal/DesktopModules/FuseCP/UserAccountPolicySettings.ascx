@@ -2,10 +2,6 @@
 <div class="card-body form-horizontal">
     <ul class="LinksList mb-0">
         <li>
-            <asp:HyperLink ID="lnkFuseCPPolicy" runat="server" meta:resourcekey="lnkFuseCPPolicy"
-                    Text="FuseCP Policy" NavigateUrl='<%# GetSettingsLink("FuseCPPolicy", "SettingsFuseCPPolicy") %>'></asp:HyperLink>
-        </li>
-        <li>
             <asp:HyperLink ID="lnkServiceLevels" runat="server" meta:resourcekey="lnkServiceLevels"
                     Text="Service Levels" NavigateUrl='<%# GetSettingsLink("ServiceLevels", "SettingsServiceLevels") %>'></asp:HyperLink>
         </li>

@@ -41,11 +41,24 @@ namespace FuseCP.EnterpriseServer.Security
             public const string Module = "Module";
         }
 
-        // Default thresholds. These can be overridden via system settings in the future.
+        // Default thresholds used when settings are not configured.
         private const int DefaultMaxFailedAttempts = 5;
         private static readonly TimeSpan DefaultWindow = TimeSpan.FromMinutes(30);
         private static readonly TimeSpan DefaultIpLockoutDuration = TimeSpan.FromMinutes(15);
-        private const int CriticalAttemptThreshold = 20;
+        private const int DefaultCriticalAttemptThreshold = 20;
+
+        private static readonly TimeSpan PolicyCacheDuration = TimeSpan.FromMinutes(1);
+        private static readonly object PolicyCacheSync = new object();
+        private static DateTime PolicyCacheUpdatedUtc = DateTime.MinValue;
+        private static BruteForcePolicySettings CachedPolicySettings;
+
+        private sealed class BruteForcePolicySettings
+        {
+            public int MaxFailedAttempts { get; set; }
+            public TimeSpan Window { get; set; }
+            public TimeSpan LockoutDuration { get; set; }
+            public int CriticalAttemptThreshold { get; set; }
+        }
 
         /// <inheritdoc/>
         public BruteForceProtectionService(ControllerBase provider) : base(provider) { }
@@ -76,12 +89,15 @@ namespace FuseCP.EnterpriseServer.Security
             if (IsIpWhitelisted(ipAddress))
                 return false;
 
+            var policy = GetPolicySettings();
+            var effectiveLayer = string.IsNullOrWhiteSpace(layer) ? Layers.Portal : layer;
+
             // Persist the log entry.
             var log = new BruteForceLog
             {
                 IpAddress = ipAddress,
                 Username = username,
-                Layer = layer ?? Layers.Portal,
+                Layer = effectiveLayer,
                 AttemptTime = DateTime.UtcNow,
                 Succeeded = succeeded,
                 UserAgent = userAgent
@@ -93,15 +109,15 @@ namespace FuseCP.EnterpriseServer.Security
                 return false;
 
             // Count recent failures from this IP on this layer.
-            var windowStart = DateTime.UtcNow.Subtract(DefaultWindow);
+            var windowStart = DateTime.UtcNow.Subtract(policy.Window);
             var recentFailures = Database.BruteForceLogs
                 .Count(l => l.IpAddress == ipAddress
-                         && l.Layer == layer
+                         && l.Layer == effectiveLayer
                          && !l.Succeeded
                          && l.AttemptTime >= windowStart);
 
             // Critical threshold → permanent (high severity) blacklist.
-            if (recentFailures >= CriticalAttemptThreshold)
+            if (recentFailures >= policy.CriticalAttemptThreshold)
             {
                 EnsureBlacklisted(ipAddress, "Auto-blacklisted: critical attempt threshold exceeded",
                     severityLevel: 3, expiry: null);
@@ -109,10 +125,10 @@ namespace FuseCP.EnterpriseServer.Security
             }
 
             // Standard threshold → timed lockout.
-            if (recentFailures >= DefaultMaxFailedAttempts)
+            if (recentFailures >= policy.MaxFailedAttempts)
             {
-                EnsureBlacklisted(ipAddress, $"Auto-blocked after {recentFailures} failed {layer} attempts",
-                    severityLevel: 1, expiry: DateTime.UtcNow.Add(DefaultIpLockoutDuration));
+                EnsureBlacklisted(ipAddress, $"Auto-blocked after {recentFailures} failed {effectiveLayer} attempts",
+                    severityLevel: 1, expiry: DateTime.UtcNow.Add(policy.LockoutDuration));
                 return true;
             }
 
@@ -199,6 +215,19 @@ namespace FuseCP.EnterpriseServer.Security
         }
 
         /// <summary>
+        /// Removes a single active IP security policy by identifier.
+        /// </summary>
+        public void RemovePolicy(int policyId)
+        {
+            var policy = Database.IpSecurityPolicies.FirstOrDefault(p => p.Id == policyId && p.IsActive);
+            if (policy == null)
+                return;
+
+            policy.IsActive = false;
+            Database.SaveChanges();
+        }
+
+        /// <summary>
         /// Adds an IP address or CIDR range to the whitelist (safe path).
         /// </summary>
         /// <param name="ipRange">An exact IP address or CIDR range (e.g. "10.0.0.0/8").</param>
@@ -269,21 +298,38 @@ namespace FuseCP.EnterpriseServer.Security
         }
 
         /// <summary>
-        /// Returns all currently active IP security policies.
+        /// Returns IP security policies that are still within their validity window.
         /// </summary>
         /// <param name="whitelistOnly">When true, returns only whitelist entries.</param>
         /// <param name="blacklistOnly">When true, returns only blacklist entries.</param>
-        public List<IpSecurityPolicy> GetPolicies(bool whitelistOnly = false, bool blacklistOnly = false)
+        /// <param name="includeInactive">When true, includes inactive rules so they can be reviewed or re-enabled.</param>
+        public List<IpSecurityPolicy> GetPolicies(bool whitelistOnly = false, bool blacklistOnly = false, bool includeInactive = false)
         {
             var now = DateTime.UtcNow;
 
             IQueryable<IpSecurityPolicy> query = Database.IpSecurityPolicies
-                .Where(p => p.IsActive && (p.ExpiresDate == null || p.ExpiresDate > now));
+                .Where(p => p.ExpiresDate == null || p.ExpiresDate > now);
+
+            if (!includeInactive)
+                query = query.Where(p => p.IsActive);
 
             if (whitelistOnly) query = query.Where(p => p.IsWhitelist);
             if (blacklistOnly) query = query.Where(p => !p.IsWhitelist);
 
             return query.OrderByDescending(p => p.CreatedDate).ToList();
+        }
+
+        /// <summary>
+        /// Enables or disables a single IP security policy by identifier.
+        /// </summary>
+        public void SetPolicyState(int policyId, bool isActive)
+        {
+            var policy = Database.IpSecurityPolicies.FirstOrDefault(p => p.Id == policyId);
+            if (policy == null || policy.IsActive == isActive)
+                return;
+
+            policy.IsActive = isActive;
+            Database.SaveChanges();
         }
 
         // ------------------------------------------------------------------ //
@@ -321,6 +367,63 @@ namespace FuseCP.EnterpriseServer.Security
             }
 
             Database.SaveChanges();
+        }
+
+        private BruteForcePolicySettings GetPolicySettings()
+        {
+            if (CachedPolicySettings != null && (DateTime.UtcNow - PolicyCacheUpdatedUtc) <= PolicyCacheDuration)
+                return CachedPolicySettings;
+
+            lock (PolicyCacheSync)
+            {
+                if (CachedPolicySettings != null && (DateTime.UtcNow - PolicyCacheUpdatedUtc) <= PolicyCacheDuration)
+                    return CachedPolicySettings;
+
+                var settings = SystemController.GetSystemSettingsInternal(SystemSettings.AUTHENTICATION_SETTINGS, false);
+                var maxFailedAttempts = ParseIntSetting(settings,
+                    SystemSettings.AUTH_BRUTEFORCE_MAX_FAILED_ATTEMPTS,
+                    DefaultMaxFailedAttempts,
+                    minValue: 1,
+                    maxValue: 1000);
+                var windowMinutes = ParseIntSetting(settings,
+                    SystemSettings.AUTH_BRUTEFORCE_WINDOW_MINUTES,
+                    (int)DefaultWindow.TotalMinutes,
+                    minValue: 1,
+                    maxValue: 1440);
+                var lockoutMinutes = ParseIntSetting(settings,
+                    SystemSettings.AUTH_BRUTEFORCE_LOCKOUT_MINUTES,
+                    (int)DefaultIpLockoutDuration.TotalMinutes,
+                    minValue: 1,
+                    maxValue: 10080);
+                var criticalAttempts = ParseIntSetting(settings,
+                    SystemSettings.AUTH_BRUTEFORCE_CRITICAL_ATTEMPTS,
+                    DefaultCriticalAttemptThreshold,
+                    minValue: 1,
+                    maxValue: 5000);
+
+                CachedPolicySettings = new BruteForcePolicySettings
+                {
+                    MaxFailedAttempts = maxFailedAttempts,
+                    Window = TimeSpan.FromMinutes(windowMinutes),
+                    LockoutDuration = TimeSpan.FromMinutes(lockoutMinutes),
+                    CriticalAttemptThreshold = criticalAttempts
+                };
+
+                PolicyCacheUpdatedUtc = DateTime.UtcNow;
+                return CachedPolicySettings;
+            }
+        }
+
+        private static int ParseIntSetting(SystemSettings settings, string key, int defaultValue, int minValue, int maxValue)
+        {
+            if (settings != null && int.TryParse(settings[key], out var parsedValue))
+            {
+                if (parsedValue < minValue) return minValue;
+                if (parsedValue > maxValue) return maxValue;
+                return parsedValue;
+            }
+
+            return defaultValue;
         }
 
         /// <summary>

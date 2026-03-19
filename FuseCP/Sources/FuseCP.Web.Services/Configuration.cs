@@ -60,6 +60,7 @@ public class Configuration
 	public static string CertificateFile = null;
 	public static string CertificatePassword = null;
 	public static string Password;
+	public static bool AllowLegacyPasswordAuthentication = true;
 	public static string KeyFile = null;
 	public static string ProbingPaths = "";
 	public static string AllowedHosts = "0.0.0.0";
@@ -139,6 +140,7 @@ public class Configuration
 		CertificateFile = configuration.GetValue<string>("ServerCertificate:File");
 		CertificatePassword = configuration.GetValue<string>("ServerCertificate:Password");
 		Password = configuration.GetValue<string>("Server:Password") ?? String.Empty;
+		AllowLegacyPasswordAuthentication = configuration.GetValue<bool?>("Server:AllowLegacyPasswordAuthentication") ?? true;
 		AllowedHosts = configuration.GetValue<string>("AllowedHosts") ?? "*";
 		TraceLevel = configuration.GetValue<TraceLevel?>("TraceLevel") ?? TraceLevel.Off;
 		KeyFile = configuration.GetValue<string>("ServerCertificate:KeyFile");

@@ -34,24 +34,12 @@ namespace FuseCP.Portal
         {
             // passwords
             passwordPolicy.Value = settings["PasswordPolicy"];
-
-            // logo
-            txtLogoImageURL.Text = settings["LogoImageURL"];
-
-            // demo message
-            txtDemoMessage.Text = settings["DemoMessage"];
         }
 
         public void SaveSettings(UserSettings settings)
         {
             // passwords
             settings["PasswordPolicy"] = passwordPolicy.Value;
-
-            // logo
-            settings["LogoImageURL"] = txtLogoImageURL.Text.Trim();
-
-            // demo message
-            settings["DemoMessage"] = txtDemoMessage.Text;
         }
     }
 }

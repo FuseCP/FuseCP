@@ -966,4 +966,28 @@
   <data name="ModuleTitle.PrivateNetworkVLANs" xml:space="preserve">
     <value>?????? ?????? - ????? VLAN</value>
   </data>
+  <data name="ModuleTitle.ConfigurationPolicies" xml:space="preserve">
+    <value>السياسات</value>
+  </data>
+  <data name="ModuleTitle.ConfigurationMailTemplates" xml:space="preserve">
+    <value>قوالب البريد</value>
+  </data>
+  <data name="ModuleTitle.ConfigurationAppearanceSettings" xml:space="preserve">
+    <value>إعدادات المظهر</value>
+  </data>
+  <data name="ModuleTitle.SecurityPortalAuthentication" xml:space="preserve">
+    <value>مصادقة البوابة</value>
+  </data>
+  <data name="ModuleTitle.SecurityPasswordLifecycle" xml:space="preserve">
+    <value>تقوية بيانات الاعتماد</value>
+  </data>
+  <data name="ModuleTitle.SecurityBruteForceAttempts" xml:space="preserve">
+    <value>محاولات القوة الغاشمة</value>
+  </data>
+  <data name="ModuleTitle.SecurityIpSecurityPolicies" xml:space="preserve">
+    <value>سياسات أمان IP</value>
+  </data>
+  <data name="ModuleTitle.UserAccountAppearanceSettings" xml:space="preserve">
+    <value>المظهر والهوية</value>
+  </data>
 </root>

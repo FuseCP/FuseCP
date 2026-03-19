@@ -44,6 +44,7 @@ These instructions guide AI coding assistants working in this repository.
 * Never expose secrets, credentials, tokens, or private tenant data.
 * Avoid introducing insecure defaults.
 * Flag security-sensitive changes for maintainer review.
+* **Runtime-written server auth config**: when `FuseCP.Server` must persist hardened authentication settings at runtime, write them to `appsettings.hardened.json` as a narrow overlay loaded after `appsettings.json`. Do not make `bin_dotnet`, DLL folders, or the base `appsettings.json` writable just to persist runtime auth changes.
 * **Web.config policy**: Commit only required structural/runtime fixes (for example ANCM wiring, handler registration, section definitions, non-secret defaults). Never commit environment-specific secrets in `Web.config` (including real connection strings, usernames/passwords, machine keys, and private endpoints).
 * **When `Web.config` needs functional fixes**: create a sanitized commit-safe variant for git, then restore local secret-bearing values after commit and keep those local-only values out of source control (for example via local git index flags such as `skip-worktree` where appropriate).
 
@@ -59,6 +60,7 @@ These instructions guide AI coding assistants working in this repository.
 * At the start of each new development day/session, run `FuseCP/Tools/Start-Of-Day.ps1` before making code changes.
 * If the task is docs-only or this check would be redundant in the same session, at minimum run `FuseCP/Tools/check-sln-scope-sync.ps1`.
 * Run the narrowest relevant build/tests first, then broaden if needed.
+* If a `FuseCP.Server`, `FuseCP.WebPortal`, or `DesktopModules/FuseCP` build fails because `bin_dotnet` outputs are locked by `w3wp`, stop the IIS worker processes first; use `FuseCP/Tools/Unlock-WebPortal-Build.ps1` when rebuilding the portal modules because it stops `w3wp` and can rerun the Portal Modules build with `-RunBuild`.
 * For broad validation, use repository orchestrators (`build.xml`, `build-debug.bat`, `build-release.bat`, `deploy-*.bat`) because independent solution order may be insufficient.
 * Prefer the scripted validation entrypoint `FuseCP/Tools/run-local-validation.ps1` to keep local verification consistent and efficient.
 * Prefer `run-local-validation.ps1 -ChangedOnly` for fast iteration when a path-based scope can be inferred safely.

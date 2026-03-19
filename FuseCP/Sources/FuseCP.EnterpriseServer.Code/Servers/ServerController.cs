@@ -229,6 +229,12 @@ namespace FuseCP.EnterpriseServer
 
 		public bool? GetServerPasswordIsSHA256(string serverUrl)
 		{
+			var authenticationInfo = GetServerAuthenticationInfo(serverUrl);
+			return authenticationInfo?.PasswordIsSha256;
+		}
+
+		public ServerAuthenticationInfo GetServerAuthenticationInfo(string serverUrl)
+		{
             int accountCheck = SecurityContext.CheckAccount(DemandAccount.NotDemo | DemandAccount.IsActive
                  | DemandAccount.IsAdmin);
             if (accountCheck < 0) return null;
@@ -239,47 +245,67 @@ namespace FuseCP.EnterpriseServer
             {
                 var autoDiscovery = new AutoDiscovery();
                 ServiceProviderProxy.ServerInit(autoDiscovery, serverUrl, "", false);
-                return autoDiscovery.GetServerPasswordIsSHA256();
+                return autoDiscovery.GetServerAuthenticationInfo();
             }
             catch (WebException ex)
-            {
-                HttpWebResponse response = (HttpWebResponse)ex.Response;
-                if (response != null && response.StatusCode == HttpStatusCode.NotFound)
-                    return null;
-                else if (response != null && response.StatusCode == HttpStatusCode.BadRequest)
-                    return null;
-                else if (response != null && response.StatusCode == HttpStatusCode.InternalServerError)
-                    return null;
-                else if (response != null && response.StatusCode == HttpStatusCode.ServiceUnavailable)
-                    return null;
-                else if (response != null && response.StatusCode == HttpStatusCode.Unauthorized)
-                    return null;
-                if (ex.Message.Contains("The remote name could not be resolved") || ex.Message.Contains("Unable to connect"))
-                {
-                    TaskManager.WriteError("The remote server could not be resolved");
-                    return null;
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("The signature or decryption was invalid"))
-                {
-                    TaskManager.WriteWarning("Wrong server access credentials");
-                    return null;
-                }
-                else
-                {
-                    TaskManager.WriteError("General Server Error");
-                    TaskManager.WriteError(ex);
-                    return null;
-                }
-            }
-            finally
-            {
-                TaskManager.CompleteTask();
-            }
-        }
+			{
+				HttpWebResponse response = (HttpWebResponse)ex.Response;
+				if (response != null && response.StatusCode == HttpStatusCode.NotFound)
+					return null;
+				else if (response != null && response.StatusCode == HttpStatusCode.BadRequest)
+					return null;
+				else if (response != null && response.StatusCode == HttpStatusCode.InternalServerError)
+					return null;
+				else if (response != null && response.StatusCode == HttpStatusCode.ServiceUnavailable)
+					return null;
+				else if (response != null && response.StatusCode == HttpStatusCode.Unauthorized)
+					return null;
+				if (ex.Message.Contains("The remote name could not be resolved") || ex.Message.Contains("Unable to connect"))
+				{
+					TaskManager.WriteError("The remote server could not be resolved");
+					return null;
+				}
+				return null;
+			}
+			catch (Exception ex)
+			{
+				try
+				{
+					var autoDiscovery = new AutoDiscovery();
+					ServiceProviderProxy.ServerInit(autoDiscovery, serverUrl, "", false);
+					var passwordIsSha256 = autoDiscovery.GetServerPasswordIsSHA256();
+					return new ServerAuthenticationInfo
+					{
+						Version = 1,
+						SupportsHmacAuthentication = false,
+						SupportsLegacyPasswordAuthentication = true,
+						PasswordIsSha256 = passwordIsSha256,
+						AllowedClockSkewSeconds = 0,
+						KeyId = passwordIsSha256 ? "legacy-sha256" : "legacy-sha1",
+						ClusterId = string.Empty
+					};
+				}
+				catch
+				{
+				}
+
+				if (ex.Message.Contains("The signature or decryption was invalid"))
+				{
+					TaskManager.WriteWarning("Wrong server access credentials");
+					return null;
+				}
+				else
+				{
+					TaskManager.WriteError("General Server Error");
+					TaskManager.WriteError(ex);
+					return null;
+				}
+			}
+			finally
+			{
+				TaskManager.CompleteTask();
+			}
+		}
 
         public void GetServerPlatform(string serverUrl, out OSPlatform platform, out bool? isCore)
 		{
@@ -541,36 +567,47 @@ namespace FuseCP.EnterpriseServer
 
 		public int UpdateServerConnectionPassword(int serverId, string password)
 		{
-			// check account
+			throw new InvalidOperationException("Direct server connection password reset through the GUI or web API is disabled. Use the installer-based recovery flow on the server host, then reconcile Enterprise with Recover-ServerCredential.ps1.");
+		}
+
+		public ServerAuthenticationInfo HardenServerAuthentication(int serverId)
+		{
 			int accountCheck = SecurityContext.CheckAccount(DemandAccount.NotDemo | DemandAccount.IsActive
 				| DemandAccount.IsAdmin);
-			if (accountCheck < 0) return accountCheck;
+			if (accountCheck < 0)
+				return null;
 
-			// get original server
 			ServerInfo server = GetServerByIdInternal(serverId);
+			if (server == null)
+				throw new InvalidOperationException($"Server with ID {serverId} was not found.");
 
-			TaskManager.StartTask("SERVER", "UPDATE_PASSWORD", server.ServerName, serverId);
+			TaskManager.StartTask("SERVER", "HARDEN_AUTHENTICATION", server.ServerName, serverId);
 
-			// set password
-			server.Password = password;
-			var passwordIsSHA256 = GetServerPasswordIsSHA256(server.ServerUrl);
-			if (passwordIsSHA256 != null)
+			try
 			{
-				server.PasswordIsSHA256 = (bool)passwordIsSHA256;
+				string newSharedSecret = Cryptor.CreateCryptoKey(32);
+
+				var proxy = new ServiceProvider();
+				new ServiceProviderProxy(this).ServerInit(proxy, serverId);
+				ServerAuthenticationInfo authenticationInfo = proxy.HardenServerAuthentication(newSharedSecret);
+
+				server.Password = newSharedSecret;
+				server.PasswordIsSHA256 = true;
+
+				var serverUrl = CryptoUtils.EncryptServerUrl(server.ServerUrl);
+				Database.UpdateServer(server.ServerId, server.ServerName, serverUrl,
+					CryptoUtils.EncryptServerPassword(server.Password), server.Comments, server.InstantDomainAlias,
+					server.PrimaryGroupId, server.ADEnabled, server.ADRootDomain, server.ADUsername, CryptoUtils.Encrypt(server.ADPassword),
+					server.ADAuthenticationType, server.ADParentDomain, server.ADParentDomainController,
+					server.OSPlatform, server.IsCore, server.PasswordIsSHA256);
+
+				ServiceProviderProxy.ClearServerAuthenticationCache(serverId);
+				return authenticationInfo;
 			}
-
-			var serverUrl = CryptoUtils.EncryptServerUrl(server.ServerUrl);
-
-			// update server
-			Database.UpdateServer(server.ServerId, server.ServerName, serverUrl,
-				CryptoUtils.EncryptServerPassword(server.Password), server.Comments, server.InstantDomainAlias,
-				server.PrimaryGroupId, server.ADEnabled, server.ADRootDomain, server.ADUsername, CryptoUtils.Encrypt(server.ADPassword),
-				server.ADAuthenticationType, server.ADParentDomain, server.ADParentDomainController,
-				server.OSPlatform, server.IsCore, server.PasswordIsSHA256);
-
-			TaskManager.CompleteTask();
-
-			return 0;
+			finally
+			{
+				TaskManager.CompleteTask();
+			}
 		}
 
 		public int UpdateServerADPassword(int serverId, string adPassword)

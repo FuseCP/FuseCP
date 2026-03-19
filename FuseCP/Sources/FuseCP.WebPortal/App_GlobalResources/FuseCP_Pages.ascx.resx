@@ -588,4 +588,76 @@
   <data name="PageTitle.APIDocumentation" xml:space="preserve">
     <value>API Documentation</value>
   </data>
+  <data name="PageName.Infrastructure" xml:space="preserve">
+    <value>Infrastructure</value>
+  </data>
+  <data name="PageTitle.Infrastructure" xml:space="preserve">
+    <value>Infrastructure</value>
+  </data>
+  <data name="PageName.Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="PageTitle.Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="PageName.PoliciesAndTemplates" xml:space="preserve">
+    <value>Policies and Templates</value>
+  </data>
+  <data name="PageTitle.PoliciesAndTemplates" xml:space="preserve">
+    <value>Policies and Templates</value>
+  </data>
+  <data name="PageName.AppearanceBranding" xml:space="preserve">
+    <value>Appearance and Branding</value>
+  </data>
+  <data name="PageTitle.AppearanceBranding" xml:space="preserve">
+    <value>Appearance and Branding</value>
+  </data>
+  <data name="PageName.SecurityBruteForceAttempts" xml:space="preserve">
+    <value>Brute Force Attempts</value>
+  </data>
+  <data name="PageTitle.SecurityBruteForceAttempts" xml:space="preserve">
+    <value>Brute Force Attempts</value>
+  </data>
+  <data name="PageName.SecurityIpSecurityPolicies" xml:space="preserve">
+    <value>IP Security Policies</value>
+  </data>
+  <data name="PageTitle.SecurityIpSecurityPolicies" xml:space="preserve">
+    <value>IP Security Policies</value>
+  </data>
+  <data name="PageName.ConfigurationPolicies" xml:space="preserve">
+    <value>Policies</value>
+  </data>
+  <data name="PageTitle.ConfigurationPolicies" xml:space="preserve">
+    <value>Policies</value>
+  </data>
+  <data name="PageName.ConfigurationMailTemplates" xml:space="preserve">
+    <value>Mail Templates</value>
+  </data>
+  <data name="PageTitle.ConfigurationMailTemplates" xml:space="preserve">
+    <value>Mail Templates</value>
+  </data>
+  <data name="PageName.ConfigurationAppearance" xml:space="preserve">
+    <value>Appearance Settings</value>
+  </data>
+  <data name="PageTitle.ConfigurationAppearance" xml:space="preserve">
+    <value>Appearance Settings</value>
+  </data>
+  <data name="PageName.SecurityPortalAuthentication" xml:space="preserve">
+    <value>Portal Authentication</value>
+  </data>
+  <data name="PageTitle.SecurityPortalAuthentication" xml:space="preserve">
+    <value>Portal Authentication</value>
+  </data>
+  <data name="PageName.SecurityCredentialHardening" xml:space="preserve">
+    <value>Credential Hardening</value>
+  </data>
+  <data name="PageTitle.SecurityCredentialHardening" xml:space="preserve">
+    <value>Credential Hardening</value>
+  </data>
+  <data name="PageName.SecurityPasswordLifecycle" xml:space="preserve">
+    <value>Credential Hardening</value>
+  </data>
+  <data name="PageTitle.SecurityPasswordLifecycle" xml:space="preserve">
+    <value>Credential Hardening</value>
+  </data>
 </root>

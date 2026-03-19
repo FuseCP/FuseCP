@@ -3617,6 +3617,13 @@
         <Compile Include="SettingsFuseCPPolicy.ascx.designer.cs">
             <DependentUpon>SettingsFuseCPPolicy.ascx</DependentUpon>
         </Compile>
+        <Compile Include="SettingsAppearanceBranding.ascx.cs">
+            <DependentUpon>SettingsAppearanceBranding.ascx</DependentUpon>
+            <SubType>ASPXCodeBehind</SubType>
+        </Compile>
+        <Compile Include="SettingsAppearanceBranding.ascx.designer.cs">
+            <DependentUpon>SettingsAppearanceBranding.ascx</DependentUpon>
+        </Compile>
         <Compile Include="SettingsOperatingSystemPolicy.ascx.cs">
             <DependentUpon>SettingsOperatingSystemPolicy.ascx</DependentUpon>
             <SubType>ASPXCodeBehind</SubType>
@@ -4758,6 +4765,13 @@
         <Compile Include="UserAccountMailTemplateSettings.ascx.designer.cs">
             <DependentUpon>UserAccountMailTemplateSettings.ascx</DependentUpon>
         </Compile>
+        <Compile Include="UserAccountAppearanceSettings.ascx.cs">
+            <DependentUpon>UserAccountAppearanceSettings.ascx</DependentUpon>
+            <SubType>ASPXCodeBehind</SubType>
+        </Compile>
+        <Compile Include="UserAccountAppearanceSettings.ascx.designer.cs">
+            <DependentUpon>UserAccountAppearanceSettings.ascx</DependentUpon>
+        </Compile>
         <Compile Include="UserAccountMenu.ascx.cs">
             <DependentUpon>UserAccountMenu.ascx</DependentUpon>
             <SubType>ASPXCodeBehind</SubType>
@@ -5583,10 +5597,39 @@
         <Compile Include="PhoneNumbersEditPhoneNumber.ascx.designer.cs">
             <DependentUpon>PhoneNumbersEditPhoneNumber.ascx</DependentUpon>
         </Compile>
+        <Compile Include="SecurityBruteForceAttempts.ascx.cs">
+            <DependentUpon>SecurityBruteForceAttempts.ascx</DependentUpon>
+            <SubType>ASPXCodeBehind</SubType>
+        </Compile>
+        <Compile Include="SecurityBruteForceAttempts.ascx.designer.cs">
+            <DependentUpon>SecurityBruteForceAttempts.ascx</DependentUpon>
+        </Compile>
+        <Compile Include="SecurityIpSecurityPolicies.ascx.cs">
+            <DependentUpon>SecurityIpSecurityPolicies.ascx</DependentUpon>
+            <SubType>ASPXCodeBehind</SubType>
+        </Compile>
+        <Compile Include="SecurityIpSecurityPolicies.ascx.designer.cs">
+            <DependentUpon>SecurityIpSecurityPolicies.ascx</DependentUpon>
+        </Compile>
+        <Compile Include="SecurityPortalAuthentication.ascx.cs">
+            <DependentUpon>SecurityPortalAuthentication.ascx</DependentUpon>
+            <SubType>ASPXCodeBehind</SubType>
+        </Compile>
+        <Compile Include="SecurityPortalAuthentication.ascx.designer.cs">
+            <DependentUpon>SecurityPortalAuthentication.ascx</DependentUpon>
+        </Compile>
+        <Compile Include="SecurityPasswordLifecycle.ascx.cs">
+            <DependentUpon>SecurityPasswordLifecycle.ascx</DependentUpon>
+            <SubType>ASPXCodeBehind</SubType>
+        </Compile>
+        <Compile Include="SecurityPasswordLifecycle.ascx.designer.cs">
+            <DependentUpon>SecurityPasswordLifecycle.ascx</DependentUpon>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Content Include="ApplyEnableHardQuotaFeature.ascx" />
         <Content Include="AutoUpdateServers.ascx" />
+        <Content Include="SecurityPasswordLifecycle.ascx" />
         <Content Include="ExchangeServer\EnterpriseStorageSpaces.ascx" />
         <Content Include="ExchangeServer\ExchangeCreateJournalingMailbox.ascx" />
         <Content Include="ExchangeServer\ExchangeMailboxAutoReply.ascx" />
@@ -5654,6 +5697,15 @@
         <Content Include="ProviderControls\MailCleaner_Settings.ascx" />
         <Content Include="ProviderControls\SfB_Settings.ascx" />
         <Content Include="ScheduleTaskControls\AuditLogReportView.ascx" />
+        <Content Include="SecurityBruteForceAttempts.ascx" />
+        <Content Include="SecurityIpSecurityPolicies.ascx" />
+        <Content Include="SecurityPortalAuthentication.ascx" />
+        <Content Include="App_LocalResources\SecurityBruteForceAttempts.ascx.resx" />
+        <Content Include="App_LocalResources\SecurityBruteForceAttempts.ascx.de-DE.resx" />
+        <Content Include="App_LocalResources\SecurityBruteForceAttempts.ascx.ar-AE.resx" />
+        <Content Include="App_LocalResources\SecurityIpSecurityPolicies.ascx.resx" />
+        <Content Include="App_LocalResources\SecurityIpSecurityPolicies.ascx.de-DE.resx" />
+        <Content Include="App_LocalResources\SecurityIpSecurityPolicies.ascx.ar-AE.resx" />
         <Content Include="ServerVLANsControl.ascx" />
         <Content Include="SettingsVerificationCodeLetter.ascx" />
         <Content Include="SkinControls\BootstrapDropDownList.ascx" />
@@ -7762,6 +7814,7 @@
         <Content Include="App_LocalResources\SettingsEditor.ascx.resx">
             <SubType>Designer</SubType>
         </Content>
+        <Content Include="SettingsAppearanceBranding.ascx" />
         <Content Include="SettingsFuseCPPolicy.ascx" />
         <Content Include="SettingsOperatingSystemPolicy.ascx" />
         <Content Include="SettingsSharePointPolicy.ascx" />
@@ -9014,6 +9067,7 @@
         <Content Include="UserAccountChangePassword.ascx" />
         <Content Include="UserAccountDetails.ascx" />
         <Content Include="UserAccountEditDetails.ascx" />
+        <Content Include="UserAccountAppearanceSettings.ascx" />
         <Content Include="UserAccountMailTemplateSettings.ascx" />
         <Content Include="UserAccountMenu.ascx" />
         <Content Include="UserAccountNotes.ascx" />

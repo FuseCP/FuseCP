@@ -981,4 +981,28 @@
   <data name="ModuleTitle.PrivateNetworkVLANs" xml:space="preserve">
     <value>Private Network VLANs</value>
   </data>
+  <data name="ModuleTitle.ConfigurationPolicies" xml:space="preserve">
+    <value>Policies</value>
+  </data>
+  <data name="ModuleTitle.ConfigurationMailTemplates" xml:space="preserve">
+    <value>Mail Templates</value>
+  </data>
+  <data name="ModuleTitle.ConfigurationAppearanceSettings" xml:space="preserve">
+    <value>Appearance Settings</value>
+  </data>
+  <data name="ModuleTitle.SecurityPortalAuthentication" xml:space="preserve">
+    <value>Portal Authentication</value>
+  </data>
+  <data name="ModuleTitle.SecurityPasswordLifecycle" xml:space="preserve">
+    <value>Credential Hardening</value>
+  </data>
+  <data name="ModuleTitle.SecurityBruteForceAttempts" xml:space="preserve">
+    <value>Brute Force Attempts</value>
+  </data>
+  <data name="ModuleTitle.SecurityIpSecurityPolicies" xml:space="preserve">
+    <value>IP Security Policies</value>
+  </data>
+  <data name="ModuleTitle.UserAccountAppearanceSettings" xml:space="preserve">
+    <value>Appearance and Branding</value>
+  </data>
 </root>
