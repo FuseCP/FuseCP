@@ -133,9 +133,9 @@ jobs:
     - name: Build Server & EnterpriseServer
       working-directory: FuseCP\Sources
       run: |
-        dotnet build FuseCP.Server.sln
-        dotnet build FuseCP.EnterpriseServer.sln
-        dotnet build FuseCP.Tests.sln
+        dotnet build --configuration ${{ matrix.configuration }} FuseCP.Server.sln
+        dotnet build --configuration ${{ matrix.configuration }} FuseCP.EnterpriseServer.sln
+        dotnet build --configuration ${{ matrix.configuration }} FuseCP.Tests.sln
 
     - name: Run Unit Tests
       id: test
