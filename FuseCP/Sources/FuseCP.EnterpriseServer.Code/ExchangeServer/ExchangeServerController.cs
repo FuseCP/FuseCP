@@ -849,14 +849,14 @@ namespace FuseCP.EnterpriseServer
 
         public ExchangeMailboxStatistics GetMailboxStatistics(int itemId, int accountId)
         {
-            // place log record
-            TaskManager.StartTask("EXCHANGE", "GET_MAILBOX_STATS", itemId);
-
             try
             {
                 Organization org = GetOrganization(itemId);
                 if (org == null)
                     return null;
+
+                // place log record
+                TaskManager.StartTask("EXCHANGE", "GET_MAILBOX_STATS", null, itemId, org.PackageId, null);
 
 
                 // get stats
@@ -2577,15 +2577,15 @@ namespace FuseCP.EnterpriseServer
             }
             #endregion
 
-            // place log record
-            TaskManager.StartTask("EXCHANGE", "GET_MAILBOX_GENERAL", itemId);
-
             try
             {
                 // load organization
                 Organization org = GetOrganization(itemId);
                 if (org == null)
                     return null;
+
+                // place log record
+                TaskManager.StartTask("EXCHANGE", "GET_MAILBOX_GENERAL", null, itemId, org.PackageId, null);
 
                 // load account
                 ExchangeAccount account = GetAccount(itemId, accountId);
@@ -2681,15 +2681,15 @@ namespace FuseCP.EnterpriseServer
             }
             #endregion
 
-            // place log record
-            TaskManager.StartTask("EXCHANGE", "GET_RESOURCE_MAILBOX", itemId);
-
             try
             {
                 // load organization
                 Organization org = GetOrganization(itemId);
                 if (org == null)
                     return null;
+
+                // place log record
+                TaskManager.StartTask("EXCHANGE", "GET_RESOURCE_MAILBOX", null, itemId, org.PackageId, null);
 
                 // load account
                 ExchangeAccount account = GetAccount(itemId, accountId);
@@ -6797,11 +6797,14 @@ namespace FuseCP.EnterpriseServer
 
         public ExchangeDisclaimer GetExchangeDisclaimer(int itemId, int exchangeDisclaimerId)
         {
-
-            TaskManager.StartTask("EXCHANGE", "GET_EXCHANGE_EXCHANGEDISCLAIMER", itemId);
-
             try
             {
+                Organization org = GetOrganization(itemId);
+                if (org == null)
+                    return null;
+
+                TaskManager.StartTask("EXCHANGE", "GET_EXCHANGE_EXCHANGEDISCLAIMER", null, itemId, org.PackageId, null);
+
                 return ObjectUtils.FillObjectFromDataReader<ExchangeDisclaimer>(
                     Database.GetExchangeDisclaimer(exchangeDisclaimerId));
             }
@@ -6818,10 +6821,14 @@ namespace FuseCP.EnterpriseServer
 
         public List<ExchangeDisclaimer> GetExchangeDisclaimers(int itemId)
         {
-            TaskManager.StartTask("EXCHANGE", "GET_EXCHANGE_EXCHANGEDISCLAIMER", itemId);
-
             try
             {
+                Organization org = GetOrganization(itemId);
+                if (org == null)
+                    return new List<ExchangeDisclaimer>();
+
+                TaskManager.StartTask("EXCHANGE", "GET_EXCHANGE_EXCHANGEDISCLAIMER", null, itemId, org.PackageId, null);
+
                 List<ExchangeDisclaimer> disclaimers = ObjectUtils.CreateListFromDataReader<ExchangeDisclaimer>(Database.GetExchangeDisclaimers(itemId));
                 return disclaimers;
             }
@@ -6900,10 +6907,14 @@ namespace FuseCP.EnterpriseServer
 
         public int GetExchangeAccountDisclaimerId(int itemId, int AccountID)
         {
-            TaskManager.StartTask("EXCHANGE", "GET_EXCHANGE_ACCOUNTDISCLAIMERID", AccountID);
-
             try
             {
+                Organization org = GetOrganization(itemId);
+                if (org == null)
+                    return -1;
+
+                TaskManager.StartTask("EXCHANGE", "GET_EXCHANGE_ACCOUNTDISCLAIMERID", null, itemId, org.PackageId, null);
+
                 return Database.GetExchangeAccountDisclaimerId(AccountID);
             }
             catch (Exception ex)

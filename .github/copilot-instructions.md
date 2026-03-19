@@ -32,6 +32,13 @@ These instructions guide AI coding assistants working in this repository.
   4. Commit Entity, Configuration, migration files, and regenerated `install.*.sql` files
   5. **Database workflow verification is FULLY AUTOMATED**: Never manually run verification scripts - they execute automatically in CI, local validation, and pre-commit hooks. Treat `install.*.sql` as generated artifacts, not the source of truth. SQLite upgrades run through EF migrations. Never edit EF model snapshot files or migration files by hand. See `DATABASE_WORKFLOW_COMPLETE.md` for complete reference.
 
+## Exchange Provider Patterns
+
+* **Provider parity**: Exchange providers for 2013, 2016, and 2019 (`FuseCP.Providers.HostedSolution.Exchange2013/2016/2019`) share identical method structure. Any change to `GetMailbox*`, `SetMailbox*`, or shared helper methods must be applied to **all three providers in the same commit** and all three must be built to confirm no compile regressions.
+* **Remoted PSObject type variance**: Exchange PowerShell remoting returns PSObjects whose properties can have unexpected runtime shapes — e.g. `SmtpAddress` may arrive as a plain string, size properties may arrive as `Unlimited<ByteQuantifiedSize>` or as a formatted string, and boolean properties may arrive as non-bool objects. Never use direct casts (`(bool)`, `(Unlimited<int>)`, `(Unlimited<ByteQuantifiedSize>)`) on `GetPSObjectProperty()` results. Use the existing safe helpers: `ObjToBoolean`, `ConvertByteSizePropertyToKB`, `ConvertByteSizePropertyToMB`, `ConvertUnlimitedIntPropertyToInt32`.
+* **No-language runspace restrictions**: Exchange remoting runs in constrained/no-language mode. Setting `ConfirmPreference` and calling `Get-MailboxSearch` can throw "Script invocation is not supported in this session configuration" — always guard such calls with try-catch and provide a fallback code path.
+* **PSObject property access**: Prefer `PSObject.Properties["name"]` over `PSObject.Members["name"]` when reading remoted Exchange objects; `Members` can hit script-backed properties that fail in constrained sessions.
+
 ## Security and Data Handling
 
 * Never expose secrets, credentials, tokens, or private tenant data.
