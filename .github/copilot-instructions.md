@@ -25,7 +25,12 @@ These instructions guide AI coding assistants working in this repository.
 * Update docs when behavior, configuration, or deployment steps change.
 * For files that carry copyright headers/metadata, use exact text `Copyright (C) 2026 FuseCP` and keep generator-driven files in sync (for example `FuseCP/build.xml` and generated `VersionInfo.*` files).
 * **UI/CSS changes**: Always edit the LESS source files (`main.less`, `Menus.less`) — never `main.css` directly. Recompile with `npm run build:css` from the `App_Themes/Default/Styles/` directory and commit both the `.less` and the recompiled `.css`.
-* **Database schema changes**: Edit Entity classes under `FuseCP.EnterpriseServer.Data/Entities/`, update Configuration Fluent API if needed, then generate a migration with `MigrationAdd.bat`. Treat `install.*.sql` as generated artifacts, not the source of truth; SQLite upgrades run through EF migrations, not `install.sqlite.sql`. Never edit EF model snapshot files by hand. See `FuseCP/Sources/FuseCP.EnterpriseServer.Data/README.md` and `AI_DIRECTIVES.md §6` for the full workflow.
+* **Database schema changes**: Edit Entity classes under `FuseCP.EnterpriseServer.Data/Entities/`, create corresponding Configuration class in `Configuration/`, then:
+  1. Add `ApplyConfiguration(model, new MyEntityConfiguration());` in `DbContextBase.OnModelCreating()`
+  2. Add DbSet property in `DbContext.Sets.cs`
+  3. Run `FuseCP/Sources/FuseCP.EnterpriseServer.Data/MigrationAdd.bat` to generate migrations for all 4 providers and regenerate `install.*.sql`
+  4. Commit Entity, Configuration, migration files, and regenerated `install.*.sql` files
+  5. **Database workflow verification is FULLY AUTOMATED**: Never manually run verification scripts - they execute automatically in CI, local validation, and pre-commit hooks. Treat `install.*.sql` as generated artifacts, not the source of truth. SQLite upgrades run through EF migrations. Never edit EF model snapshot files or migration files by hand. See `DATABASE_WORKFLOW_COMPLETE.md` for complete reference.
 
 ## Exchange Provider Patterns
 
@@ -43,6 +48,13 @@ These instructions guide AI coding assistants working in this repository.
 * **When `Web.config` needs functional fixes**: create a sanitized commit-safe variant for git, then restore local secret-bearing values after commit and keep those local-only values out of source control (for example via local git index flags such as `skip-worktree` where appropriate).
 
 ## Testing and Verification
+
+* **Automated Database Verification** (NO MANUAL LAUNCHES): Database schema compliance is fully automated:
+  - Single entry point: `FuseCP/Tools/Orchestrate-Database-Workflow.ps1` (modes: Quick, Full, Verify, Fix, Report)
+  - Enforced at: CI (every PR/commit), local builds (before validation), pre-commit (if hook enabled)
+  - Automatically regenerates MySQL artifacts when migrations change
+  - Blocks builds that violate EF workflow (misaligned entities/configs, stale install scripts)
+  - Reference: `DATABASE_WORKFLOW_COMPLETE.md` for complete guide, developer workflows, troubleshooting
 
 * At the start of each new development day/session, run `FuseCP/Tools/Start-Of-Day.ps1` before making code changes.
 * If the task is docs-only or this check would be redundant in the same session, at minimum run `FuseCP/Tools/check-sln-scope-sync.ps1`.

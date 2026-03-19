@@ -599,24 +599,6 @@ namespace FuseCP.Portal {
         protected global::System.Web.UI.WebControls.HyperLink lnkEventViewer;
         
         /// <summary>
-        /// pnPlatformPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnPlatformPanel;
-        
-        /// <summary>
-        /// lnkPlatformInstaller control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkPlatformInstaller;
-        
-        /// <summary>
         /// lnkServerReboot control.
         /// </summary>
         /// <remarks>

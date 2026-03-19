@@ -25,21 +25,21 @@ function Ensure-ElevatedSession {
         return
     }
 
-    $args = @(
+    $relaunchArgs = @(
         "-NoProfile",
         "-ExecutionPolicy", "Bypass",
         "-File", $PSCommandPath
     )
 
-    if ($SkipEnvironmentCheck) { $args += "-SkipEnvironmentCheck" }
-    if ($SkipSolutionSyncCheck) { $args += "-SkipSolutionSyncCheck" }
-    if ($StartWebsites) { $args += "-StartWebsites" }
+    if ($SkipEnvironmentCheck) { $relaunchArgs += "-SkipEnvironmentCheck" }
+    if ($SkipSolutionSyncCheck) { $relaunchArgs += "-SkipSolutionSyncCheck" }
+    if ($StartWebsites) { $relaunchArgs += "-StartWebsites" }
 
     Write-Host $Reason -ForegroundColor Yellow
     Write-Host "Requesting Administrator permissions for start-of-day tasks..." -ForegroundColor Yellow
 
     try {
-        $childProcess = Start-Process -FilePath "pwsh" -ArgumentList $args -Verb RunAs -Wait -PassThru -WorkingDirectory (Get-Location) -Environment @{ FUSECP_START_OF_DAY_ELEVATED = "1" }
+        $childProcess = Start-Process -FilePath "pwsh" -ArgumentList $relaunchArgs -Verb RunAs -Wait -PassThru -WorkingDirectory (Get-Location) -Environment @{ FUSECP_START_OF_DAY_ELEVATED = "1" }
         exit $childProcess.ExitCode
     }
     catch {
@@ -92,6 +92,7 @@ function Ensure-SqlExpressRunning {
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 $checkEnvironmentScript = Join-Path $PSScriptRoot "check-test-environment.ps1"
 $checkSolutionSyncScript = Join-Path $PSScriptRoot "check-sln-scope-sync.ps1"
+$databaseWorkflowScript = Join-Path $PSScriptRoot "Orchestrate-Database-Workflow.ps1"
 $startWebsiteScript = Join-Path $PSScriptRoot "StartWebsite.ps1"
 
 if (-not (Test-Path $checkEnvironmentScript)) {
@@ -100,6 +101,10 @@ if (-not (Test-Path $checkEnvironmentScript)) {
 
 if (-not (Test-Path $checkSolutionSyncScript)) {
     throw "Required script not found: $checkSolutionSyncScript"
+}
+
+if (-not (Test-Path $databaseWorkflowScript)) {
+    throw "Required script not found: $databaseWorkflowScript"
 }
 
 if ($StartWebsites -and -not (Test-Path $startWebsiteScript)) {
@@ -134,6 +139,12 @@ if (-not $SkipSolutionSyncCheck) {
 }
 else {
     Write-Host "Skipping solution sync check." -ForegroundColor DarkYellow
+}
+
+Write-Host "Running database workflow quick check..." -ForegroundColor Cyan
+& pwsh -NoProfile -ExecutionPolicy Bypass -File $databaseWorkflowScript -Mode Quick
+if ($LASTEXITCODE -ne 0) {
+    throw "Database workflow quick check failed. Resolve workflow issues before continuing."
 }
 
 if ($StartWebsites) {

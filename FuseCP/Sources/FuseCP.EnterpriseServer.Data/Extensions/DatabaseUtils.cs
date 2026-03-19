@@ -1694,8 +1694,10 @@ SELECT DatabaseVersion FROM Version");
 						if (Providers.OS.OSInfo.IsCore)
 						{
 							var contextType = Type.GetType("FuseCP.EnterpriseServer.Data.SqliteDbContext, FuseCP.EnterpriseServer.Data.NetCore");
-							//using (var context = new SqliteDbContext(masterConnectionString, false))
-							using (var context = Activator.CreateInstance(contextType, new object[] { masterConnectionString, false }) as IMigratableDbContext)
+							var sqliteConnectionString = DbSettings.GetNativeConnectionString(masterConnectionString);
+							// Migrations are generated from the seeded model, so runtime SQLite updates
+							// must use the same model shape to avoid false pending-model-changes errors.
+							using (var context = Activator.CreateInstance(contextType, new object[] { sqliteConnectionString, true }) as IMigratableDbContext)
 							{
 								context.Migrate();
 							}

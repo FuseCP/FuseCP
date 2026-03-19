@@ -8209,108 +8209,34 @@ SELECT changes();
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
 VALUES ('20251113211755_RemovedOldWindowsProviders', '9.0.9');
 
-DELETE FROM "Providers"
-WHERE "ProviderID" = 201;
-SELECT changes();
+CREATE TABLE "BruteForceLogs" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_BruteForceLogs" PRIMARY KEY AUTOINCREMENT,
+    "IpAddress" TEXT NOT NULL,
+    "Username" TEXT NULL,
+    "Layer" TEXT NOT NULL,
+    "AttemptTime" TEXT NOT NULL,
+    "Succeeded" INTEGER NOT NULL,
+    "UserAgent" TEXT NULL
+);
 
+CREATE TABLE "IpSecurityPolicies" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_IpSecurityPolicies" PRIMARY KEY AUTOINCREMENT,
+    "IpRange" TEXT NOT NULL,
+    "IsWhitelist" INTEGER NOT NULL,
+    "CreatedDate" TEXT NOT NULL,
+    "ExpiresDate" TEXT NULL,
+    "Reason" TEXT NULL,
+    "IsActive" INTEGER NOT NULL,
+    "SeverityLevel" INTEGER NOT NULL,
+    "CreatedBy" TEXT NULL
+);
 
-DELETE FROM "Providers"
-WHERE "ProviderID" = 1201;
-SELECT changes();
+CREATE INDEX "IX_BruteForceLogs_IpAddress_Layer_AttemptTime" ON "BruteForceLogs" ("IpAddress", "Layer", "AttemptTime");
 
-
-DELETE FROM "Providers"
-WHERE "ProviderID" = 1202;
-SELECT changes();
-
-
-DELETE FROM "Providers"
-WHERE "ProviderID" = 1205;
-SELECT changes();
-
-
-DELETE FROM "Providers"
-WHERE "ProviderID" = 1206;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 209;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 210;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 460;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 461;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 462;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 463;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 464;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 465;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 466;
-SELECT changes();
-
-
-DELETE FROM "Quotas"
-WHERE "QuotaID" = 467;
-SELECT changes();
-
-
-DELETE FROM "ScheduleTaskParameters"
-WHERE "ParameterID" = 'CRM_REPORT' AND "TaskID" = 'SCHEDULE_TASK_HOSTED_SOLUTION_REPORT';
-SELECT changes();
-
-
-DELETE FROM "ServiceDefaultProperties"
-WHERE "PropertyName" = 'RecordDefaultTTL' AND "ProviderID" = 55;
-SELECT changes();
-
-
-DELETE FROM "ServiceDefaultProperties"
-WHERE "PropertyName" = 'RecordMinimumTTL' AND "ProviderID" = 55;
-SELECT changes();
-
-
-DELETE FROM "ResourceGroups"
-WHERE "GroupID" = 21;
-SELECT changes();
-
-
-DELETE FROM "ResourceGroups"
-WHERE "GroupID" = 24;
-SELECT changes();
-
+CREATE INDEX "IX_IpSecurityPolicies_IpRange_IsActive" ON "IpSecurityPolicies" ("IpRange", "IsActive");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20260315123631_RemoveLegacyCrmAndNetticaSeeds', '9.0.9');
+VALUES ('20260318133000_AddBruteForceProtection', '9.0.9');
 
 COMMIT;
 

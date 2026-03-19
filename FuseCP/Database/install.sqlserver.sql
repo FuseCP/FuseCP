@@ -76516,211 +76516,63 @@ END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
 )
 BEGIN
-    EXEC(N'DELETE FROM [Providers]
-    WHERE [ProviderID] = 201;
-    SELECT @@ROWCOUNT');
+    CREATE TABLE [BruteForceLogs] (
+        [Id] int NOT NULL IDENTITY,
+        [IpAddress] nvarchar(45) NOT NULL,
+        [Username] nvarchar(255) NULL,
+        [Layer] nvarchar(20) NOT NULL,
+        [AttemptTime] datetime2 NOT NULL,
+        [Succeeded] bit NOT NULL,
+        [UserAgent] nvarchar(500) NULL,
+        CONSTRAINT [PK_BruteForceLogs] PRIMARY KEY ([Id])
+    );
 END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
 )
 BEGIN
-    EXEC(N'DELETE FROM [Providers]
-    WHERE [ProviderID] = 1201;
-    SELECT @@ROWCOUNT');
+    CREATE TABLE [IpSecurityPolicies] (
+        [Id] int NOT NULL IDENTITY,
+        [IpRange] nvarchar(50) NOT NULL,
+        [IsWhitelist] bit NOT NULL,
+        [CreatedDate] datetime2 NOT NULL,
+        [ExpiresDate] datetime2 NULL,
+        [Reason] nvarchar(500) NULL,
+        [IsActive] bit NOT NULL,
+        [SeverityLevel] int NOT NULL,
+        [CreatedBy] nvarchar(255) NULL,
+        CONSTRAINT [PK_IpSecurityPolicies] PRIMARY KEY ([Id])
+    );
 END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
 )
 BEGIN
-    EXEC(N'DELETE FROM [Providers]
-    WHERE [ProviderID] = 1202;
-    SELECT @@ROWCOUNT');
+    CREATE INDEX [IX_BruteForceLogs_IpAddress_Layer_AttemptTime] ON [BruteForceLogs] ([IpAddress], [Layer], [AttemptTime]);
 END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
 )
 BEGIN
-    EXEC(N'DELETE FROM [Providers]
-    WHERE [ProviderID] = 1205;
-    SELECT @@ROWCOUNT');
+    CREATE INDEX [IX_IpSecurityPolicies_IpRange_IsActive] ON [IpSecurityPolicies] ([IpRange], [IsActive]);
 END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Providers]
-    WHERE [ProviderID] = 1206;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 209;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 210;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 460;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 461;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 462;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 463;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 464;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 465;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 466;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [Quotas]
-    WHERE [QuotaID] = 467;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [ScheduleTaskParameters]
-    WHERE [ParameterID] = N''CRM_REPORT'' AND [TaskID] = N''SCHEDULE_TASK_HOSTED_SOLUTION_REPORT'';
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [ServiceDefaultProperties]
-    WHERE [PropertyName] = N''RecordDefaultTTL'' AND [ProviderID] = 55;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [ServiceDefaultProperties]
-    WHERE [PropertyName] = N''RecordMinimumTTL'' AND [ProviderID] = 55;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [ResourceGroups]
-    WHERE [GroupID] = 21;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
-)
-BEGIN
-    EXEC(N'DELETE FROM [ResourceGroups]
-    WHERE [GroupID] = 24;
-    SELECT @@ROWCOUNT');
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260315123641_RemoveLegacyCrmAndNetticaSeeds'
+    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
 )
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20260315123641_RemoveLegacyCrmAndNetticaSeeds', N'9.0.9');
+    VALUES (N'20260318133000_AddBruteForceProtection', N'9.0.9');
 END;
 
 COMMIT;

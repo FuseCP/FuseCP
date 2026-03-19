@@ -6042,5 +6042,90 @@ DELIMITER ;
 CALL MigrationsScript();
 DROP PROCEDURE MigrationsScript;
 
-COMMIT;
+DROP PROCEDURE IF EXISTS MigrationsScript;
+DELIMITER //
+CREATE PROCEDURE MigrationsScript()
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20260318133000_AddBruteForceProtection') THEN
+    CREATE TABLE `BruteForceLogs` (
+        `Id` int NOT NULL AUTO_INCREMENT,
+        `IpAddress` varchar(45) CHARACTER SET utf8mb4 NOT NULL,
+        `Username` varchar(255) CHARACTER SET utf8mb4 NULL,
+        `Layer` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
+        `AttemptTime` datetime(6) NOT NULL,
+        `Succeeded` tinyint(1) NOT NULL,
+        `UserAgent` varchar(500) CHARACTER SET utf8mb4 NULL,
+        CONSTRAINT `PK_BruteForceLogs` PRIMARY KEY (`Id`)
+    ) CHARACTER SET=utf8mb4;
 
+    END IF;
+END //
+DELIMITER ;
+CALL MigrationsScript();
+DROP PROCEDURE MigrationsScript;
+
+DROP PROCEDURE IF EXISTS MigrationsScript;
+DELIMITER //
+CREATE PROCEDURE MigrationsScript()
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20260318133000_AddBruteForceProtection') THEN
+    CREATE TABLE `IpSecurityPolicies` (
+        `Id` int NOT NULL AUTO_INCREMENT,
+        `IpRange` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+        `IsWhitelist` tinyint(1) NOT NULL,
+        `CreatedDate` datetime(6) NOT NULL,
+        `ExpiresDate` datetime(6) NULL,
+        `Reason` varchar(500) CHARACTER SET utf8mb4 NULL,
+        `IsActive` tinyint(1) NOT NULL,
+        `SeverityLevel` int NOT NULL,
+        `CreatedBy` varchar(255) CHARACTER SET utf8mb4 NULL,
+        CONSTRAINT `PK_IpSecurityPolicies` PRIMARY KEY (`Id`)
+    ) CHARACTER SET=utf8mb4;
+
+    END IF;
+END //
+DELIMITER ;
+CALL MigrationsScript();
+DROP PROCEDURE MigrationsScript;
+
+DROP PROCEDURE IF EXISTS MigrationsScript;
+DELIMITER //
+CREATE PROCEDURE MigrationsScript()
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20260318133000_AddBruteForceProtection') THEN
+    CREATE INDEX `IX_BruteForceLogs_IpAddress_Layer_AttemptTime` ON `BruteForceLogs` (`IpAddress`, `Layer`, `AttemptTime`);
+
+    END IF;
+END //
+DELIMITER ;
+CALL MigrationsScript();
+DROP PROCEDURE MigrationsScript;
+
+DROP PROCEDURE IF EXISTS MigrationsScript;
+DELIMITER //
+CREATE PROCEDURE MigrationsScript()
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20260318133000_AddBruteForceProtection') THEN
+    CREATE INDEX `IX_IpSecurityPolicies_IpRange_IsActive` ON `IpSecurityPolicies` (`IpRange`, `IsActive`);
+
+    END IF;
+END //
+DELIMITER ;
+CALL MigrationsScript();
+DROP PROCEDURE MigrationsScript;
+
+DROP PROCEDURE IF EXISTS MigrationsScript;
+DELIMITER //
+CREATE PROCEDURE MigrationsScript()
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20260318133000_AddBruteForceProtection') THEN
+    INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+    VALUES ('20260318133000_AddBruteForceProtection', '9.0.9');
+
+    END IF;
+END //
+DELIMITER ;
+CALL MigrationsScript();
+DROP PROCEDURE MigrationsScript;
+
+COMMIT;
