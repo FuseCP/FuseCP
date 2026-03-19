@@ -165,9 +165,31 @@ jobs:
         comment-identifier: 'bff-tests'
         
     - name: Fail if Tests Failed
-      if: steps.test.outcome == 'failure'
+      shell: pwsh
       run: |
-        echo "Tests failed, failing the job"
-        exit 1
+        $trxFiles = Get-ChildItem -Path ./test-results -Filter *.trx -Recurse -ErrorAction SilentlyContinue
+        if (-not $trxFiles -or $trxFiles.Count -eq 0) {
+          Write-Error "No TRX files found. Treating this as a test infrastructure failure."
+          exit 1
+        }
+
+        [int]$failedCount = 0
+        foreach ($trx in $trxFiles) {
+          try {
+            [xml]$doc = Get-Content -Path $trx.FullName
+            $failed = @($doc.TestRun.Results.UnitTestResult | Where-Object { $_.outcome -eq 'Failed' }).Count
+            $failedCount += $failed
+          } catch {
+            Write-Error "Failed to parse TRX file: $($trx.FullName). $_"
+            exit 1
+          }
+        }
+
+        if ($failedCount -gt 0) {
+          Write-Host "Detected $failedCount failed test(s) across TRX results."
+          exit 1
+        }
+
+        Write-Host "No failed tests detected in TRX results."
 
 
