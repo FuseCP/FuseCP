@@ -23,12 +23,11 @@
 	- Local: 131/131 tests pass with LocalDB present
 	- CI: ~30 SQLite tests expected to pass, ~4 SqlServer rows Inconclusive (not Failed)
 
-- Commit: 66052758a
+- Commit: 6e069840c
 - Message: fix(db): regenerate complete SqlServer migration Designer snapshot
 - Impact:
 	- Regenerates the broken SqlServer `AddBruteForceProtection.Designer.cs` which had an empty `BuildTargetModel` method (38 lines vs 920KB).
 	- This incomplete snapshot caused `dotnet ef database update` to fail with "pending model changes" error.
-	- Moves SqlServer migrations to root `Migrations\SqlServer\` for consistency.
 - Validation:
 	- `dotnet build --framework net10.0 FuseCP/Sources/FuseCP.EnterpriseServer.Data`
 	- `dotnet ef migrations has-pending-model-changes --framework net10.0 --context SqlServerDbContext` returns no pending changes
