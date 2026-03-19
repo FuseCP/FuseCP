@@ -188,7 +188,7 @@ function Test-EfWorkflowGuards {
         
         $setupSqliteExists = $testContent -match "SetupSqliteDb"
         $installDbExists = $testContent -match "InstallFreshDatabase"
-        $migrateExists = $testContent -match "\.Migrate\(\)"
+        $migrateExists = ($testContent -match "\.Migrate\(\)") -or ($testContent -match 'GetMethod\("Migrate"')
         
         if (-not ($setupSqliteExists -and $installDbExists -and $migrateExists)) {
             Add-Result "Test Bootstrap Methods" "FAIL" "Missing required methods in test init"
@@ -429,7 +429,7 @@ function Invoke-ComprehensiveVerification {
         $testContent = Get-Content $testHelperFile -Raw
         $hasSetup = $testContent -match "SetupSqliteDb"
         $hasInstall = $testContent -match "InstallFreshDatabase"
-        $hasMigrate = $testContent -match "\.Migrate\(\)"
+        $hasMigrate = ($testContent -match "\.Migrate\(\)") -or ($testContent -match 'GetMethod\("Migrate"')
         
         if ($hasSetup -and $hasInstall -and $hasMigrate) {
             Add-Result "  Test Bootstrap Setup" "PASS" "All methods present"
