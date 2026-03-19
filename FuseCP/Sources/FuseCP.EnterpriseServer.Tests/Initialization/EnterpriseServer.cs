@@ -192,7 +192,8 @@ public class EnterpriseServer : IDisposable
 			// DatabaseUtils.UpdateDatabase for SQLite.
 			{
 				var contextType = Type.GetType("FuseCP.EnterpriseServer.Data.SqliteDbContext, FuseCP.EnterpriseServer.Data.NetCore");
-				using var context = Activator.CreateInstance(contextType, new object[] { connectionString, false }) as IDisposable;
+				var nativeConnectionString = DbSettings.GetNativeConnectionString(connectionString);
+				using var context = Activator.CreateInstance(contextType, new object[] { nativeConnectionString, true }) as IDisposable;
 				contextType?.GetMethod("Migrate", BindingFlags.Instance | BindingFlags.Public)?.Invoke(context, null);
 			}
 
