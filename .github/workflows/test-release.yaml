@@ -62,7 +62,9 @@ jobs:
     permissions:
       checks: write
       contents: write
+      issues: write
       packages: write
+      pull-requests: write
 
     timeout-minutes: 60
 
