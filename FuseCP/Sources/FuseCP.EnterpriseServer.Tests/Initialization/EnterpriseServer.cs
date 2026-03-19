@@ -141,6 +141,37 @@ public class EnterpriseServer : IDisposable
 		return connectionString;
 	}
 	static int localDbStarted = 0;
+	static int? localDbAvailable = null;
+	static string localDbUnavailableReason = null;
+
+	public static bool IsLocalDbAvailable
+	{
+		get
+		{
+			if (localDbAvailable.HasValue)
+			{
+				return localDbAvailable.Value == 1;
+			}
+
+			try
+			{
+				var shell = Shell.Standard.Clone;
+				shell.Redirect = true;
+				shell.Exec("SqlLocalDB info");
+				localDbAvailable = 1;
+				localDbUnavailableReason = null;
+			}
+			catch (Exception ex)
+			{
+				localDbAvailable = 0;
+				localDbUnavailableReason = ex.Message;
+			}
+
+			return localDbAvailable.Value == 1;
+		}
+	}
+
+	public static string LocalDbUnavailableReason => localDbUnavailableReason;
 	public static void StartLocalDB()
 	{
 		if (Interlocked.Exchange(ref localDbStarted, 1) == 0)
@@ -148,6 +179,33 @@ public class EnterpriseServer : IDisposable
 			var shell = Shell.Standard.Clone;
 			shell.Redirect = true;
 			shell.Exec("SqlLocalDB start");
+		}
+	}
+
+	public static bool TrySetupLocalDb(out string connectionString, out Exception error)
+	{
+		connectionString = null;
+		error = null;
+
+		if (!IsLocalDbAvailable)
+		{
+			error = new InvalidOperationException($"SqlLocalDB is not available: {LocalDbUnavailableReason}");
+			return false;
+		}
+
+		try
+		{
+			connectionString = SetupLocalDb();
+			localDbAvailable = 1;
+			localDbUnavailableReason = null;
+			return true;
+		}
+		catch (Exception ex)
+		{
+			localDbAvailable = 0;
+			localDbUnavailableReason = ex.Message;
+			error = ex;
+			return false;
 		}
 	}
 	public static string SetupLocalDb()

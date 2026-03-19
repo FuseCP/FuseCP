@@ -38,6 +38,14 @@ namespace FuseCP.Tests
 	[TestClass]
 	public class Database
 	{
+		static void RequireSqlServer(DbType dbtype)
+		{
+			if (dbtype == DbType.SqlServer && !EnterpriseServer.IsLocalDbAvailable)
+			{
+				Assert.Inconclusive($"SqlServer test requires SqlLocalDB, which is unavailable: {EnterpriseServer.LocalDbUnavailableReason}");
+			}
+		}
+
 		public string ConnectionString(DbType dbtype) => EnterpriseServer.ConnectionString(dbtype);
 
 		[TestMethod]
@@ -45,6 +53,7 @@ namespace FuseCP.Tests
 		[DataRow(DbType.Sqlite)]
 		public void TestDbAccess(DbType dbtype)
 		{
+			RequireSqlServer(dbtype);
 			using (var db = new FuseCP.EnterpriseServer.Data.DbContext(ConnectionString(dbtype)))
 			{
 				var providers = db.Providers.ToArray();
@@ -57,6 +66,7 @@ namespace FuseCP.Tests
 		[DataRow(DbType.Sqlite)]
 		public void TestDynamicLike(DbType dbtype)
 		{
+			RequireSqlServer(dbtype);
 			using (var db = new FuseCP.EnterpriseServer.Data.DbContext(ConnectionString(dbtype)))
 			{
 				var columnName = "ProviderName";
@@ -79,6 +89,7 @@ namespace FuseCP.Tests
 		[DataRow(DbType.Sqlite)]
 		public void TestGetSearchObjectEF(DbType dbtype)
 		{
+			RequireSqlServer(dbtype);
 			using (var db = new DataProvider(ConnectionString(dbtype)))
 			{
 				db.AlwaysUseEntityFramework = true;
@@ -91,6 +102,7 @@ namespace FuseCP.Tests
 		[DataRow(DbType.Sqlite)]
 		public void TestGetSearchObjectStoredProcedure(DbType dbtype)
 		{
+			RequireSqlServer(dbtype);
 			using (var db = new DataProvider(ConnectionString(dbtype)))
 			{
 				db.AlwaysUseEntityFramework = false;

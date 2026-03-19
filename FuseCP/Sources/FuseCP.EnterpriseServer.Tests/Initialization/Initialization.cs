@@ -45,9 +45,16 @@ namespace FuseCP.Tests
 			
 			// Setup EnterpriseServer website & database
 			EnterpriseServer.Clone();
-			EnterpriseServer.SetupSqliteDb();
-			var connStr = EnterpriseServer.SetupLocalDb();
-			EnterpriseServer.ConfigureDatabase(connStr);
+			var sqliteConnectionString = EnterpriseServer.SetupSqliteDb();
+			if (EnterpriseServer.TrySetupLocalDb(out var connStr, out var localDbError))
+			{
+				EnterpriseServer.ConfigureDatabase(connStr);
+			}
+			else
+			{
+				Console.WriteLine($"Skipping LocalDB-backed EnterpriseServer tests: {localDbError.Message}");
+				EnterpriseServer.ConfigureDatabase(sqliteConnectionString);
+			}
 
 			Servers.Init(Component.EnterpriseServer);
 		}
