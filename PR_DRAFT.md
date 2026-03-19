@@ -33,6 +33,14 @@
 	- `dotnet ef migrations has-pending-model-changes --framework net10.0 --context SqlServerDbContext` returns no pending changes
 	- `sqlcmd` idempotent install script applies migration to dev environment
 
+- Commit: d8f89492b
+- Message: fix(db): align SqlServer active model snapshot with brute-force entities
+- Impact:
+	- Updates `SqlServerDbContextModelSnapshot_Run_Migrate_msSQL_Script.cs` to include `BruteForceLog` and `IpSecurityPolicy` mappings.
+	- Removes persistent SQL Server model drift where EF reported pending model changes despite migration files existing.
+- Validation:
+	- `dotnet ef migrations has-pending-model-changes --framework net10.0 --context SqlServerDbContext` returns no pending changes
+
 ## CI
 
 - Commit: ca6be8ef5
@@ -44,3 +52,13 @@
 - Validation:
 	- `dotnet build --configuration Release FuseCP.Tests.sln`
 	- `dotnet test --no-build -v n --logger trx -m:1 -p:BuildInParallel=false --configuration Release --results-directory ..\..\test-results FuseCP.Tests.sln`
+
+- Commit: efec24a52
+- Message: fix(ci): fail Test workflow only when TRX contains failed tests
+- Impact:
+	- Replaces `steps.test.outcome == 'failure'` gate with TRX parsing that fails only on actual `Failed` test outcomes.
+	- Preserves hard failure when TRX is missing or unreadable.
+	- Prevents false job failures caused by non-zero MSTest exit codes due to `Inconclusive` rows on runners without LocalDB.
+- Validation:
+	- Local TRX parse reports `TRX failed count: 0` for passing suites.
+	- Workflow now only fails on real failed tests, not inconclusive outcomes.
