@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using System.Runtime.Serialization;
 
 namespace FuseCP.WebDav.Core.Exceptions
 {
@@ -30,10 +29,6 @@ namespace FuseCP.WebDav.Core.Exceptions
         }
 
         public ResourceNotFoundException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        protected ResourceNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

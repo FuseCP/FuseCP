@@ -45,7 +45,10 @@ namespace FuseCP.WebDav.Core.Security.Authentication
 
             try
             {
-                _principalContext = new PrincipalContext(ContextType.Domain, WebDavAppConfigManager.Instance.UserDomain);
+                if (OperatingSystem.IsWindows())
+                {
+                    _principalContext = new PrincipalContext(ContextType.Domain, WebDavAppConfigManager.Instance.UserDomain);
+                }
             }
             catch (Exception ex)
             {
@@ -125,6 +128,12 @@ namespace FuseCP.WebDav.Core.Security.Authentication
             Log.WriteStart("ValidateAuthenticationData");
 
             if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+
+            // AD-backed authentication is only available on Windows.
+            if (!OperatingSystem.IsWindows() || _principalContext == null)
             {
                 return false;
             }

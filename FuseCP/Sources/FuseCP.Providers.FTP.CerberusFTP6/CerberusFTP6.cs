@@ -143,8 +143,10 @@ namespace FuseCP.Providers.FTP
             byte[] data = StrToByteArray(strPassword);
             byte[] shaResult;
 
-            var sha = new SHA1CryptoServiceProvider();
-            shaResult = sha.ComputeHash(data);
+            using (var sha = SHA1.Create())
+            {
+                shaResult = sha.ComputeHash(data);
+            }
 
             int[] returnResult = new int[shaResult.Length];
             for (var i = 0; i < shaResult.Length; i++)

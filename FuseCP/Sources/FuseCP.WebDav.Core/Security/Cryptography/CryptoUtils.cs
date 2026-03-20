@@ -35,12 +35,15 @@ namespace FuseCP.WebDav.Core.Security.Cryptography
 
                 if (!string.IsNullOrEmpty(Key))
                 {
-                    RegistryKey root = Registry.LocalMachine;
-                    RegistryKey rk = root.OpenSubKey(EnterpriseServerRegistryPath);
-                    if (rk != null)
+                    if (OperatingSystem.IsWindows())
                     {
-                        value = (string)rk.GetValue(Key, null);
-                        rk.Close();
+                        RegistryKey root = Registry.LocalMachine;
+                        RegistryKey rk = root.OpenSubKey(EnterpriseServerRegistryPath);
+                        if (rk != null)
+                        {
+                            value = (string)rk.GetValue(Key, null);
+                            rk.Close();
+                        }
                     }
                 }
 
@@ -71,10 +74,6 @@ namespace FuseCP.WebDav.Core.Security.Cryptography
             if (InputText == null)
                 return InputText;
 
-            // We are now going to create an instance of the 
-            // Rihndael class.
-            RijndaelManaged RijndaelCipher = new RijndaelManaged();
-
             // First we need to turn the input strings into a byte array.
             byte[] PlainText = System.Text.Encoding.Unicode.GetBytes(InputText);
 
@@ -89,39 +88,30 @@ namespace FuseCP.WebDav.Core.Security.Cryptography
             PasswordDeriveBytes SecretKey = new PasswordDeriveBytes(Password, Salt);
 
 
-            // Create a encryptor from the existing SecretKey bytes.
-            // We use 32 bytes for the secret key 
-            // (the default Rijndael key length is 256 bit = 32 bytes) and
-            // then 16 bytes for the IV (initialization vector),
-            // (the default Rijndael IV length is 128 bit = 16 bytes)
-            ICryptoTransform Encryptor = RijndaelCipher.CreateEncryptor(SecretKey.GetBytes(32), SecretKey.GetBytes(16));
+            // Create an encryptor from the existing SecretKey bytes.
+            // We use 32 bytes for the secret key and 16 bytes for the IV
+            // to preserve legacy payload compatibility.
+            byte[] key = SecretKey.GetBytes(32);
+            byte[] iv = SecretKey.GetBytes(16);
+            byte[] CipherBytes;
+            using (Aes aes = Aes.Create())
+            {
+                aes.Mode = CipherMode.CBC;
+                aes.Padding = PaddingMode.PKCS7;
+                using (ICryptoTransform Encryptor = aes.CreateEncryptor(key, iv))
+                using (MemoryStream memoryStream = new MemoryStream())
+                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, Encryptor, CryptoStreamMode.Write))
+                {
+                    // Start the encryption process.
+                    cryptoStream.Write(PlainText, 0, PlainText.Length);
 
+                    // Finish encrypting.
+                    cryptoStream.FlushFinalBlock();
 
-            // Create a MemoryStream that is going to hold the encrypted bytes 
-            MemoryStream memoryStream = new MemoryStream();
-
-
-            // Create a CryptoStream through which we are going to be processing our data. 
-            // CryptoStreamMode.Write means that we are going to be writing data 
-            // to the stream and the output will be written in the MemoryStream
-            // we have provided. (always use write mode for encryption)
-            CryptoStream cryptoStream = new CryptoStream(memoryStream, Encryptor, CryptoStreamMode.Write);
-
-            // Start the encryption process.
-            cryptoStream.Write(PlainText, 0, PlainText.Length);
-
-
-            // Finish encrypting.
-            cryptoStream.FlushFinalBlock();
-
-            // Convert our encrypted data from a memoryStream into a byte array.
-            byte[] CipherBytes = memoryStream.ToArray();
-
-
-
-            // Close both streams.
-            memoryStream.Close();
-            cryptoStream.Close();
+                    // Convert our encrypted data from a memoryStream into a byte array.
+                    CipherBytes = memoryStream.ToArray();
+                }
+            }
 
 
 
@@ -149,36 +139,31 @@ namespace FuseCP.WebDav.Core.Security.Cryptography
                     return InputText;
 
                 string Password = CryptoKey;
-                RijndaelManaged RijndaelCipher = new RijndaelManaged();
-
 
                 byte[] EncryptedData = Convert.FromBase64String(InputText);
                 byte[] Salt = Encoding.ASCII.GetBytes(Password.Length.ToString());
 
 
                 PasswordDeriveBytes SecretKey = new PasswordDeriveBytes(Password, Salt);
-
-                // Create a decryptor from the existing SecretKey bytes.
-                ICryptoTransform Decryptor = RijndaelCipher.CreateDecryptor(SecretKey.GetBytes(32), SecretKey.GetBytes(16));
-
-
-                MemoryStream memoryStream = new MemoryStream(EncryptedData);
-
-                // Create a CryptoStream. (always use Read mode for decryption).
-                CryptoStream cryptoStream = new CryptoStream(memoryStream, Decryptor, CryptoStreamMode.Read);
-
-
-                // Since at this point we don't know what the size of decrypted data
-                // will be, allocate the buffer long enough to hold EncryptedData;
-                // DecryptedData is never longer than EncryptedData.
+                byte[] key = SecretKey.GetBytes(32);
+                byte[] iv = SecretKey.GetBytes(16);
                 byte[] PlainText = new byte[EncryptedData.Length];
-
-                // Start decrypting.
-                int DecryptedCount = cryptoStream.Read(PlainText, 0, PlainText.Length);
-
-
-                memoryStream.Close();
-                cryptoStream.Close();
+                int DecryptedCount;
+                using (Aes aes = Aes.Create())
+                {
+                    aes.Mode = CipherMode.CBC;
+                    aes.Padding = PaddingMode.PKCS7;
+                    using (ICryptoTransform Decryptor = aes.CreateDecryptor(key, iv))
+                    using (MemoryStream memoryStream = new MemoryStream(EncryptedData))
+                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, Decryptor, CryptoStreamMode.Read))
+                    {
+                        // Since at this point we don't know what the size of decrypted data
+                        // will be, allocate the buffer long enough to hold EncryptedData;
+                        // DecryptedData is never longer than EncryptedData.
+                        // Start decrypting.
+                        DecryptedCount = cryptoStream.Read(PlainText, 0, PlainText.Length);
+                    }
+                }
 
                 // Convert decrypted data into a string. 
                 string DecryptedData = Encoding.Unicode.GetString(PlainText, 0, DecryptedCount);
@@ -198,10 +183,12 @@ namespace FuseCP.WebDav.Core.Security.Cryptography
             // Convert plain text into a byte array.
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
-            HashAlgorithm hash = new SHA1Managed(); ;
-
             // Compute hash value of our plain text with appended salt.
-            byte[] hashBytes = hash.ComputeHash(plainTextBytes);
+            byte[] hashBytes;
+            using (HashAlgorithm hash = System.Security.Cryptography.SHA1.Create())
+            {
+                hashBytes = hash.ComputeHash(plainTextBytes);
+            }
 
             // Return the result.
             return Convert.ToBase64String(hashBytes);

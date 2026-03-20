@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -134,26 +135,20 @@ namespace FuseCP.WebDav.Core
                 var credentials = (NetworkCredential) _credentials;
                 string auth = "Basic " +
                               Convert.ToBase64String(
-                                  Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                WebRequest webRequest = WebRequest.Create(Href);
-                webRequest.Method = "DELETE";
-                webRequest.Credentials = credentials;
-                webRequest.Headers.Add("Authorization", auth);
-                using (WebResponse webResponse = webRequest.GetResponse())
+                                  Encoding.Default.GetBytes((credentials?.UserName ?? string.Empty) + ":" + (credentials?.Password ?? string.Empty)));
+                var handler = new HttpClientHandler();
+                if (credentials != null)
                 {
-                    using (Stream responseStream = webResponse.GetResponseStream())
+                    handler.Credentials = credentials;
+                }
+
+                using (var client = new HttpClient(handler))
+                using (var request = new HttpRequestMessage(HttpMethod.Delete, Href))
+                {
+                    request.Headers.TryAddWithoutValidation("Authorization", auth);
+                    using (var response = client.Send(request))
                     {
-                        var buffer = new byte[8192];
-                        string result = "";
-                        int bytesRead = 0;
-                        do
-                        {
-                            bytesRead = responseStream.Read(buffer, 0, buffer.Length);
-                            if (bytesRead > 0)
-                            {
-                                result += Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                            }
-                        } while (bytesRead > 0);
+                        response.EnsureSuccessStatusCode();
                     }
                 }
             }

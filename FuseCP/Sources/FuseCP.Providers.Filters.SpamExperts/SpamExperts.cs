@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 
 namespace FuseCP.Providers.Filters
@@ -87,14 +88,14 @@ namespace FuseCP.Providers.Filters
             string result = string.Empty;
             try
             {
-                System.Net.WebClient Client = new WebClient();
-
-                Client.Credentials = new NetworkCredential(User, Password);
-
-                using (Stream strm = Client.OpenRead(uri.Uri))
+                var handler = new HttpClientHandler
                 {
-                    StreamReader sr = new StreamReader(strm);
-                    result = sr.ReadToEnd();
+                    Credentials = new NetworkCredential(User, Password)
+                };
+
+                using (var client = new HttpClient(handler))
+                {
+                    result = client.GetStringAsync(uri.Uri).GetAwaiter().GetResult();
                 }
 
                 if (result == null) result = "";

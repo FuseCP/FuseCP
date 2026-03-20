@@ -17,8 +17,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Mime;
-using System.Net.Security;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
@@ -53,6 +54,38 @@ namespace FuseCP.WebDav.Core
             private Property[] _properties = {};
             private int _timeOut = 30000;
             private bool _versionControlled = false;
+
+            private string BuildBasicAuthHeader(NetworkCredential credentials)
+            {
+                return "Basic " + Convert.ToBase64String(
+                    Encoding.Default.GetBytes((credentials?.UserName ?? string.Empty) + ":" + (credentials?.Password ?? string.Empty)));
+            }
+
+            private HttpClient CreateHttpClient(NetworkCredential credentials, bool ignoreServerCertificateErrors = false)
+            {
+                var handler = new HttpClientHandler();
+                if (credentials != null)
+                {
+                    handler.Credentials = credentials;
+                }
+
+                if (ignoreServerCertificateErrors)
+                {
+                    handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+                }
+
+                var client = new HttpClient(handler);
+                if (TimeOut == Timeout.Infinite)
+                {
+                    client.Timeout = Timeout.InfiniteTimeSpan;
+                }
+                else
+                {
+                    client.Timeout = TimeSpan.FromMilliseconds(TimeOut);
+                }
+
+                return client;
+            }
 
             public WebDavResource()
             {
@@ -112,20 +145,21 @@ namespace FuseCP.WebDav.Core
             /// <param name="filename">Full path of a file to be downloaded to</param>
             public void Download(string filename)
             {
-                var webClient = new WebClient();
-                webClient.DownloadFile(_href, filename);
+                File.WriteAllBytes(filename, Download());
             }
 
             public byte[] Download()
             {
-                try
+                var credentials = (NetworkCredential)_credentials;
+                using (var client = CreateHttpClient(credentials))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, _href))
                 {
-                    var webClient = new WebClient();
-                    return webClient.DownloadData(_href);
-                }
-                catch (WebException)
-                {
-                    throw;
+                    request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+                    using (HttpResponseMessage response = client.Send(request))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        return response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+                    }
                 }
             }
 
@@ -135,14 +169,7 @@ namespace FuseCP.WebDav.Core
             /// <param name="filename">Full path of a file to be uploaded from</param>
             public void Upload(string filename)
             {
-                var credentials = (NetworkCredential) _credentials;
-                string auth = "Basic " +
-                              Convert.ToBase64String(
-                                  Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                var webClient = new WebClient();
-                webClient.Credentials = credentials;
-                webClient.Headers.Add("Authorization", auth);
-                webClient.UploadFile(Href, "PUT", filename);
+                Upload(File.ReadAllBytes(filename));
             }
 
             /// <summary>
@@ -152,14 +179,16 @@ namespace FuseCP.WebDav.Core
             public void Upload(byte[] data)
             {
                 var credentials = (NetworkCredential)_credentials;
-                string auth = "Basic " +
-                              Convert.ToBase64String(
-                                  Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                var webClient = new WebClient();
-                webClient.Credentials = credentials;
-                webClient.Headers.Add("Authorization", auth);
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                webClient.UploadData(Href, "PUT", data);
+                using (var client = CreateHttpClient(credentials, ignoreServerCertificateErrors: true))
+                using (var request = new HttpRequestMessage(HttpMethod.Put, Href))
+                {
+                    request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+                    request.Content = new ByteArrayContent(data ?? Array.Empty<byte>());
+                    using (HttpResponseMessage response = client.Send(request))
+                    {
+                        response.EnsureSuccessStatusCode();
+                    }
+                }
             }
 
             /// <summary>
@@ -169,16 +198,17 @@ namespace FuseCP.WebDav.Core
             public Stream GetReadStream()
             {
                 var credentials = (NetworkCredential) _credentials;
-                string auth = "Basic " +
-                              Convert.ToBase64String(
-                                  Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                var webClient = new WebClient();
-                webClient.Credentials = credentials;
-                webClient.Headers.Add("Authorization", auth);
-                //TODO Disable SSL
-                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(delegate{ return true; });
-
-                return webClient.OpenRead(_href);
+                using (var client = CreateHttpClient(credentials, ignoreServerCertificateErrors: true))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, _href))
+                {
+                    request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+                    using (HttpResponseMessage response = client.Send(request))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        byte[] bytes = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+                        return new MemoryStream(bytes, writable: false);
+                    }
+                }
             }
 
             /// <summary>
@@ -346,28 +376,13 @@ namespace FuseCP.WebDav.Core
             public void Delete()
             {
                 var credentials = (NetworkCredential) _credentials;
-                string auth = "Basic " +
-                              Convert.ToBase64String(
-                                  Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                WebRequest webRequest = WebRequest.Create(Href);
-                webRequest.Method = "DELETE";
-                webRequest.Credentials = credentials;
-                webRequest.Headers.Add("Authorization", auth);
-                using (WebResponse webResponse = webRequest.GetResponse())
+                using (var client = CreateHttpClient(credentials))
+                using (var request = new HttpRequestMessage(HttpMethod.Delete, Href))
                 {
-                    using (Stream responseStream = webResponse.GetResponseStream())
+                    request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+                    using (HttpResponseMessage response = client.Send(request))
                     {
-                        var buffer = new byte[8192];
-                        string result = "";
-                        int bytesRead = 0;
-                        do
-                        {
-                            bytesRead = responseStream.Read(buffer, 0, buffer.Length);
-                            if (bytesRead > 0)
-                            {
-                                result += Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                            }
-                        } while (bytesRead > 0);
+                        response.EnsureSuccessStatusCode();
                     }
                 }
             }
@@ -389,28 +404,21 @@ namespace FuseCP.WebDav.Core
                                  "<D:owner>{0}</D:owner>" +
                                  "</D:lockinfo>", ScpContext.User.Login);
 
-                string auth = "Basic " +
-                              Convert.ToBase64String(
-                                  Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-
-                WebRequest webRequest = WebRequest.Create(Href);
-
-                webRequest.Method = "LOCK";
-                webRequest.Credentials = credentials;
-                webRequest.Headers.Add("Authorization", auth);
-                webRequest.PreAuthenticate = true;
-                webRequest.ContentType = "application/xml";
-
-                // Retrieve the request stream.
-                using (Stream requestStream = webRequest.GetRequestStream())
+                using (var client = CreateHttpClient(credentials))
+                using (var request = new HttpRequestMessage(new HttpMethod("LOCK"), Href))
                 {
-                    // Write the lock XML to the destination.
-                    requestStream.Write(Encoding.UTF8.GetBytes(lockXml), 0, lockXml.Length);
-                }
+                    request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+                    request.Headers.TryAddWithoutValidation("Prefer", "return=representation");
+                    request.Content = new StringContent(lockXml, Encoding.UTF8, "application/xml");
 
-                using (WebResponse webResponse = webRequest.GetResponse())
-                {
-                    lockToken = webResponse.Headers["Lock-Token"];
+                    using (HttpResponseMessage response = client.Send(request))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        if (response.Headers.TryGetValues("Lock-Token", out var values))
+                        {
+                            lockToken = values.FirstOrDefault() ?? string.Empty;
+                        }
+                    }
                 }
 
                 return lockToken;
@@ -421,17 +429,16 @@ namespace FuseCP.WebDav.Core
             /// </summary>
             public void UnLock()
             {
-                WebRequest webRequest = WebRequest.Create(Href);
-
-                webRequest.Method = "UNLOCK";
-                webRequest.Credentials = _credentials;
-                webRequest.PreAuthenticate = true;
-
-                webRequest.Headers.Add(@"Lock-Token", Properties.First(x => x.Name.Name == "locktoken").StringValue);
-
-                using (WebResponse webResponse = webRequest.GetResponse())
+                var credentials = (NetworkCredential)_credentials;
+                using (var client = CreateHttpClient(credentials))
+                using (var request = new HttpRequestMessage(new HttpMethod("UNLOCK"), Href))
                 {
-                    //TODO unlock
+                    request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+                    request.Headers.TryAddWithoutValidation("Lock-Token", Properties.First(x => x.Name.Name == "locktoken").StringValue);
+                    using (HttpResponseMessage response = client.Send(request))
+                    {
+                        response.EnsureSuccessStatusCode();
+                    }
                 }
             }
 

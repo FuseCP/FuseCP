@@ -18,9 +18,10 @@ using System.DirectoryServices.AccountManagement;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Security;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Xml;
 using FuseCP.WebDav.Core.Config;
 using FuseCP.WebDav.Core.Exceptions;
@@ -43,6 +44,38 @@ namespace FuseCP.WebDav.Core
         {
             private IHierarchyItem[] _children = new IHierarchyItem[0];
             private Uri _path;
+
+            private string BuildBasicAuthHeader(NetworkCredential credentials)
+            {
+                return "Basic " + Convert.ToBase64String(
+                    Encoding.Default.GetBytes((credentials?.UserName ?? string.Empty) + ":" + (credentials?.Password ?? string.Empty)));
+            }
+
+            private HttpClient CreateHttpClient(NetworkCredential credentials, bool ignoreServerCertificateErrors = false)
+            {
+                var handler = new HttpClientHandler();
+                if (credentials != null)
+                {
+                    handler.Credentials = credentials;
+                }
+
+                if (ignoreServerCertificateErrors)
+                {
+                    handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+                }
+
+                var client = new HttpClient(handler);
+                if (TimeOut == Timeout.Infinite)
+                {
+                    client.Timeout = Timeout.InfiniteTimeSpan;
+                }
+                else
+                {
+                    client.Timeout = TimeSpan.FromMilliseconds(TimeOut);
+                }
+
+                return client;
+            }
 
             public Uri Path { get { return _path; } }
 
@@ -83,24 +116,24 @@ namespace FuseCP.WebDav.Core
                 {
                     resource.SetHref(new Uri(Href.AbsoluteUri + name));
                     var credentials = (NetworkCredential) _credentials;
-                    string auth = "Basic " +
-                                  Convert.ToBase64String(
-                                      Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                    var request = (HttpWebRequest) WebRequest.Create(resource.Href);
-                    request.Method = "PUT";
-                    request.Credentials = credentials;
-                    request.ContentType = "text/xml";
-                    request.Accept = "text/xml";
-                    request.Headers["translate"] = "f";
-                    request.Headers.Add("Authorization", auth);
-                    using (var response = (HttpWebResponse) request.GetResponse())
+                    using (var client = CreateHttpClient(credentials))
+                    using (var request = new HttpRequestMessage(HttpMethod.Put, resource.Href))
                     {
-                        if (response.StatusCode == HttpStatusCode.Created ||
-                            response.StatusCode == HttpStatusCode.NoContent)
+                        request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+                        request.Headers.TryAddWithoutValidation("translate", "f");
+                        request.Headers.TryAddWithoutValidation("Accept", "text/xml");
+                        request.Content = new ByteArrayContent(Array.Empty<byte>());
+                        request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/xml");
+
+                        using (var response = client.Send(request))
                         {
-                            Open(Href);
-                            resource = (WebDavResource) GetResource(name);
-                            resource.SetCredentials(_credentials);
+                            if (response.StatusCode == HttpStatusCode.Created ||
+                                response.StatusCode == HttpStatusCode.NoContent)
+                            {
+                                Open(Href);
+                                resource = (WebDavResource)GetResource(name);
+                                resource.SetCredentials(_credentials);
+                            }
                         }
                     }
                 }
@@ -122,21 +155,19 @@ namespace FuseCP.WebDav.Core
                 try
                 {
                     var credentials = (NetworkCredential) _credentials;
-                    var request = (HttpWebRequest) WebRequest.Create(Href.AbsoluteUri + name);
-                    request.Method = "MKCOL";
-                    request.Credentials = credentials;
-                    string auth = "Basic " +
-                                  Convert.ToBase64String(
-                                      Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                    request.Headers.Add("Authorization", auth);
-
-                    using (var response = (HttpWebResponse) request.GetResponse())
+                    using (var client = CreateHttpClient(credentials))
+                    using (var request = new HttpRequestMessage(new HttpMethod("MKCOL"), Href.AbsoluteUri + name))
                     {
-                        if (response.StatusCode == HttpStatusCode.Created ||
-                            response.StatusCode == HttpStatusCode.NoContent)
+                        request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+
+                        using (var response = client.Send(request))
                         {
-                            folder.SetCredentials(_credentials);
-                            folder.Open(Href.AbsoluteUri + name + "/");
+                            if (response.StatusCode == HttpStatusCode.Created ||
+                                response.StatusCode == HttpStatusCode.NoContent)
+                            {
+                                folder.SetCredentials(_credentials);
+                                folder.Open(Href.AbsoluteUri + name + "/");
+                            }
                         }
                     }
                 }
@@ -183,33 +214,33 @@ namespace FuseCP.WebDav.Core
             /// </summary>
             public void Open()
             {
-                var request = (HttpWebRequest)WebRequest.Create(_path);
-                request.PreAuthenticate = true;
-                request.Method = "PROPFIND";
-                request.ContentType = "application/xml";
-                request.Headers["Depth"] = "1";
-                //TODO Disable SSL
-                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(delegate { return true; });
-
                 var credentials = (NetworkCredential)_credentials;
-                if (credentials != null && credentials.UserName != null)
+                using (var client = CreateHttpClient(credentials, ignoreServerCertificateErrors: true))
+                using (var request = new HttpRequestMessage(new HttpMethod("PROPFIND"), _path))
                 {
-                    //request.Credentials = credentials;
-                    string auth = "Basic " +
-                                  Convert.ToBase64String(
-                                      Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                    request.Headers.Add("Authorization", auth);
+                    request.Headers.TryAddWithoutValidation("Depth", "1");
+                    if (credentials != null && credentials.UserName != null)
+                    {
+                        request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
+                    }
+                    request.Content = new ByteArrayContent(Array.Empty<byte>());
+                    request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/xml");
+
+                    using (var response = client.Send(request))
+                    {
+                        if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
+                        {
+                            throw new UnauthorizedException();
+                        }
+
+                        response.EnsureSuccessStatusCode();
+                        string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        ProcessResponse(responseString);
+                    }
                 }
+                
                 try
                 {
-                    using (var response = (HttpWebResponse) request.GetResponse())
-                    {
-                        using (var responseStream = new StreamReader(response.GetResponseStream()))
-                        {
-                            string responseString = responseStream.ReadToEnd();
-                            ProcessResponse(responseString);
-                        }
-                    }
                 }
                 catch (WebException e)
                 {
@@ -217,7 +248,7 @@ namespace FuseCP.WebDav.Core
                     {
                         throw new UnauthorizedException();
                     }
-                    throw e;
+                    throw;
                 }
             }
 
@@ -249,57 +280,33 @@ namespace FuseCP.WebDav.Core
 
             public void OpenPaged()
             {
-                var request = (HttpWebRequest)WebRequest.Create(_path);
-                //request.PreAuthenticate = true;
-                request.Method = "SEARCH";
-
-                //TODO Disable SSL
-                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(delegate { return true; });
-
                 var credentials = (NetworkCredential)_credentials;
-                if (credentials != null && credentials.UserName != null)
+                using (var client = CreateHttpClient(credentials, ignoreServerCertificateErrors: true))
+                using (var request = new HttpRequestMessage(new HttpMethod("SEARCH"), _path))
                 {
-                    request.Credentials = _credentials;
-
-                    string auth = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(credentials.UserName + ":" + credentials.Password));
-                    request.Headers.Add("Authorization", auth);
-                }
-
-                var strQuery = "<?xml version=\"1.0\"?><D:searchrequest xmlns:D = \"DAV:\" >"
-                        + "<D:sql>SELECT \"DAV:displayname\" FROM \"" + _path + "\""
-                        + "WHERE \"DAV:ishidden\" = false"
-                        + "</D:sql></D:searchrequest>";
-
-                try
-                {
-                   var bytes = Encoding.UTF8.GetBytes(strQuery);
-
-                    request.ContentLength = bytes.Length;
-
-                    using (var requestStream = request.GetRequestStream())
+                    if (credentials != null && credentials.UserName != null)
                     {
-                        // Write the SQL query to the request stream.
-                        requestStream.Write(bytes, 0, bytes.Length);
+                        request.Headers.TryAddWithoutValidation("Authorization", BuildBasicAuthHeader(credentials));
                     }
 
-                    request.ContentType = "text/xml";
+                    var strQuery = "<?xml version=\"1.0\"?><D:searchrequest xmlns:D = \"DAV:\" >"
+                            + "<D:sql>SELECT \"DAV:displayname\" FROM \"" + _path + "\""
+                            + "WHERE \"DAV:ishidden\" = false"
+                            + "</D:sql></D:searchrequest>";
 
-                    using (var response = (HttpWebResponse)request.GetResponse())
+                    request.Content = new StringContent(strQuery, Encoding.UTF8, "text/xml");
+
+                    using (var response = client.Send(request))
                     {
-                        using (var responseStream = new StreamReader(response.GetResponseStream()))
+                        if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            string responseString = responseStream.ReadToEnd();
-                            ProcessResponse(responseString);
+                            throw new UnauthorizedException();
                         }
+
+                        response.EnsureSuccessStatusCode();
+                        string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        ProcessResponse(responseString);
                     }
-                }
-                catch (WebException e)
-                {
-                    if (e.Status == WebExceptionStatus.ProtocolError)
-                    {
-                        throw new UnauthorizedException();
-                    }
-                    throw e;
                 }
             }
 
