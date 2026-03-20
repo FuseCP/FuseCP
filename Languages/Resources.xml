@@ -1441,6 +1441,46 @@
     <DefaultValue>Private Network VLANs</DefaultValue>
   </Resource>
   <Resource>
+    <File>App_GlobalResources\FuseCP_Modules.ascx.resx</File>
+    <Key>ModuleTitle.ConfigurationPolicies</Key>
+    <DefaultValue>Policies</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Modules.ascx.resx</File>
+    <Key>ModuleTitle.ConfigurationMailTemplates</Key>
+    <DefaultValue>Mail Templates</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Modules.ascx.resx</File>
+    <Key>ModuleTitle.ConfigurationAppearanceSettings</Key>
+    <DefaultValue>Appearance Settings</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Modules.ascx.resx</File>
+    <Key>ModuleTitle.SecurityPortalAuthentication</Key>
+    <DefaultValue>Portal Authentication</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Modules.ascx.resx</File>
+    <Key>ModuleTitle.SecurityPasswordLifecycle</Key>
+    <DefaultValue>Credential Hardening</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Modules.ascx.resx</File>
+    <Key>ModuleTitle.SecurityBruteForceAttempts</Key>
+    <DefaultValue>Brute Force Attempts</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Modules.ascx.resx</File>
+    <Key>ModuleTitle.SecurityIpSecurityPolicies</Key>
+    <DefaultValue>IP Security Policies</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Modules.ascx.resx</File>
+    <Key>ModuleTitle.UserAccountAppearanceSettings</Key>
+    <DefaultValue>Appearance and Branding</DefaultValue>
+  </Resource>
+  <Resource>
     <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
     <Key>PageName.Login</Key>
     <DefaultValue>Sign In</DefaultValue>
@@ -2224,6 +2264,126 @@
     <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
     <Key>PageTitle.APIDocumentation</Key>
     <DefaultValue>API Documentation</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.Infrastructure</Key>
+    <DefaultValue>Infrastructure</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.Infrastructure</Key>
+    <DefaultValue>Infrastructure</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.Security</Key>
+    <DefaultValue>Security</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.Security</Key>
+    <DefaultValue>Security</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.PoliciesAndTemplates</Key>
+    <DefaultValue>Policies and Templates</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.PoliciesAndTemplates</Key>
+    <DefaultValue>Policies and Templates</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.AppearanceBranding</Key>
+    <DefaultValue>Appearance and Branding</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.AppearanceBranding</Key>
+    <DefaultValue>Appearance and Branding</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.SecurityBruteForceAttempts</Key>
+    <DefaultValue>Brute Force Attempts</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.SecurityBruteForceAttempts</Key>
+    <DefaultValue>Brute Force Attempts</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.SecurityIpSecurityPolicies</Key>
+    <DefaultValue>IP Security Policies</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.SecurityIpSecurityPolicies</Key>
+    <DefaultValue>IP Security Policies</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.ConfigurationPolicies</Key>
+    <DefaultValue>Policies</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.ConfigurationPolicies</Key>
+    <DefaultValue>Policies</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.ConfigurationMailTemplates</Key>
+    <DefaultValue>Mail Templates</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.ConfigurationMailTemplates</Key>
+    <DefaultValue>Mail Templates</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.ConfigurationAppearance</Key>
+    <DefaultValue>Appearance Settings</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.ConfigurationAppearance</Key>
+    <DefaultValue>Appearance Settings</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.SecurityPortalAuthentication</Key>
+    <DefaultValue>Portal Authentication</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.SecurityPortalAuthentication</Key>
+    <DefaultValue>Portal Authentication</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.SecurityCredentialHardening</Key>
+    <DefaultValue>Credential Hardening</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.SecurityCredentialHardening</Key>
+    <DefaultValue>Credential Hardening</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageName.SecurityPasswordLifecycle</Key>
+    <DefaultValue>Credential Hardening</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>App_GlobalResources\FuseCP_Pages.ascx.resx</File>
+    <Key>PageTitle.SecurityPasswordLifecycle</Key>
+    <DefaultValue>Credential Hardening</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\FuseCP_SharedResources.ascx.resx</File>
@@ -18916,6 +19076,121 @@
     <DefaultValue>User name</DefaultValue>
   </Resource>
   <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>chkServerAdminAccess.ToolTip</Key>
+    <DefaultValue>Allow this IP or subnet to reach serveradmin-only portal pages when it is whitelisted.</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>lblServerAdminAccess.Text</Key>
+    <DefaultValue>Server Admin</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>lblServerAdminAccess.ToolTip</Key>
+    <DefaultValue>Allow this IP or subnet to reach serveradmin-only portal pages when it is whitelisted.</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>btnBlock.ToolTip</Key>
+    <DefaultValue>Block this IP or subnet</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>btnWhitelist.ToolTip</Key>
+    <DefaultValue>Whitelist this IP or subnet</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>locBlockButtonText.Text</Key>
+    <DefaultValue>Block</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>locWhitelistButtonText.Text</Key>
+    <DefaultValue>Whitelist</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>litActionHelp.Text</Key>
+    <DefaultValue>Enable Server Admin before whitelisting if this IP should also reach serveradmin-only portal pages. You can still change or remove it from the list below.</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>litPoliciesTitle.Text</Key>
+    <DefaultValue>IP Security Policies</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>locTogglePolicyState.Text</Key>
+    <DefaultValue>Toggle rule state</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>PolicyType.Whitelist</Key>
+    <DefaultValue>Whitelist</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>PolicyType.Block</Key>
+    <DefaultValue>Block</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>PolicyStatus.Active</Key>
+    <DefaultValue>Enabled</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>PolicyStatus.Disabled</Key>
+    <DefaultValue>Disabled</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>PolicyState.Enable.ToolTip</Key>
+    <DefaultValue>Enable this rule</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>PolicyState.Disable.ToolTip</Key>
+    <DefaultValue>Disable this rule</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>ServerAdminAccess.Enabled.ToolTip</Key>
+    <DefaultValue>Allow this whitelisted IP or subnet to access serveradmin-only portal pages.</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>ServerAdminAccess.Disabled.ToolTip</Key>
+    <DefaultValue>Enable this whitelist rule before granting serveradmin page access.</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>Action.Remove</Key>
+    <DefaultValue>Remove</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>Action.RemoveWhitelist.ToolTip</Key>
+    <DefaultValue>Remove this whitelist rule</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>Action.RemoveBlock.ToolTip</Key>
+    <DefaultValue>Remove this block rule</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>Action.RemoveWhitelist.Confirm</Key>
+    <DefaultValue>Remove this whitelist rule?</DefaultValue>
+  </Resource>
+  <Resource>
+    <File>DesktopModules\FuseCP\App_LocalResources\SecurityIpSecurityPolicies.ascx.resx</File>
+    <Key>Action.RemoveBlock.Confirm</Key>
+    <DefaultValue>Remove this block rule?</DefaultValue>
+  </Resource>
+  <Resource>
     <File>DesktopModules\FuseCP\App_LocalResources\ServerHeaderControl.ascx.resx</File>
     <Key>lblServerComments.Text</Key>
     <DefaultValue>Server comments:</DefaultValue>
@@ -23704,11 +23979,6 @@ The following substitution variables can be used in the pattern:&lt;br/&gt;
   </Resource>
   <Resource>
     <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>
-    <Key>HeaderAuthenticationSettings.Text</Key>
-    <DefaultValue>PORTAL AUTHENTICATION SETTINGS</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>
     <Key>HeaderNew.Text</Key>
     <DefaultValue>SPARE</DefaultValue>
   </Resource>
@@ -23774,11 +24044,6 @@ The following substitution variables can be used in the pattern:&lt;br/&gt;
   </Resource>
   <Resource>
     <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>
-    <Key>SettinglblEnablePasswordReset.Text</Key>
-    <DefaultValue>Password reset Link:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>
     <Key>SettinglblFileManagerEditableExtensions.Text</Key>
     <DefaultValue>Editable Extensions:</DefaultValue>
   </Resource>
@@ -23789,23 +24054,8 @@ The following substitution variables can be used in the pattern:&lt;br/&gt;
   </Resource>
   <Resource>
     <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>
-    <Key>SettingtxtMfaTokenAppDisplayName.Text</Key>
-    <DefaultValue>Authenticator Display Name:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>
-    <Key>SettingchkCanPeerChangeMFa.Text</Key>
-    <DefaultValue>Can Peer Change Mfa</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>
     <Key>SettinglblOwaUrl.Text</Key>
     <DefaultValue>OWA URL:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>
-    <Key>SettinglblPasswordResetLinkLifeSpan.Text</Key>
-    <DefaultValue>Reset Link Life Span:</DefaultValue>
   </Resource>
   <Resource>
     <File>DesktopModules\FuseCP\App_LocalResources\SystemSettings.ascx.resx</File>

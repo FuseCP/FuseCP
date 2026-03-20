@@ -70,6 +70,17 @@ namespace FuseCP.EnterpriseServer
 		static UserCache Users = new UserCache();
 		static ConcurrentDictionary<string, Task> GetUserTasks = new ConcurrentDictionary<string, Task>();
 
+		private static bool IsLoopbackHost(string hostAddress)
+		{
+			if (string.IsNullOrWhiteSpace(hostAddress))
+				return false;
+
+			if (!System.Net.IPAddress.TryParse(hostAddress, out var ipAddress))
+				return false;
+
+			return System.Net.IPAddress.IsLoopback(ipAddress);
+		}
+
 		public static bool Validate(string username, string password)
 		{
 			if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return false;
@@ -79,8 +90,9 @@ namespace FuseCP.EnterpriseServer
 				UserCacheEntry cachedUser;
 				var hostAddress = Web.Services.Server.UserHostAddress;
 				var bruteForce = new BruteForceProtectionService(controller);
+				var shouldApplyIpPolicy = !IsLoopbackHost(hostAddress);
 
-				if (!string.IsNullOrEmpty(hostAddress) && bruteForce.IsIpBlocked(hostAddress))
+				if (shouldApplyIpPolicy && !string.IsNullOrEmpty(hostAddress) && bruteForce.IsIpBlocked(hostAddress))
 				{
 					controller.AuditLog.AddAuditLogWarningRecord("User", "Login", username, new string[] { "IP blocked by brute force protection", "IP: " + hostAddress });
 					return false;
@@ -100,7 +112,8 @@ namespace FuseCP.EnterpriseServer
 					}));
 
 					controller.SecurityContext.SetThreadPrincipal(cachedUser.User);
-					bruteForce.RecordAttempt(hostAddress, username, BruteForceProtectionService.Layers.Api, succeeded: true);
+					if (shouldApplyIpPolicy)
+						bruteForce.RecordAttempt(hostAddress, username, BruteForceProtectionService.Layers.Api, succeeded: true);
 					return true;
 				}
 
@@ -109,7 +122,8 @@ namespace FuseCP.EnterpriseServer
 				if (user == null)
 				{
 					Users.TryRemove(username, out cachedUser);
-					bruteForce.RecordAttempt(hostAddress, username, BruteForceProtectionService.Layers.Api, succeeded: false);
+					if (shouldApplyIpPolicy)
+						bruteForce.RecordAttempt(hostAddress, username, BruteForceProtectionService.Layers.Api, succeeded: false);
 					
 					controller.AuditLog.AddAuditLogWarningRecord("User", "Login", username, new string[] { "Invalid username or password" });
 
@@ -117,7 +131,8 @@ namespace FuseCP.EnterpriseServer
 				}
 
 				Users.AddOrUpdate(username, user, password);
-				bruteForce.RecordAttempt(hostAddress, username, BruteForceProtectionService.Layers.Api, succeeded: true);
+				if (shouldApplyIpPolicy)
+					bruteForce.RecordAttempt(hostAddress, username, BruteForceProtectionService.Layers.Api, succeeded: true);
 				controller.SecurityContext.SetThreadPrincipal(user);
 			}
 			return true;

@@ -47,7 +47,8 @@
         <div class="row mb-3">
             <label for="chkEnablePasswordReset" class="col-sm-3 form-label">Enable password reset</label>
             <div class="col-sm-9">
-                <asp:CheckBox ID="chkEnablePasswordReset" runat="server" CssClass="fcp-check-inline" Text="Enabled" />
+                <asp:CheckBox ID="chkEnablePasswordReset" runat="server" CssClass="fcp-check-inline" Text="Enabled (Required)" Enabled="false" />
+                <div class="form-text">Password reset is always required and cannot be disabled.</div>
             </div>
         </div>
         <div class="row mb-3">

@@ -165,17 +165,11 @@
   <data name="SettinglblBackupFolderPath.Text" xml:space="preserve">
     <value>مسار مجلد النسخ الاحتياطية:</value>
   </data>
-  <data name="SettinglblEnablePasswordReset.Text" xml:space="preserve">
-    <value>رابط إعادة تعيين كلمة المرور:</value>
-  </data>
   <data name="SettinglblFileManagerEditableExtensions.Text" xml:space="preserve">
     <value>ملحقات قابلة للتحرير:</value>
   </data>
   <data name="SettinglblIpAddressRestriction.Text" xml:space="preserve">
     <value>عناوين IP:</value>
-  </data>
-  <data name="SettinglblPasswordResetLinkLifeSpan.Text" xml:space="preserve">
-    <value>إعادة تعيين عمر الارتباط:</value>
   </data>
   <data name="SettinglblRdsController.Text" xml:space="preserve">
     <value>تحكم RDS الرئيسي:</value>

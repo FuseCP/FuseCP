@@ -133,9 +133,7 @@ namespace FuseCP.Portal
 
             if (settings != null)
             {
-                chkEnablePasswordReset.Checked = Utils.ParseBool(settings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_ENABLED_KEY], false);
                 txtWebdavPortalUrl.Text = settings[WEBDAV_PORTAL_URL];
-                txtPasswordResetLinkLifeSpan.Text = settings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_LINK_LIFE_SPAN];
 
                 chkEnableOwa.Checked = Utils.ParseBool(settings[FCP.SystemSettings.WEBDAV_OWA_ENABLED_KEY], false);
                 txtOwaUrl.Text = settings[FCP.SystemSettings.WEBDAV_OWA_URL];
@@ -157,15 +155,6 @@ namespace FuseCP.Portal
             if (settings != null)
             {
                 txtIPAddress.Text = settings.GetValueOrDefault(FCP.SystemSettings.ACCESS_IPs, string.Empty);
-            }
-
-            // Authenitcation settings
-            settings = ES.Services.System.GetSystemSettings(FCP.SystemSettings.AUTHENTICATION_SETTINGS);
-
-            if (settings != null)
-            {
-                txtMfaTokenAppDisplayName.Text = settings.GetValueOrDefault(FCP.SystemSettings.MFA_TOKEN_APP_DISPLAY_NAME, string.Empty);
-                chkCanPeerChangeMFa.Checked = settings.GetValueOrDefault(FCP.SystemSettings.MFA_CAN_PEER_CHANGE_MFA, true);
             }
 
             var isSqlServer = DbHelper.DbType == EnterpriseServer.Data.DbType.SqlServer;
@@ -319,12 +308,10 @@ namespace FuseCP.Portal
         {
             try
             {
-                FCP.SystemSettings settings = new FCP.SystemSettings();
                 // Cloud Portal
-                settings = new FCP.SystemSettings();
+                FCP.SystemSettings settings = ES.Services.System.GetSystemSettings(FCP.SystemSettings.WEBDAV_PORTAL_SETTINGS) ?? new FCP.SystemSettings();
                 settings[WEBDAV_PORTAL_URL] = txtWebdavPortalUrl.Text;
-                settings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_ENABLED_KEY] = chkEnablePasswordReset.Checked.ToString();
-                settings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_LINK_LIFE_SPAN] = txtPasswordResetLinkLifeSpan.Text;
+                settings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_ENABLED_KEY] = bool.TrueString;
 
                 int result = ES.Services.System.SetSystemSettings(FCP.SystemSettings.WEBDAV_PORTAL_SETTINGS, settings);
 
@@ -388,35 +375,6 @@ namespace FuseCP.Portal
                 settings[FCP.SystemSettings.ACCESS_IPs] = txtIPAddress.Text;
 
                 int result = ES.Services.System.SetSystemSettings(FCP.SystemSettings.ACCESS_IP_SETTINGS, settings);
-
-                if (result < 0)
-                {
-                    ShowResultMessage(result);
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage("SYSTEM_SETTINGS_SAVE", ex);
-                return;
-            }
-
-            ShowSuccessMessage("SYSTEM_SETTINGS_SAVE");
-        }
-
-        private void SaveAuthentication()
-        {
-            try
-            {
-                FCP.SystemSettings settings = new FCP.SystemSettings();
-
-                // authentication settings
-                settings = new FCP.SystemSettings();
-                settings[FCP.SystemSettings.MFA_TOKEN_APP_DISPLAY_NAME] = txtMfaTokenAppDisplayName.Text.Trim();
-                settings[FCP.SystemSettings.MFA_CAN_PEER_CHANGE_MFA] = chkCanPeerChangeMFa.Checked ? "True" : "False";
-
-
-                int result = ES.Services.System.SetSystemSettings(FCP.SystemSettings.AUTHENTICATION_SETTINGS, settings);
 
                 if (result < 0)
                 {
@@ -503,10 +461,6 @@ namespace FuseCP.Portal
             SaveRESTRICT();
         }
 
-		protected void btnAuthenticationSettings_Click(object sender, EventArgs e)
-		{
-			SaveAuthentication();
-		}
 		protected void btnDebugSettings_Click(object sender, EventArgs e)
 		{
 			SaveDebug();

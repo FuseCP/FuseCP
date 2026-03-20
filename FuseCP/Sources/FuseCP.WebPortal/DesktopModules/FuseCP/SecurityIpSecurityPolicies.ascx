@@ -1,10 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SecurityIpSecurityPolicies.ascx.cs" Inherits="FuseCP.Portal.SecurityIpSecurityPolicies" %>
 
-<div class="card mb-3">
-    <div class="card-header">
-        <h3 class="card-title m-0">IP Policy Actions</h3>
-    </div>
-    <div class="card-body">
+<div class="card-body border-bottom">
+    <h5 class="mb-3">IP Policy Actions</h5>
         <div class="row g-3">
             <div class="col-xl-3 col-lg-4">
                 <asp:Label ID="lblIpRange" runat="server" AssociatedControlID="txtIpRange" CssClass="form-label" Text="IP or CIDR"></asp:Label>
@@ -21,7 +18,7 @@
             <div class="col-xl-3 col-lg-2 col-md-8">
                 <div class="d-flex flex-wrap flex-xl-nowrap align-items-center gap-2 pt-lg-4 h-100">
                     <div class="form-check mb-0 flex-shrink-0">
-                        <asp:CheckBox ID="chkServerAdminAccess" runat="server" CssClass="form-check-input" meta:resourcekey="chkServerAdminAccess" />
+                        <asp:CheckBox ID="chkServerAdminAccess" runat="server" meta:resourcekey="chkServerAdminAccess" />
                         <asp:Label ID="lblServerAdminAccess" runat="server" AssociatedControlID="chkServerAdminAccess" CssClass="form-check-label text-nowrap" meta:resourcekey="lblServerAdminAccess" Text="Server Admin"></asp:Label>
                     </div>
                     <asp:LinkButton ID="btnBlock" runat="server" CssClass="btn btn-danger flex-shrink-0" ToolTip="Block this IP or subnet" OnClick="btnBlock_Click" meta:resourcekey="btnBlock">
@@ -37,15 +34,13 @@
         </div>
 
         <p class="text-muted mt-3 mb-0"><asp:Localize ID="litActionHelp" runat="server" meta:resourcekey="litActionHelp" Text="Enable Server Admin before whitelisting if this IP should also reach serveradmin-only portal pages. You can still change or remove it from the list below." /></p>
-    </div>
 </div>
 
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h3 class="card-title m-0"><asp:Localize ID="litPoliciesTitle" runat="server" meta:resourcekey="litPoliciesTitle" Text="IP Security Policies" /></h3>
+<div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="m-0"><asp:Localize ID="litPoliciesTitle" runat="server" meta:resourcekey="litPoliciesTitle" Text="IP Security Policies" /></h5>
         <asp:Button ID="btnRefreshPolicies" runat="server" CssClass="btn btn-primary" Text="Refresh" OnClick="btnRefreshPolicies_Click" />
     </div>
-    <div class="card-body">
         <asp:GridView ID="gvPolicies" runat="server" AutoGenerateColumns="False" CssSelectorClass="NormalGridView" Width="100%"
             RowStyle-CssClass="fcp-grid-row" AlternatingRowStyle-CssClass="fcp-grid-row-alt" EmptyDataText="No policies.">
             <Columns>
@@ -87,5 +82,4 @@
                 </asp:TemplateField>
             </Columns>
         </asp:GridView>
-    </div>
 </div>

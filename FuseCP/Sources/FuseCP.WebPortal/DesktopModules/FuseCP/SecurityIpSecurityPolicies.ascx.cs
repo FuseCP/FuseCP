@@ -37,6 +37,9 @@ namespace FuseCP.Portal
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // WebForms CheckBox renders a wrapper span; set Bootstrap class on the actual input.
+            chkServerAdminAccess.InputAttributes["class"] = "form-check-input";
+
             if (!IsPostBack)
             {
                 BindPolicies();

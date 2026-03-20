@@ -365,51 +365,6 @@ namespace FuseCP.Portal {
         protected global::System.Web.UI.WebControls.LinkButton StyleButton7;
         
         /// <summary>
-        /// SettinglblEnablePasswordReset control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Localize SettinglblEnablePasswordReset;
-        
-        /// <summary>
-        /// chkEnablePasswordReset control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkEnablePasswordReset;
-        
-        /// <summary>
-        /// SettinglblPasswordResetLinkLifeSpan control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Localize SettinglblPasswordResetLinkLifeSpan;
-        
-        /// <summary>
-        /// txtPasswordResetLinkLifeSpan control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPasswordResetLinkLifeSpan;
-        
-        /// <summary>
-        /// SettingNotePasswordResetLinkLifeSpan control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Localize SettingNotePasswordResetLinkLifeSpan;
-        
-        /// <summary>
         /// SettinglblWebdavPortalUrl control.
         /// </summary>
         /// <remarks>
@@ -471,60 +426,6 @@ namespace FuseCP.Portal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton StyleButton9;
-        
-        /// <summary>
-        /// HeaderAuthenticationSettings control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Localize HeaderAuthenticationSettings;
-        
-        /// <summary>
-        /// SettingtxtMfaTokenAppDisplayName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Localize SettingtxtMfaTokenAppDisplayName;
-        
-        /// <summary>
-        /// txtMfaTokenAppDisplayName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMfaTokenAppDisplayName;
-        
-        /// <summary>
-        /// SettingchkCanPeerChangeMFa control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Localize SettingchkCanPeerChangeMFa;
-        
-        /// <summary>
-        /// chkCanPeerChangeMFa control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkCanPeerChangeMFa;
-        
-        /// <summary>
-        /// btnAuthenticationSettings control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnAuthenticationSettings;
         
         /// <summary>
         /// DebugSettingsPanel control.

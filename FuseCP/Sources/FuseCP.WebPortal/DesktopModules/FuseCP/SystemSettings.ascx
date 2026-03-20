@@ -318,36 +318,24 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row mb-3">
-                                                    <label for="chkEnablePasswordReset" class="col-sm-2 form-label">
-                                                                <asp:Localize ID="SettinglblEnablePasswordReset" runat="server" meta:resourcekey="SettinglblEnablePasswordReset" />
-                                                    </label>
-                                                    <div class="col-sm-6">
-                                                        <asp:CheckBox ID="chkEnablePasswordReset" runat="server" CssClass="fcp-check-inline" Text="Yes" meta:resourcekey="SettingchkEnablePasswordReset" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row mb-3">
-                                                    <label for="SettingNotePasswordResetLinkLifeSpan" class="col-sm-2 form-label">
-                                                                <asp:Localize ID="SettinglblPasswordResetLinkLifeSpan" runat="server" meta:resourcekey="SettinglblPasswordResetLinkLifeSpan" />
-                                                    </label>
-                                                    <div class="col-sm-6">
-                                                        <asp:TextBox runat="server" ID="txtPasswordResetLinkLifeSpan" CssClass="form-control" /><br />
-                                                        <asp:Localize ID="SettingNotePasswordResetLinkLifeSpan" runat="server" meta:resourcekey="SettingNotePasswordResetLinkLifeSpan" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="row mb-3">
                                                     <label for="txtWebdavPortalUrl" class="col-sm-2 form-label">
                                                                 <asp:Localize ID="SettinglblWebdavPortalUrl" runat="server" meta:resourcekey="SettinglblWebdavPortalUrl" />
                                                     </label>
                                                     <div class="col-sm-6">
                                                         <asp:TextBox runat="server" ID="txtWebdavPortalUrl" meta:resourcekey="SettingPlcWebdavPortalUrl" CssClass="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row mb-3">
+                                                    <label class="col-sm-2 form-label">Password Reset</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="alert alert-info mb-0 py-2">
+                                                            Password reset is always enabled and managed in
+                                                            <a href="Default.aspx?pid=SecurityPortalAuthentication">Security Portal Authentication</a>.
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,46 +386,6 @@
                     </fieldset>
                     <hr />
                     <asp:LinkButton ID="StyleButton9" CssClass="btn btn-success w-100" runat="server" meta:resourcekey="SettingbtnSaveSettings" OnClick="btnSaveRESTRICT_Click" />
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header card-header-link">
-                <span><i class="bi bi-lock" aria-hidden="true">&nbsp;</i>&nbsp;&nbsp;</span>
-                <a data-bs-toggle="collapse" data-bs-parent="#accordion" href="#AuthenticationSettings" aria-expanded="false" class="collapsed">
-                    <asp:Localize ID="HeaderAuthenticationSettings" runat="server" meta:resourcekey="HeaderAuthenticationSettings" /><span class='bi bi-plus-lg float-end' aria-hidden='true'> </span>
-                </a>
-            </div>
-            <div id="AuthenticationSettings" class="accordion-collapse collapse" aria-expanded="false">
-                <div class="card-body">
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row mb-3">
-                                    <label for="txtMfaTokenAppDisplayName" class="col-sm-2 form-label">
-                                                <asp:Localize ID="SettingtxtMfaTokenAppDisplayName" runat="server" meta:resourcekey="SettingtxtMfaTokenAppDisplayName" />
-                                    </label>
-                                    <div class="col-sm-6">
-                                        <asp:TextBox runat="server" Rows="10" ID="txtMfaTokenAppDisplayName" CssClass="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row mb-3">
-                                    <label for="chkCanPeerChangeMFa" class="col-sm-2 form-label">
-                                        <asp:Localize ID="SettingchkCanPeerChangeMFa" runat="server" meta:resourcekey="SettingchkCanPeerChangeMFa" />
-                                    </label>
-                                <div class="col-sm-6">
-                                    <asp:CheckBox ID="chkCanPeerChangeMFa" runat="server" CssClass="fcp-check-inline" Text="Yes" meta:resourcekey="SettingchkCanPeerChangeMFa" />
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    </fieldset>
-                    <hr />
-                    <asp:LinkButton ID="btnAuthenticationSettings" CssClass="btn btn-success w-100" runat="server" meta:resourcekey="SettingbtnSaveSettings" OnClick="btnAuthenticationSettings_Click" />
                 </div>
             </div>
         </div>

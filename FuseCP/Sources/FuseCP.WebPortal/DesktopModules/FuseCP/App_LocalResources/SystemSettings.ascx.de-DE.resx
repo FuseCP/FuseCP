@@ -168,9 +168,6 @@
   <data name="SettinglblEnableOwa.Text" xml:space="preserve">
     <value>OWA:</value>
   </data>
-  <data name="SettinglblEnablePasswordReset.Text" xml:space="preserve">
-    <value>"Passwort zurücksetzen"-Link:</value>
-  </data>
   <data name="SettinglblFileManagerEditableExtensions.Text" xml:space="preserve">
     <value>Editierbare Erweiterungen:</value>
   </data>
@@ -179,9 +176,6 @@
   </data>
   <data name="SettinglblOwaUrl.Text" xml:space="preserve">
     <value>OWA-URL:</value>
-  </data>
-  <data name="SettinglblPasswordResetLinkLifeSpan.Text" xml:space="preserve">
-    <value>Lebensdauer des "Zurücksetzen"-Links:</value>
   </data>
   <data name="SettinglblRdsController.Text" xml:space="preserve">
     <value>Haupt-RDS-Controller:</value>

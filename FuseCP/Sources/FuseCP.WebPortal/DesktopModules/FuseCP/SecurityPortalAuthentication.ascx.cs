@@ -43,9 +43,11 @@ namespace FuseCP.Portal
                 FCP.SystemSettings portalAuthSettings = ES.Services.System.GetSystemSettings(FCP.SystemSettings.WEBDAV_PORTAL_SETTINGS);
                 if (portalAuthSettings != null)
                 {
-                    chkEnablePasswordReset.Checked = Utils.ParseBool(portalAuthSettings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_ENABLED_KEY], false);
                     txtPasswordResetLinkLifeSpan.Text = portalAuthSettings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_LINK_LIFE_SPAN];
                 }
+
+                // Password reset is mandatory for portal security and must always remain enabled.
+                chkEnablePasswordReset.Checked = true;
 
                 BindFixNowStatus();
             }
@@ -60,7 +62,7 @@ namespace FuseCP.Portal
             try
             {
                 FCP.SystemSettings settings = new FCP.SystemSettings();
-                settings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_ENABLED_KEY] = chkEnablePasswordReset.Checked.ToString();
+                settings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_ENABLED_KEY] = true.ToString();
                 settings[FCP.SystemSettings.WEBDAV_PASSWORD_RESET_LINK_LIFE_SPAN] = txtPasswordResetLinkLifeSpan.Text;
 
                 int result = ES.Services.System.SetSystemSettings(FCP.SystemSettings.WEBDAV_PORTAL_SETTINGS, settings);
@@ -120,9 +122,9 @@ namespace FuseCP.Portal
         {
             int blockers = 0;
 
-            bool passwordResetConfigured = chkEnablePasswordReset.Checked && !string.IsNullOrWhiteSpace(txtPasswordResetLinkLifeSpan.Text);
+            bool passwordResetConfigured = !string.IsNullOrWhiteSpace(txtPasswordResetLinkLifeSpan.Text);
             SetStatusBadge(lblPasswordResetStatus, passwordResetConfigured,
-                passwordResetConfigured ? "Configured" : (chkEnablePasswordReset.Checked ? "Lifespan Missing" : "Disabled"));
+                passwordResetConfigured ? "Configured" : "Lifespan Missing");
             if (!passwordResetConfigured) blockers++;
 
             bool mfaConfigured = !string.IsNullOrWhiteSpace(txtMfaTokenAppDisplayName.Text);
