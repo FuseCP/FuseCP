@@ -27,6 +27,24 @@ module refactors unless required by the issue.
 
 From repository root, use the module-focused workflow below.
 
+### Apply pending EF migrations (Enterprise DB)
+
+Before testing Portal/Enterprise changes that add or alter schema, apply pending migrations to your local DB.
+
+Run from repository root:
+
+* `Set-Location "FuseCP/Sources/FuseCP.EnterpriseServer.Data"`
+* `dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Integrated Security=True;TrustServerCertificate=true"`
+
+If your SQL instance uses SQL logins instead of integrated auth:
+
+* `Set-Location "FuseCP/Sources/FuseCP.EnterpriseServer.Data"`
+* `dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Uid=YOUR_USER;Pwd=YOUR_PASSWORD;TrustServerCertificate=true"`
+
+Optional verification:
+
+* `dotnet ef migrations list --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Integrated Security=True;TrustServerCertificate=true"`
+
 Important: many FuseCP solutions depend on shared projects/artifacts in a
 specific order. Independent `.sln` builds are useful for focused iteration, but
 for reliable integration validation use orchestrated repository build entrypoints.
