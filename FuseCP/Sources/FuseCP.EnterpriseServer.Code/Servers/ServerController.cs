@@ -285,8 +285,9 @@ namespace FuseCP.EnterpriseServer
 						ClusterId = string.Empty
 					};
 				}
-				catch
+				catch (Exception)
 				{
+					// Legacy probe failed; fall through to primary exception handler.
 				}
 
 				if (ex.Message.Contains("The signature or decryption was invalid"))

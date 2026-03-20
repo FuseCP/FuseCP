@@ -120,11 +120,9 @@ namespace FuseCP.EnterpriseServer
 
 		CachedServerAuthenticationMode ResolveServerAuthenticationMode(int serverId, string encryptedServerUrl, bool defaultPasswordIsSHA256)
 		{
-			if (ServerAuthenticationCache.TryGetValue(serverId, out var cached))
-			{
-				if ((DateTime.UtcNow - cached.CachedUtc).TotalSeconds <= ServerAuthenticationCacheSeconds)
-					return cached;
-			}
+			if (ServerAuthenticationCache.TryGetValue(serverId, out var cached) &&
+				(DateTime.UtcNow - cached.CachedUtc).TotalSeconds <= ServerAuthenticationCacheSeconds)
+				return cached;
 
 			var resolved = new CachedServerAuthenticationMode
 			{
@@ -146,7 +144,7 @@ namespace FuseCP.EnterpriseServer
 					TryRecordServerAuthAttempt(encryptedServerUrl, serverId, succeeded: true);
 				}
 			}
-			catch
+			catch (Exception)
 			{
 				try
 				{
@@ -156,7 +154,7 @@ namespace FuseCP.EnterpriseServer
 					resolved.UseServerRequestAuthentication = false;
 					TryRecordServerAuthAttempt(encryptedServerUrl, serverId, succeeded: true);
 				}
-				catch
+				catch (Exception)
 				{
 					resolved.UseServerRequestAuthentication = false;
 					resolved.PasswordIsSHA256 = defaultPasswordIsSHA256;
@@ -183,7 +181,7 @@ namespace FuseCP.EnterpriseServer
 				var bruteForce = new BruteForceProtectionService(this);
 				bruteForce.RecordAttempt(remoteAddress, $"server:{serverId}", BruteForceProtectionService.Layers.Server, succeeded);
 			}
-			catch
+			catch (Exception)
 			{
 				// Best-effort logging only.
 			}

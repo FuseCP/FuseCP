@@ -87,8 +87,8 @@ namespace FuseCP.Web.Clients
 					string.Empty);
 
 				HttpRequestMessageProperty httpRequest;
-				if (request.Properties.ContainsKey(HttpRequestMessageProperty.Name) &&
-					request.Properties[HttpRequestMessageProperty.Name] is HttpRequestMessageProperty existing)
+				if (request.Properties.TryGetValue(HttpRequestMessageProperty.Name, out object existingValue) &&
+					existingValue is HttpRequestMessageProperty existing)
 				{
 					httpRequest = existing;
 				}

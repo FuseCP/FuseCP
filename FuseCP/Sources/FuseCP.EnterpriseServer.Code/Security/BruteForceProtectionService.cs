@@ -380,7 +380,13 @@ namespace FuseCP.EnterpriseServer.Security
                     return CachedPolicySettings;
 
                 var settings = SystemController.GetSystemSettingsInternal(SystemSettings.AUTHENTICATION_SETTINGS, false);
-                var maxFailedAttempts = ParseIntSetting(settings,
+                return StorePolicySettingsCache(settings);
+            }
+        }
+
+        private static BruteForcePolicySettings StorePolicySettingsCache(SystemSettings settings)
+        {
+            var maxFailedAttempts = ParseIntSetting(settings,
                     SystemSettings.AUTH_BRUTEFORCE_MAX_FAILED_ATTEMPTS,
                     DefaultMaxFailedAttempts,
                     minValue: 1,
@@ -411,7 +417,6 @@ namespace FuseCP.EnterpriseServer.Security
 
                 PolicyCacheUpdatedUtc = DateTime.UtcNow;
                 return CachedPolicySettings;
-            }
         }
 
         private static int ParseIntSetting(SystemSettings settings, string key, int defaultValue, int minValue, int maxValue)

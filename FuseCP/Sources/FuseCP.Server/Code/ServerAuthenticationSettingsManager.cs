@@ -91,10 +91,10 @@ namespace FuseCP.Server
 
 			// Pick the first directory that already has the file, or the first candidate if none do.
 			string dir = candidateDirs.FirstOrDefault(d =>
-				File.Exists(Path.Combine(d, HardenedConfigFileName)))
+				File.Exists(Path.Join(d, HardenedConfigFileName)))
 				?? candidateDirs[0];
 
-			return Path.Combine(dir, HardenedConfigFileName);
+			return Path.Join(dir, HardenedConfigFileName);
 		}
 	}
 }

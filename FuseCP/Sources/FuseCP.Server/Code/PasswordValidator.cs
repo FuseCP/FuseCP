@@ -16,6 +16,7 @@
 using System.ServiceModel;
 using System.Collections.Concurrent;
 using System.Globalization;
+using System.Linq;
 using FuseCP.Web.Services;
 using FuseCP.Providers;
 
@@ -85,11 +86,8 @@ namespace FuseCP.Server
 		static void PruneExpiredNonces(DateTimeOffset now)
 		{
 			var expiryThreshold = now - TimeSpan.FromSeconds(ServerRequestAuthentication.DefaultAllowedClockSkewSeconds);
-			foreach (var nonce in NonceCache)
-			{
-				if (nonce.Value < expiryThreshold)
-					NonceCache.TryRemove(nonce.Key, out _);
-			}
+			foreach (var nonce in NonceCache.Where(n => n.Value < expiryThreshold).ToList())
+				NonceCache.TryRemove(nonce.Key, out _);
 		}
 
 		public static void Init()

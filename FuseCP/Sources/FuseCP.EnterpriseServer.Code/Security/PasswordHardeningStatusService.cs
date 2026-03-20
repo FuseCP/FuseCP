@@ -63,7 +63,7 @@ namespace FuseCP.EnterpriseServer.Security
 
             foreach (var user in users.OrderBy(u => u.Username))
             {
-                if (!string.IsNullOrEmpty(filter) && (user.Username == null || user.Username.ToLowerInvariant().Contains(filter) == false))
+                if (!string.IsNullOrEmpty(filter) && (user.Username == null || !user.Username.ToLowerInvariant().Contains(filter)))
                     continue;
 
                 string storedPassword = NormalizeStoredPassword(user.Password);
@@ -113,14 +113,14 @@ namespace FuseCP.EnterpriseServer.Security
             int eligibleUserCount = 0;
             int convertedUserCount = 0;
 
-            foreach (var user in users)
+            var eligibleUsers = users
+                .Select(u => new { u.UserId, StoredPassword = NormalizeStoredPassword(u.Password) })
+                .Where(u => CanAutoHardenStoredPassword(u.StoredPassword))
+                .ToList();
+            foreach (var user in eligibleUsers)
             {
-                string storedPassword = NormalizeStoredPassword(user.Password);
-                if (!CanAutoHardenStoredPassword(storedPassword))
-                    continue;
-
                 eligibleUserCount++;
-                string hardenedPassword = PasswordHardeningService.HashClientPasswordProof(storedPassword);
+                string hardenedPassword = PasswordHardeningService.HashClientPasswordProof(user.StoredPassword);
                 Database.ChangeUserPassword(-1, user.UserId, CryptoUtils.Encrypt(hardenedPassword));
                 convertedUserCount++;
             }
@@ -163,9 +163,8 @@ namespace FuseCP.EnterpriseServer.Security
 
             status.TotalUserCount = users.Count;
 
-            foreach (var user in users)
+            foreach (var storedPassword in users.Select(u => NormalizeStoredPassword(u.Password)))
             {
-                string storedPassword = NormalizeStoredPassword(user.Password);
                 if (string.IsNullOrWhiteSpace(storedPassword))
                 {
                     status.EmptyUserPasswordCount++;
@@ -221,8 +220,9 @@ namespace FuseCP.EnterpriseServer.Security
 							: (authenticationInfo.SupportsLegacyPasswordAuthentication ? "Legacy fallback enabled" : "Legacy compatibility");
                     }
                 }
-                catch
+                catch (Exception)
                 {
+                    // Best-effort server probe; failure leaves ProbeSucceeded false.
                 }
 
                 if (serverStatus.ProbeSucceeded)
