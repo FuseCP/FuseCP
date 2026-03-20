@@ -266,25 +266,39 @@ When code includes new entities/tables (for example `IpSecurityPolicies`), updat
 2. Change directory to the EF data project.
 3. Run `dotnet ef database update` with the provider/connection you use locally.
 
-Windows Integrated Authentication (recommended for local dev):
+#### Finding your connection details
 
-```powershell
-Set-Location "FuseCP/Sources/FuseCP.EnterpriseServer.Data"
-dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Integrated Security=True;TrustServerCertificate=true"
+Your local database name and credentials are in `FuseCP/Sources/FuseCP.WebPortal/Web.config` under the `<connectionStrings>` section:
+
+```xml
+<add name="EnterpriseServer"
+     connectionString="DbType=SqlServer;Server=(local);Database=YOUR_DB;uid=YOUR_USER;pwd=YOUR_PASSWORD;TrustServerCertificate=true"
+     providerName="System.Data.EntityClient" />
 ```
 
-SQL Login authentication (if your local SQL instance uses SQL users):
+Use those values (database name, uid, pwd) in the commands below.
+
+#### Windows Integrated Authentication (recommended for local dev):
 
 ```powershell
 Set-Location "FuseCP/Sources/FuseCP.EnterpriseServer.Data"
-dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Uid=YOUR_USER;Pwd=YOUR_PASSWORD;TrustServerCertificate=true"
+dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=YOUR_DB;Integrated Security=True;TrustServerCertificate=true"
 ```
 
-Optional verification (shows migration chain known to EF):
+#### SQL Login authentication (if your local SQL instance uses SQL users):
 
 ```powershell
 Set-Location "FuseCP/Sources/FuseCP.EnterpriseServer.Data"
-dotnet ef migrations list --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Integrated Security=True;TrustServerCertificate=true"
+dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=YOUR_DB;Uid=YOUR_USER;Pwd=YOUR_PASSWORD;TrustServerCertificate=true"
+```
+
+Replace `YOUR_DB`, `YOUR_USER`, and `YOUR_PASSWORD` with the values from your `Web.config`.
+
+#### Optional verification (shows migration chain known to EF):
+
+```powershell
+Set-Location "FuseCP/Sources/FuseCP.EnterpriseServer.Data"
+dotnet ef migrations list --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=YOUR_DB;Integrated Security=True;TrustServerCertificate=true"
 ```
 
 If update fails with a login error, switch authentication mode (Integrated Security vs SQL login) and retry with credentials that can modify schema in the target database.

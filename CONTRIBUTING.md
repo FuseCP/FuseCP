@@ -31,19 +31,23 @@ From repository root, use the module-focused workflow below.
 
 Before testing Portal/Enterprise changes that add or alter schema, apply pending migrations to your local DB.
 
-Run from repository root:
+Your local database name and credentials are in `FuseCP/Sources/FuseCP.WebPortal/Web.config` under `<connectionStrings>` — look for the `EnterpriseServer` entry and note the `Database`, `uid`, and `pwd` values.
+
+Run from repository root (Windows Integrated Auth):
 
 * `Set-Location "FuseCP/Sources/FuseCP.EnterpriseServer.Data"`
-* `dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Integrated Security=True;TrustServerCertificate=true"`
+* `dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=YOUR_DB;Integrated Security=True;TrustServerCertificate=true"`
 
-If your SQL instance uses SQL logins instead of integrated auth:
+SQL Login (if your instance uses SQL users):
 
 * `Set-Location "FuseCP/Sources/FuseCP.EnterpriseServer.Data"`
-* `dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Uid=YOUR_USER;Pwd=YOUR_PASSWORD;TrustServerCertificate=true"`
+* `dotnet ef database update --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=YOUR_DB;Uid=YOUR_USER;Pwd=YOUR_PASSWORD;TrustServerCertificate=true"`
+
+Replace `YOUR_DB`, `YOUR_USER`, and `YOUR_PASSWORD` with the values from your `Web.config`.
 
 Optional verification:
 
-* `dotnet ef migrations list --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=FuseCP;Integrated Security=True;TrustServerCertificate=true"`
+* `dotnet ef migrations list --framework net10.0 --context SqlServerDbContext -- "DbType=SqlServer;Server=(local);Initial Catalog=YOUR_DB;Integrated Security=True;TrustServerCertificate=true"`
 
 Important: many FuseCP solutions depend on shared projects/artifacts in a
 specific order. Independent `.sln` builds are useful for focused iteration, but
