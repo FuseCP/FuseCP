@@ -30,7 +30,7 @@ namespace FuseCP.Portal
     /// Summary description for PresentationServices
     /// </summary>
     [WebService(Namespace = "http://smbsaas/fusecp/webportal")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [WebServiceBinding]
 	[System.Web.Script.Services.ScriptService]
     public class TaskManager : System.Web.Services.WebService
     {

@@ -36,7 +36,7 @@ namespace FuseCP.Portal
     [SupportedOSPlatform("windows")]
 #endif
     [WebService(Namespace = "http://tempuri.org/")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [WebServiceBinding]
     public class ResizeImage : IHttpHandler
     {
 

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<RootNamespace>FuseCP.Providers.Mail</RootNamespace>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFramework>net10.0-windows</TargetFramework>
 		<PublishUrl>publish\</PublishUrl>
 		<WarningsAsErrors>618</WarningsAsErrors>
 		<OutputPath>..\FuseCP.Server\bin\Providers\</OutputPath>

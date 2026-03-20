@@ -19,6 +19,7 @@ using System.Net.Mail;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
@@ -1147,12 +1148,6 @@ namespace FuseCP.Providers.Mail
             }
         }
 
-        private static string GetRandowChars(string chars, int length)
-        {
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
         protected string GetRandomPassword()
         {
             var apiObject = GetApiObject();
@@ -1161,9 +1156,36 @@ namespace FuseCP.Providers.Mail
             var nonAlphaNum = apiObject.GetProperty("C_Accounts_Policies_Pass_NonAlphaNum");
             var alpha = apiObject.GetProperty("C_Accounts_Policies_Pass_Alpha");
 
-            return System.Web.Security.Membership.GeneratePassword((int)minLength, (int)nonAlphaNum) +
-                GetRandowChars("0123456789", (int)digits) +
-                GetRandowChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", (int)alpha);
+            return GeneratePassword((int)minLength, (int)nonAlphaNum, (int)digits, (int)alpha);
+        }
+
+        private static string GeneratePassword(int minLength, int nonAlphaNumCount, int digitCount, int alphaCount)
+        {
+            const string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string digits = "0123456789";
+            const string symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+            var chars = new List<char>();
+
+            for (int i = 0; i < Math.Max(0, alphaCount); i++)
+                chars.Add(letters[RandomNumberGenerator.GetInt32(letters.Length)]);
+
+            for (int i = 0; i < Math.Max(0, digitCount); i++)
+                chars.Add(digits[RandomNumberGenerator.GetInt32(digits.Length)]);
+
+            for (int i = 0; i < Math.Max(0, nonAlphaNumCount); i++)
+                chars.Add(symbols[RandomNumberGenerator.GetInt32(symbols.Length)]);
+
+            while (chars.Count < Math.Max(0, minLength))
+                chars.Add(letters[RandomNumberGenerator.GetInt32(letters.Length)]);
+
+            for (int i = chars.Count - 1; i > 0; i--)
+            {
+                int j = RandomNumberGenerator.GetInt32(i + 1);
+                (chars[i], chars[j]) = (chars[j], chars[i]);
+            }
+
+            return new string(chars.ToArray());
         }
 
         public void UpdateMailAlias(MailAlias mailAlias)

@@ -24,7 +24,7 @@ namespace FuseCP.Portal.VPS2012
     /// Summary description for $codebehindclassname$
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [WebServiceBinding]
     public class VirtualMachineImage : IHttpHandler
     {
 

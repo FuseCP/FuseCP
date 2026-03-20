@@ -25,7 +25,7 @@ namespace FuseCP.Portal.Proxmox
 	/// Summary description for $codebehindclassname$
 	/// </summary>
 	[WebService(Namespace = "http://tempuri.org/")]
-	[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+	[WebServiceBinding]
 	public class VirtualMachineSnapshotImage : IHttpHandler
 	{
 

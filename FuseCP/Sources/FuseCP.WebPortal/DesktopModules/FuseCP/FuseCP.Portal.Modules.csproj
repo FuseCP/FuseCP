@@ -30,6 +30,7 @@
 
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+        <PackageReference Update="System.Web.Services.Description" ExcludeAssets="compile;runtime" PrivateAssets="all" />
     </ItemGroup>
     
     <ItemGroup>
@@ -42,7 +43,6 @@
         <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Mobile" Version="1.4.6" />
         <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.Web.Extensions" Version="1.4.6" />
         <PackageReference Include="EstrellasDeEsperanza.WebFormsForCore.AjaxControlToolkit" Version="1.4.6" />
-        <PackageReference Include="System.Web.Services.Description" Version="10.0.652802" Aliases="SD" ExcludeAssets="runtime" />
         <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
     </ItemGroup>
 

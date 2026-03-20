@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFramework>net10.0-windows</TargetFramework>
 		<OutputPath>..\FuseCP.Server\bin\Providers\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
@@ -17,7 +17,6 @@
 		<DebugType>portable</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
-		<Reference Include="System.Web.Services" />
 		<Reference Include="Microsoft.CSharp" />
 	</ItemGroup>
 	<ItemGroup>
@@ -27,7 +26,8 @@
 		<None Include="generateProxy.bat" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Web.Services3" Version="3.0.0" />
+		<Compile Remove="CerberusFTP6Proxy.cs" />
+		<None Include="CerberusFTP6Proxy.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\FuseCP.Providers.Base\FuseCP.Providers.Base.csproj" />
