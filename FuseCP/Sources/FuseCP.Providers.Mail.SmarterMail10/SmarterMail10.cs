@@ -2074,7 +2074,6 @@ namespace FuseCP.Providers.Mail
             // strip the last slash if any
             if (smarterUrl[smarterUrl.Length - 1] == '/')
                 smarterUrl = smarterUrl.Substring(0, smarterUrl.Length - 1);
-			ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 			proxy.Url = smarterUrl + proxy.Url.Substring(idx);
         }
 

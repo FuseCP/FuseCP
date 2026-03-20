@@ -330,7 +330,7 @@ namespace FuseCP.Providers.Mail
 			catch (Exception ex)
 			{
                 Log.WriteError(ex);
-                throw ex;
+				throw;
 			}
 
 			return configTree;
@@ -365,7 +365,7 @@ namespace FuseCP.Providers.Mail
 			catch (Exception ex)
 			{
                 Log.WriteError(ex);
-                throw ex;
+				throw;
 			}
 			finally
 			{

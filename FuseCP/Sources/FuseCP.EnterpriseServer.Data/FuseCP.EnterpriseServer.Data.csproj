@@ -120,7 +120,6 @@
         <!--<PackageReference Include="SQLite" Version="3.13.0" PrivateAssets="true" />-->
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
         <PackageReference Include="MySql.Data" Version="9.4.0" />
-        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0'">

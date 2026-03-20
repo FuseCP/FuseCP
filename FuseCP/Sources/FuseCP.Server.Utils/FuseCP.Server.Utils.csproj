@@ -15,8 +15,6 @@
         <PackageReference Include="System.Diagnostics.EventLog" Version="10.0.0" />
         <PackageReference Include="System.DirectoryServices" Version="10.0.0" />
         <PackageReference Include="System.Management" Version="10.0.0" />
-        <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
-        <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.0" />
         <PackageReference Include="Mono.Posix" Version="7.1.0-final.1.21458.1" GeneratePathProperty="true" />
 		<PackageReference Include="Mono.Unix" Version="7.1.0-final.1.21458.1" GeneratePathProperty="true" />
 	</ItemGroup>
