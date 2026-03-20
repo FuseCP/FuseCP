@@ -147,6 +147,11 @@ namespace FuseCP.Web.Services
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
+			// Optional overlay for runtime-hardened security settings (e.g. Server.Password).
+			// Loaded after appsettings.json so its values take precedence.
+			// This file is written by HardenServerAuthentication and is never overwritten by builds.
+			builder.Configuration.AddJsonFile("appsettings.hardened.json", optional: true, reloadOnChange: true);
+
 			Configuration.Read(builder.Configuration, args);
 
 			HttpPort = Configuration.HttpPort;

@@ -97,6 +97,7 @@ namespace FuseCP.Server.Client
 		}
 
 		public bool PasswordIsSHA256 { get; set; } = false;
+		public bool UseServerRequestAuthentication { get; set; } = true;
 		public int Timeout
 		{
 			get { return this.timeout; }
@@ -131,7 +132,7 @@ namespace FuseCP.Server.Client
 
 				//proxy.SetPolicy(policy);
 				proxy.Credentials.Password = serverPassword;
-				proxy.Credentials.UserName = string.Empty;
+				proxy.Credentials.UserName = UseServerRequestAuthentication ? string.Empty : "legacy";
 			}
 
 			// provider settings

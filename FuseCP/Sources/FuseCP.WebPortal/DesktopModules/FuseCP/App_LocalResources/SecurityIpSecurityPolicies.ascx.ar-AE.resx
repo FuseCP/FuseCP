@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="chkServerAdminAccess.ToolTip" xml:space="preserve">
+    <value>يسمح لهذا العنوان أو النطاق الفرعي بالوصول إلى صفحات البوابة الخاصة بمسؤول الخادم عند إدراجه في القائمة المسموح بها.</value>
+  </data>
+  <data name="lblServerAdminAccess.Text" xml:space="preserve">
+    <value>مسؤول الخادم</value>
+  </data>
+  <data name="lblServerAdminAccess.ToolTip" xml:space="preserve">
+    <value>يسمح لهذا العنوان أو النطاق الفرعي بالوصول إلى صفحات البوابة الخاصة بمسؤول الخادم عند إدراجه في القائمة المسموح بها.</value>
+  </data>
+  <data name="btnBlock.ToolTip" xml:space="preserve">
+    <value>حظر هذا العنوان أو النطاق الفرعي</value>
+  </data>
+  <data name="btnWhitelist.ToolTip" xml:space="preserve">
+    <value>إضافة هذا العنوان أو النطاق الفرعي إلى القائمة المسموح بها</value>
+  </data>
+  <data name="locBlockButtonText.Text" xml:space="preserve">
+    <value>حظر</value>
+  </data>
+  <data name="locWhitelistButtonText.Text" xml:space="preserve">
+    <value>قائمة السماح</value>
+  </data>
+  <data name="litActionHelp.Text" xml:space="preserve">
+    <value>فعّل خيار مسؤول الخادم قبل الإضافة إلى القائمة المسموح بها إذا كان هذا العنوان يجب أن يصل أيضاً إلى صفحات البوابة الخاصة بمسؤول الخادم. ويمكنك تغيير ذلك أو إزالته لاحقاً من القائمة أدناه.</value>
+  </data>
+  <data name="litPoliciesTitle.Text" xml:space="preserve">
+    <value>سياسات أمان عناوين IP</value>
+  </data>
+  <data name="locTogglePolicyState.Text" xml:space="preserve">
+    <value>تبديل حالة القاعدة</value>
+  </data>
+  <data name="PolicyType.Whitelist" xml:space="preserve">
+    <value>قائمة السماح</value>
+  </data>
+  <data name="PolicyType.Block" xml:space="preserve">
+    <value>حظر</value>
+  </data>
+  <data name="PolicyStatus.Active" xml:space="preserve">
+    <value>مفعلة</value>
+  </data>
+  <data name="PolicyStatus.Disabled" xml:space="preserve">
+    <value>معطلة</value>
+  </data>
+  <data name="PolicyState.Enable.ToolTip" xml:space="preserve">
+    <value>تفعيل هذه القاعدة</value>
+  </data>
+  <data name="PolicyState.Disable.ToolTip" xml:space="preserve">
+    <value>تعطيل هذه القاعدة</value>
+  </data>
+  <data name="ServerAdminAccess.Enabled.ToolTip" xml:space="preserve">
+    <value>يسمح لهذا العنوان أو النطاق الفرعي المدرج في القائمة المسموح بها بالوصول إلى صفحات البوابة الخاصة بمسؤول الخادم فقط.</value>
+  </data>
+  <data name="ServerAdminAccess.Disabled.ToolTip" xml:space="preserve">
+    <value>فعّل قاعدة القائمة المسموح بها أولاً قبل منح الوصول إلى صفحات مسؤول الخادم.</value>
+  </data>
+  <data name="Action.Remove" xml:space="preserve">
+    <value>إزالة</value>
+  </data>
+  <data name="Action.RemoveWhitelist.ToolTip" xml:space="preserve">
+    <value>إزالة قاعدة القائمة المسموح بها هذه</value>
+  </data>
+  <data name="Action.RemoveBlock.ToolTip" xml:space="preserve">
+    <value>إزالة قاعدة الحظر هذه</value>
+  </data>
+  <data name="Action.RemoveWhitelist.Confirm" xml:space="preserve">
+    <value>إزالة قاعدة القائمة المسموح بها هذه؟</value>
+  </data>
+  <data name="Action.RemoveBlock.Confirm" xml:space="preserve">
+    <value>إزالة قاعدة الحظر هذه؟</value>
+  </data>
+</root>

@@ -304,7 +304,7 @@ namespace FuseCP.Portal
 			if (settings != null)
 			{
 				AccessIps = settings.GetValueOrDefault(FCP.SystemSettings.ACCESS_IPs, string.Empty);
-				arAccessIps = AccessIps.Split(',');
+				arAccessIps = AccessIps.Split(new[] { ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 			}
 
 			if (!String.IsNullOrEmpty(AccessIps))

@@ -14,6 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using FuseCP.Providers.OS;
 
@@ -107,8 +111,209 @@ public class Program
 		try
 		{
 			ImportDlls();
+			if (TryRunEmergencyMode(args))
+				return;
 			StartMain(args);
 		} catch { }
+	}
+
+	private static bool TryRunEmergencyMode(string[] args)
+	{
+		string emergencyMode = GetArgValue(args, "-emergency=");
+		if (string.IsNullOrWhiteSpace(emergencyMode))
+			return false;
+
+		if (emergencyMode.Equals("help", StringComparison.OrdinalIgnoreCase))
+		{
+			PrintEmergencyHelp();
+			return true;
+		}
+
+		if (!emergencyMode.Equals("recover-server-credential", StringComparison.OrdinalIgnoreCase))
+		{
+			Console.WriteLine($"Unsupported emergency mode: {emergencyMode}");
+			PrintEmergencyHelp();
+			return true;
+		}
+
+		int exitCode = RunRecoverServerCredentialEmergency(args);
+		Environment.ExitCode = exitCode;
+		return true;
+	}
+
+	private static int RunRecoverServerCredentialEmergency(string[] args)
+	{
+		string serverId = GetArgValue(args, "-serverId=");
+		string serverName = GetArgValue(args, "-serverName=");
+
+		if (string.IsNullOrWhiteSpace(serverId) == string.IsNullOrWhiteSpace(serverName))
+		{
+			Console.WriteLine("Provide exactly one of -serverId=<id> or -serverName=<name>.");
+			return 2;
+		}
+
+		string recoverScriptPath = ResolveRecoverScriptPath();
+		if (string.IsNullOrWhiteSpace(recoverScriptPath))
+		{
+			Console.WriteLine("Recover-ServerCredential.ps1 not found.");
+			Console.WriteLine("Expected locations include:\n - <current>\\FuseCP\\Tools\\Recover-ServerCredential.ps1\n - <installer>\\Tools\\Recover-ServerCredential.ps1");
+			return 2;
+		}
+
+		string configPath = GetArgValue(args, "-config=");
+		string mode = GetArgValue(args, "-mode=");
+		string password = GetArgValue(args, "-password=");
+		bool dryRun = HasArg(args, "-dryRun") || HasArg(args, "-dry-run");
+
+		var parts = new List<string>
+		{
+			"-NoProfile",
+			"-ExecutionPolicy", "Bypass",
+			"-File", QuoteArg(recoverScriptPath)
+		};
+
+		if (!string.IsNullOrWhiteSpace(configPath))
+		{
+			parts.Add("-ConfigPath");
+			parts.Add(QuoteArg(configPath));
+		}
+
+		if (!string.IsNullOrWhiteSpace(serverId))
+		{
+			parts.Add("-ServerId");
+			parts.Add(serverId);
+		}
+		else
+		{
+			parts.Add("-ServerName");
+			parts.Add(QuoteArg(serverName));
+		}
+
+		if (!string.IsNullOrWhiteSpace(mode))
+		{
+			parts.Add("-Mode");
+			parts.Add(mode);
+		}
+
+		if (!string.IsNullOrWhiteSpace(password))
+		{
+			parts.Add("-Password");
+			parts.Add(QuoteArg(password));
+		}
+
+		if (dryRun)
+			parts.Add("-DryRun");
+
+		Console.WriteLine("Emergency: Recover Server Credential");
+		Console.WriteLine($"Using script: {recoverScriptPath}");
+		if (string.IsNullOrWhiteSpace(password))
+			Console.WriteLine("You will be prompted securely for the credential by PowerShell.");
+		else
+			Console.WriteLine("Warning: password was passed via command argument. Prefer interactive prompt for better secret hygiene.");
+
+		string shell = ResolvePowerShellHost();
+		if (string.IsNullOrWhiteSpace(shell))
+		{
+			Console.WriteLine("PowerShell host not found. Install pwsh or powershell and retry.");
+			return 2;
+		}
+
+		var startInfo = new ProcessStartInfo
+		{
+			FileName = shell,
+			Arguments = string.Join(" ", parts),
+			UseShellExecute = false,
+			RedirectStandardOutput = false,
+			RedirectStandardError = false,
+			RedirectStandardInput = false
+		};
+
+		using var process = Process.Start(startInfo);
+		if (process == null)
+		{
+			Console.WriteLine("Failed to start emergency recovery process.");
+			return 1;
+		}
+
+		process.WaitForExit();
+		return process.ExitCode;
+	}
+
+	private static string ResolveRecoverScriptPath()
+	{
+		var baseDir = AppContext.BaseDirectory;
+		var cwd = Environment.CurrentDirectory;
+
+		string[] candidates =
+		{
+			Path.GetFullPath(Path.Combine(cwd, "FuseCP", "Tools", "Recover-ServerCredential.ps1")),
+			Path.GetFullPath(Path.Combine(cwd, "Tools", "Recover-ServerCredential.ps1")),
+			Path.GetFullPath(Path.Combine(baseDir, "Tools", "Recover-ServerCredential.ps1")),
+			Path.GetFullPath(Path.Combine(baseDir, "Recover-ServerCredential.ps1"))
+		};
+
+		return candidates.FirstOrDefault(File.Exists) ?? string.Empty;
+	}
+
+	private static string ResolvePowerShellHost()
+	{
+		if (TryFindExecutableOnPath("pwsh"))
+			return "pwsh";
+
+		if (TryFindExecutableOnPath("powershell"))
+			return "powershell";
+
+		return string.Empty;
+	}
+
+	private static bool TryFindExecutableOnPath(string executable)
+	{
+		var path = Environment.GetEnvironmentVariable("PATH");
+		if (string.IsNullOrWhiteSpace(path))
+			return false;
+
+		var searchPaths = path.Split(new[] { Path.PathSeparator }, StringSplitOptions.RemoveEmptyEntries);
+		foreach (var searchPath in searchPaths)
+		{
+			try
+			{
+				var fullPath = Path.Combine(searchPath.Trim(), executable + (OSInfo.IsWindows ? ".exe" : string.Empty));
+				if (File.Exists(fullPath))
+					return true;
+			}
+			catch
+			{
+			}
+		}
+
+		return false;
+	}
+
+	private static string GetArgValue(string[] args, string prefix)
+	{
+		return args.FirstOrDefault(arg => arg.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+			?.Substring(prefix.Length)
+			?.Trim();
+	}
+
+	private static bool HasArg(string[] args, string value)
+	{
+		return args.Any(arg => arg.Equals(value, StringComparison.OrdinalIgnoreCase));
+	}
+
+	private static string QuoteArg(string value)
+	{
+		if (string.IsNullOrEmpty(value))
+			return "\"\"";
+		return "\"" + value.Replace("\"", "\\\"") + "\"";
+	}
+
+	private static void PrintEmergencyHelp()
+	{
+		Console.WriteLine("Emergency modes:");
+		Console.WriteLine("  -emergency=recover-server-credential -serverId=<id> [-mode=keep|sha256|sha1] [-config=<path>] [-dryRun] [-password=<secret>]");
+		Console.WriteLine("  -emergency=recover-server-credential -serverName=<name> [-mode=keep|sha256|sha1] [-config=<path>] [-dryRun] [-password=<secret>]");
+		Console.WriteLine("  -emergency=help");
 	}
 
 	public static void StartMain(string[] args)

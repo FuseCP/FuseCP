@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="FuseCP.EnterpriseServer.Global" Language="C#" %>
+<%@ Application Language="C#" %>

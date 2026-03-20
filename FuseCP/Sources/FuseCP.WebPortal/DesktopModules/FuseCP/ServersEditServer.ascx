@@ -48,16 +48,12 @@
                         </tr>
                         <tr>
                             <td class="SubHead align-top" >
-                                <asp:Label ID="lblNewPassword" runat="server" meta:resourcekey="lblNewPassword"></asp:Label>
+                                <asp:Label ID="lblNewPassword" runat="server" Text="Credential Recovery"></asp:Label>
                             </td>
                             <td class="Normal">
-                                <uc1:ServerPasswordControl ID="serverPassword" runat="server" ValidationGroup="ServerPassword"></uc1:ServerPasswordControl>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="Normal"></td>
-                            <td class="Normal">
-                                <asp:Button ID="btnChangeServerPassword" meta:resourcekey="btnChangeServerPassword" runat="server" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" OnClick="btnChangeServerPassword_Click" ValidationGroup="ServerPassword" />
+                                <div class="form-text">
+                                    Connection Settings only manages the server URL. Reset the credential on the server host with the installer or configuration tool, then reconcile Enterprise with the emergency recovery CLI.
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -265,6 +261,15 @@
                             <asp:HyperLink ID="lnkServerReboot" runat="server"
                                 meta:resourcekey="lnkServerReboot" Text="Server Reboot">
                             </asp:HyperLink>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="mb-2">
+                                <asp:Label ID="lblServerConnectionPasswordTools" runat="server" Text="Connection Credential State" CssClass="fw-bold" />
+                            </div>
+                            <div class="mb-2">
+                                <asp:Label ID="lblServerCredentialState" runat="server" CssClass="badge" />
+                            </div>
+                            <asp:Label ID="lblServerCredentialGuidance" runat="server" CssClass="form-text d-block" />
                         </li>
                     </ul>
                 </div>

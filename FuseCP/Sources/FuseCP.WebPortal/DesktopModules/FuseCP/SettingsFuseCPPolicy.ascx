@@ -10,26 +10,6 @@
     <table class="SettingsPanel">
         <tr>
             <td class="SubHead">
-                <asp:Label ID="lblLogoImage" runat="server" meta:resourcekey="lblLogoImage" Text="Logo Image:"></asp:Label>
-            </td>
-            <td class="Normal">
-                <asp:TextBox ID="txtLogoImageURL" runat="server" CssClass="form-control"></asp:TextBox>
-            </td>
-        </tr>
-        <tr>
-            <td class="SubHead">
-                <asp:Label ID="lblDemoMessage" runat="server" meta:resourcekey="lblDemoMessage" Text="Demo Message:"></asp:Label>
-            </td>
-            <td class="Normal">
-                <asp:TextBox ID="txtDemoMessage" runat="server" Rows="5" TextMode="MultiLine" CssClass="form-control"></asp:TextBox>
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td class="SubHead">
                 <asp:Label ID="lblPassword" runat="server" meta:resourcekey="lblPassword" Text="Account Password:"></asp:Label>
             </td>
             <td class="Normal">

@@ -50,6 +50,7 @@ namespace FuseCP.Web.Services
 		}
 
 		public static Func<string, bool> ValidateServer;
+		public static Func<FuseCP.Providers.ServerRequestAuthenticationData, bool> ValidateServerRequestAuthentication;
 		public static Func<string, string, bool> ValidateEnterpriseServer;
 
 	}

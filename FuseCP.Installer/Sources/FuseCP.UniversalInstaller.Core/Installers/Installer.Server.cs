@@ -45,12 +45,28 @@ public abstract partial class Installer
 	public virtual void RemoveServerUser() => RemoveUser(Settings.Server.Username);
 	public virtual void SetServerFilePermissions() => SetFilePermissions(Settings.Server.InstallPath, Settings.Server.Username);
 	public virtual void SetServerFileOwner() => SetFileOwner(Settings.Server.InstallPath, Settings.Server.Username, FuseCPGroup);
+	/// <summary>
+	/// Pre-creates appsettings.hardened.json so the IIS app pool can write to it (file-level access)
+	/// without needing broader directory-create permission. The file is loaded at startup as an optional
+	/// config overlay (higher priority than appsettings.json) and is written by HardenServerAuthentication.
+	/// </summary>
+	public virtual void PrepareServerHardenedConfig()
+	{
+		string hardenedFile = Path.Combine(Settings.Server.InstallPath, "appsettings.hardened.json");
+		if (!File.Exists(hardenedFile))
+		{
+			File.WriteAllText(hardenedFile, "{}");
+			InstallLog($"Created {hardenedFile}");
+		}
+	}
+
 	public virtual void InstallServer()
 	{
 		InstallServerPrerequisites();
 		CopyServer(true, StandardInstallFilter);
 		CreateServerUser();
 		ConfigureServer();
+		PrepareServerHardenedConfig();
 		SetServerFilePermissions();
 		SetServerFileOwner();
 		InstallServerWebsite();
@@ -61,6 +77,7 @@ public abstract partial class Installer
 		CopyServer(true, StandardUpdateFilter);
 		UpdateServerConfig();
 		ConfigureServer();
+		PrepareServerHardenedConfig();
 		SetServerFilePermissions();
 		SetServerFileOwner();
 		InstallServerWebsite();

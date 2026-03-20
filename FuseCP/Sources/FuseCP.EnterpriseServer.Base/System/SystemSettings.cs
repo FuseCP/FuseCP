@@ -55,6 +55,10 @@ namespace FuseCP.EnterpriseServer
 		//Mfa token app display name
 		public const string MFA_TOKEN_APP_DISPLAY_NAME = "MfaTokenAppDisplayName";
 		public const string MFA_CAN_PEER_CHANGE_MFA = "CanPeerChangeMfa";
+		public const string AUTH_BRUTEFORCE_MAX_FAILED_ATTEMPTS = "BruteForceMaxFailedAttempts";
+		public const string AUTH_BRUTEFORCE_WINDOW_MINUTES = "BruteForceWindowMinutes";
+		public const string AUTH_BRUTEFORCE_LOCKOUT_MINUTES = "BruteForceLockoutMinutes";
+		public const string AUTH_BRUTEFORCE_CRITICAL_ATTEMPTS = "BruteForceCriticalAttemptThreshold";
 
 		// Constant for IPAccess
 		public const string ACCESS_IPs = "AccessIps";

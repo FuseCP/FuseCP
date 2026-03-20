@@ -38,6 +38,38 @@ namespace FuseCP.EnterpriseServer
 	{
 		public UserController(ControllerBase provider) : base(provider) { }
 
+		private bool VerifyUserPassword(UserInfoInternal user, string providedPassword)
+		{
+			if (user == null)
+				return false;
+
+			if (PasswordHardeningService.Verify(user.Password, providedPassword))
+				return true;
+
+			// Backward compatibility for pre-hardening records.
+			if (CryptoUtils.SHAEquals(user.Password, providedPassword) || user.Password == providedPassword)
+				return true;
+
+			string normalizedProof = PasswordHardeningService.NormalizeClientPasswordProof(providedPassword);
+			if (!string.IsNullOrEmpty(normalizedProof) &&
+				(CryptoUtils.SHAEquals(user.Password, normalizedProof) || user.Password == normalizedProof))
+				return true;
+
+			return false;
+		}
+
+		private void TryUpgradeUserPasswordHash(UserInfoInternal user, string providedPassword)
+		{
+			if (user == null || string.IsNullOrEmpty(providedPassword))
+				return;
+
+			if (PasswordHardeningService.IsHardenedHash(user.Password))
+				return;
+
+			string hardenedPassword = PasswordHardeningService.HashClientPasswordProof(providedPassword);
+			Database.ChangeUserPassword(-1, user.UserId, CryptoUtils.Encrypt(hardenedPassword));
+		}
+
 		public bool UserExists(string username)
 		{
 			// try to get user from database
@@ -105,11 +137,13 @@ namespace FuseCP.EnterpriseServer
 
 
 				// compare user passwords
-				if (CryptoUtils.SHAEquals(user.Password, password) || user.Password == password ||
+				if (VerifyUserPassword(user, password) ||
 					string.IsNullOrEmpty(user.Password) &&
 					(CryptoUtils.SHAEquals(user.Password, password) || string.IsNullOrEmpty(password)) &&
 					Database.IsFreshDatabase) // allow empty password on fresh database
 				{
+					TryUpgradeUserPasswordHash(user, password);
+
 					if (string.IsNullOrEmpty(user.Password) && (CryptoUtils.SHAEquals(user.Password, password) || string.IsNullOrEmpty(password)))
 					{
 						user.OneTimePasswordState = OneTimePasswordStates.Active;
@@ -326,11 +360,13 @@ namespace FuseCP.EnterpriseServer
 				}
 
 				// compare user passwords
-				if (CryptoUtils.SHAEquals(user.Password, password) || user.Password == password ||
+				if (VerifyUserPassword(user, password) ||
 					string.IsNullOrEmpty(user.Password) &&
 					(CryptoUtils.SHAEquals(user.Password, password) || string.IsNullOrEmpty(password)) &&
 					Database.IsFreshDatabase)
 				{
+					TryUpgradeUserPasswordHash(user, password);
+
 					// Queue call to AuditLog for better speed in SOAP calls
 					if (log)
 					{
@@ -383,8 +419,9 @@ namespace FuseCP.EnterpriseServer
 				}
 
 				// change password
+				string hardenedPassword = PasswordHardeningService.HashClientPasswordProof(newPassword);
 				Database.ChangeUserPassword(-1, user.UserId,
-					CryptoUtils.Encrypt(newPassword));
+					CryptoUtils.Encrypt(hardenedPassword));
 
 				return 0;
 			}
@@ -693,6 +730,8 @@ namespace FuseCP.EnterpriseServer
 			try
 			{
 				// add user to database
+				string hardenedPassword = PasswordHardeningService.HashClientPasswordProof(password);
+
 				int userId = Database.AddUser(
 					SecurityContext.User.UserId,
 					user.OwnerId,
@@ -704,7 +743,7 @@ namespace FuseCP.EnterpriseServer
 					user.IsPeer,
 					user.Comments,
 					user.Username.Trim(),
-					CryptoUtils.Encrypt(password),
+					CryptoUtils.Encrypt(hardenedPassword),
 					user.FirstName,
 					user.LastName,
 					user.Email,
@@ -925,8 +964,9 @@ namespace FuseCP.EnterpriseServer
 			try
 			{
 
+				string hardenedPassword = PasswordHardeningService.HashClientPasswordProof(password);
 				Database.ChangeUserPassword(SecurityContext.User.UserId, userId,
-					CryptoUtils.Encrypt(password));
+					CryptoUtils.Encrypt(hardenedPassword));
 
 				return 0;
 			}

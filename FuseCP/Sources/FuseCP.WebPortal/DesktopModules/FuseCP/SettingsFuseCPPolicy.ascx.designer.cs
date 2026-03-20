@@ -32,42 +32,6 @@ namespace FuseCP.Portal {
         protected global::System.Web.UI.WebControls.Panel PanelSettingsPanel;
         
         /// <summary>
-        /// lblLogoImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLogoImage;
-        
-        /// <summary>
-        /// txtLogoImageURL control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLogoImageURL;
-        
-        /// <summary>
-        /// lblDemoMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDemoMessage;
-        
-        /// <summary>
-        /// txtDemoMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDemoMessage;
-        
-        /// <summary>
         /// lblPassword control.
         /// </summary>
         /// <remarks>

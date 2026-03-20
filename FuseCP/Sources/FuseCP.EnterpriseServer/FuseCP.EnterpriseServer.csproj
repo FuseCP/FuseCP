@@ -38,7 +38,7 @@
     <ItemGroup>
         <ProjectReference Include="..\FuseCP.Build\FuseCP.Build.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\FuseCP.EnterpriseServer.Base\FuseCP.EnterpriseServer.Base.csproj" />
-        <!--<ProjectReference Include="..\FuseCP.EnterpriseServer.Data\FuseCP.EnterpriseServer.Data.csproj" />-->
+        <ProjectReference Include="..\FuseCP.EnterpriseServer.Data\FuseCP.EnterpriseServer.Data.csproj" />
         <ProjectReference Include="..\FuseCP.Providers.Base\FuseCP.Providers.Base.csproj" />
         <ProjectReference Include="..\FuseCP.EnterpriseServer.Code\FuseCP.EnterpriseServer.Code.csproj" />
         <!--<ProjectReference Include="..\FuseCP.Providers.OS.Unix\FuseCP.Providers.OS.Unix.csproj" />-->

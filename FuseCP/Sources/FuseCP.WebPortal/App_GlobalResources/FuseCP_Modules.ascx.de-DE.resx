@@ -966,6 +966,30 @@
   <data name="ModuleTitle.PrivateNetworkVLANs" xml:space="preserve">
     <value>Privates Netzwerk VLANs</value>
   </data>
+  <data name="ModuleTitle.ConfigurationPolicies" xml:space="preserve">
+    <value>Richtlinien</value>
+  </data>
+  <data name="ModuleTitle.ConfigurationMailTemplates" xml:space="preserve">
+    <value>E-Mail-Vorlagen</value>
+  </data>
+  <data name="ModuleTitle.ConfigurationAppearanceSettings" xml:space="preserve">
+    <value>Darstellungseinstellungen</value>
+  </data>
+  <data name="ModuleTitle.SecurityPortalAuthentication" xml:space="preserve">
+    <value>Portal-Authentifizierung</value>
+  </data>
+  <data name="ModuleTitle.SecurityPasswordLifecycle" xml:space="preserve">
+    <value>Anmeldeinformations-Haertung</value>
+  </data>
+  <data name="ModuleTitle.SecurityBruteForceAttempts" xml:space="preserve">
+    <value>Brute-Force-Versuche</value>
+  </data>
+  <data name="ModuleTitle.SecurityIpSecurityPolicies" xml:space="preserve">
+    <value>IP-Sicherheitsrichtlinien</value>
+  </data>
+  <data name="ModuleTitle.UserAccountAppearanceSettings" xml:space="preserve">
+    <value>Design und Branding</value>
+  </data>
   <data name="ModuleTitle.AddVirtualDirectory" xml:space="preserve">
     <value>Virtuelles Verzeichnis hinzuf�gen</value>
   </data>

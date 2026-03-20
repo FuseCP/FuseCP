@@ -160,7 +160,7 @@ namespace FuseCP.Providers.OS
                 Client.ErrorOccurred += Restart;
                 ForwardedPort.Exception += Restart;
 
-                Trace.TraceInformation($"SSH Tunnel on {Url} started.");
+                Trace.TraceInformation($"SSH Tunnel on {SanitizeForLog(Url)} started.");
                 return true;
             }
             catch (Exception ex)
@@ -169,7 +169,7 @@ namespace FuseCP.Providers.OS
                 IsConnecting = false;
                 Disconnect();
 
-                Trace.TraceError($"Failed to connect SSH Tunnel to {Url}: {ex}");
+                Trace.TraceError($"Failed to connect SSH Tunnel to {SanitizeForLog(Url)}: {ex}");
                 return false;
             }
         }
@@ -190,7 +190,7 @@ namespace FuseCP.Providers.OS
                 IsConnecting = false;
                 Client.ErrorOccurred += Restart;
                 ForwardedPort.Exception += Restart;
-                Trace.TraceInformation($"SSH Tunnel on {Url} started.");
+                Trace.TraceInformation($"SSH Tunnel on {SanitizeForLog(Url)} started.");
             }
             catch (Exception ex)
             {
@@ -198,7 +198,7 @@ namespace FuseCP.Providers.OS
                 IsConnecting = false;
                 Disconnect();
 
-                Trace.TraceError($"Failed to connect SSH Tunnel to {Url}: {ex}");
+                Trace.TraceError($"Failed to connect SSH Tunnel to {SanitizeForLog(Url)}: {ex}");
             }
         }
 
@@ -214,7 +214,7 @@ namespace FuseCP.Providers.OS
                 Client.ErrorOccurred -= Restart;
                 ForwardedPort.Exception -= Restart;
 
-                Trace.TraceError($"Exception on SSH Tunnel {Url}: {Exception}");
+                Trace.TraceError($"Exception on SSH Tunnel {SanitizeForLog(Url)}: {Exception}");
 
                 Disconnect();
 
@@ -230,13 +230,17 @@ namespace FuseCP.Providers.OS
                     isRestarting = false;
                     Disconnect();
 
-                    Trace.TraceError($"Failed to reconnect SSH Tunnel to {Url}: {ex}");
+                    Trace.TraceError($"Failed to reconnect SSH Tunnel to {SanitizeForLog(Url)}: {ex}");
                 }
                 isRestarting = IsConnecting = false;
                 Client.ErrorOccurred += Restart;
                 ForwardedPort.Exception += Restart;
             }
         }
+
+        /// <summary>Strips control characters from a user-provided value before it appears in a log entry.</summary>
+        private static string SanitizeForLog(string value) =>
+            value == null ? string.Empty : value.Replace('\r', ' ').Replace('\n', ' ');
 
         bool isDisposed = false;
         public void Disconnect()

@@ -18,7 +18,9 @@ using System.DirectoryServices;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Text;
+using FuseCP.EnterpriseServer.Security;
 
 using FuseCP.Server.Client;
 
@@ -26,6 +28,23 @@ namespace FuseCP.EnterpriseServer
 {
 	public class ServiceProviderProxy: ControllerBase
 	{
+		const int ServerAuthenticationCacheSeconds = 300;
+
+		class CachedServerAuthenticationMode
+		{
+			public DateTime CachedUtc { get; set; }
+			public bool UseServerRequestAuthentication { get; set; }
+			public bool PasswordIsSHA256 { get; set; }
+		}
+
+		static readonly ConcurrentDictionary<int, CachedServerAuthenticationMode> ServerAuthenticationCache =
+			new ConcurrentDictionary<int, CachedServerAuthenticationMode>();
+
+		public static void ClearServerAuthenticationCache(int serverId)
+		{
+			ServerAuthenticationCache.TryRemove(serverId, out _);
+		}
+
 		public ServiceProviderProxy(ControllerBase provider) : base(provider) { }
 
 		public FuseCP.Web.Clients.ClientBase Init(FuseCP.Web.Clients.ClientBase proxy, int serviceId, StringDictionary additionalSettings = null)
@@ -91,9 +110,81 @@ namespace FuseCP.EnterpriseServer
 			
 			// set if server is running on net core
 			cnfg.IsCore = server.IsCore;
-			cnfg.PasswordIsSHA256 = server.PasswordIsSHA256;
+
+			var authenticationMode = ResolveServerAuthenticationMode(serverId, server.ServerUrl, server.PasswordIsSHA256);
+			cnfg.PasswordIsSHA256 = authenticationMode.PasswordIsSHA256;
+			cnfg.UseServerRequestAuthentication = authenticationMode.UseServerRequestAuthentication;
 
 			return ServerInit(proxy, cnfg, server.ServerUrl, server.Password);
+		}
+
+		CachedServerAuthenticationMode ResolveServerAuthenticationMode(int serverId, string encryptedServerUrl, bool defaultPasswordIsSHA256)
+		{
+			if (ServerAuthenticationCache.TryGetValue(serverId, out var cached) &&
+				(DateTime.UtcNow - cached.CachedUtc).TotalSeconds <= ServerAuthenticationCacheSeconds)
+				return cached;
+
+			var resolved = new CachedServerAuthenticationMode
+			{
+				CachedUtc = DateTime.UtcNow,
+				UseServerRequestAuthentication = false,
+				PasswordIsSHA256 = defaultPasswordIsSHA256
+			};
+
+			try
+			{
+				var autoDiscovery = new AutoDiscovery();
+				ServerInit(autoDiscovery, encryptedServerUrl, string.Empty, false);
+
+				var info = autoDiscovery.GetServerAuthenticationInfo();
+				if (info != null)
+				{
+					resolved.UseServerRequestAuthentication = info.SupportsHmacAuthentication;
+					resolved.PasswordIsSHA256 = info.PasswordIsSha256;
+					TryRecordServerAuthAttempt(encryptedServerUrl, serverId, succeeded: true);
+				}
+			}
+			catch (Exception)
+			{
+				try
+				{
+					var autoDiscovery = new AutoDiscovery();
+					ServerInit(autoDiscovery, encryptedServerUrl, string.Empty, false);
+					resolved.PasswordIsSHA256 = autoDiscovery.GetServerPasswordIsSHA256();
+					resolved.UseServerRequestAuthentication = false;
+					TryRecordServerAuthAttempt(encryptedServerUrl, serverId, succeeded: true);
+				}
+				catch (Exception)
+				{
+					resolved.UseServerRequestAuthentication = false;
+					resolved.PasswordIsSHA256 = defaultPasswordIsSHA256;
+					TryRecordServerAuthAttempt(encryptedServerUrl, serverId, succeeded: false);
+				}
+			}
+
+			ServerAuthenticationCache[serverId] = resolved;
+			return resolved;
+		}
+
+		void TryRecordServerAuthAttempt(string encryptedServerUrl, int serverId, bool succeeded)
+		{
+			try
+			{
+				var serverUrl = CryptoUtils.DecryptServerUrl(encryptedServerUrl);
+				if (!Uri.TryCreate(serverUrl, UriKind.Absolute, out var uri))
+					return;
+
+				string remoteAddress = uri.Host;
+				if (string.IsNullOrWhiteSpace(remoteAddress))
+					return;
+
+				var bruteForce = new BruteForceProtectionService(this);
+				bruteForce.RecordAttempt(remoteAddress, $"server:{serverId}", BruteForceProtectionService.Layers.Server, succeeded);
+			}
+			catch (Exception)
+			{
+				// Best-effort logging only.
+			}
 		}
 
 		private static FuseCP.Web.Clients.ClientBase ServerInit(FuseCP.Web.Clients.ClientBase proxy,

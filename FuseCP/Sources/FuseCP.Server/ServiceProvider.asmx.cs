@@ -181,6 +181,13 @@ namespace FuseCP.Server
         [WebMethod]
         public string GetCryptoKey() => Settings.CryptoKey;
 
+        [WebMethod]
+        public ServerAuthenticationInfo HardenServerAuthentication(string newSharedSecret)
+        {
+            var manager = new ServerAuthenticationSettingsManager();
+            return manager.HardenServerAuthentication(newSharedSecret);
+        }
+
         private ServiceProviderItem[] UnwrapServiceProviderItems(SoapServiceProviderItem[] soapItems)
         {
             if (soapItems == null)

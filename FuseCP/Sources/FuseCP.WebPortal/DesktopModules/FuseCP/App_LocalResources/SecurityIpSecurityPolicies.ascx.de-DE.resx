@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="chkServerAdminAccess.ToolTip" xml:space="preserve">
+    <value>Erlaubt dieser IP oder diesem Subnetz den Zugriff auf reine Serveradmin-Portal-Seiten, wenn der Eintrag auf der Whitelist steht.</value>
+  </data>
+  <data name="lblServerAdminAccess.Text" xml:space="preserve">
+    <value>Server-Admin</value>
+  </data>
+  <data name="lblServerAdminAccess.ToolTip" xml:space="preserve">
+    <value>Erlaubt dieser IP oder diesem Subnetz den Zugriff auf reine Serveradmin-Portal-Seiten, wenn der Eintrag auf der Whitelist steht.</value>
+  </data>
+  <data name="btnBlock.ToolTip" xml:space="preserve">
+    <value>Diese IP oder dieses Subnetz blockieren</value>
+  </data>
+  <data name="btnWhitelist.ToolTip" xml:space="preserve">
+    <value>Diese IP oder dieses Subnetz auf die Whitelist setzen</value>
+  </data>
+  <data name="locBlockButtonText.Text" xml:space="preserve">
+    <value>Blockieren</value>
+  </data>
+  <data name="locWhitelistButtonText.Text" xml:space="preserve">
+    <value>Whitelist</value>
+  </data>
+  <data name="litActionHelp.Text" xml:space="preserve">
+    <value>Aktivieren Sie Server-Admin vor dem Whitelisting, wenn diese IP auch reine Serveradmin-Portal-Seiten erreichen soll. Sie können das später in der Liste noch ändern oder entfernen.</value>
+  </data>
+  <data name="litPoliciesTitle.Text" xml:space="preserve">
+    <value>IP-Sicherheitsregeln</value>
+  </data>
+  <data name="locTogglePolicyState.Text" xml:space="preserve">
+    <value>Regelstatus umschalten</value>
+  </data>
+  <data name="PolicyType.Whitelist" xml:space="preserve">
+    <value>Whitelist</value>
+  </data>
+  <data name="PolicyType.Block" xml:space="preserve">
+    <value>Blockieren</value>
+  </data>
+  <data name="PolicyStatus.Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="PolicyStatus.Disabled" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="PolicyState.Enable.ToolTip" xml:space="preserve">
+    <value>Diese Regel aktivieren</value>
+  </data>
+  <data name="PolicyState.Disable.ToolTip" xml:space="preserve">
+    <value>Diese Regel deaktivieren</value>
+  </data>
+  <data name="ServerAdminAccess.Enabled.ToolTip" xml:space="preserve">
+    <value>Erlaubt dieser auf der Whitelist stehenden IP oder diesem Subnetz den Zugriff auf reine Serveradmin-Portal-Seiten.</value>
+  </data>
+  <data name="ServerAdminAccess.Disabled.ToolTip" xml:space="preserve">
+    <value>Aktivieren Sie zuerst diese Whitelist-Regel, bevor Sie Serveradmin-Zugriff freigeben.</value>
+  </data>
+  <data name="Action.Remove" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="Action.RemoveWhitelist.ToolTip" xml:space="preserve">
+    <value>Diese Whitelist-Regel entfernen</value>
+  </data>
+  <data name="Action.RemoveBlock.ToolTip" xml:space="preserve">
+    <value>Diese Block-Regel entfernen</value>
+  </data>
+  <data name="Action.RemoveWhitelist.Confirm" xml:space="preserve">
+    <value>Diese Whitelist-Regel entfernen?</value>
+  </data>
+  <data name="Action.RemoveBlock.Confirm" xml:space="preserve">
+    <value>Diese Block-Regel entfernen?</value>
+  </data>
+</root>

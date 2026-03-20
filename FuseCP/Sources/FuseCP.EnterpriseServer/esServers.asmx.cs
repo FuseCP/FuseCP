@@ -112,6 +112,12 @@ namespace FuseCP.EnterpriseServer
             return ServerController.UpdateServerConnectionPassword(serverId, password);
         }
 
+		[WebMethod]
+		public ServerAuthenticationInfo HardenServerAuthentication(int serverId)
+		{
+			return ServerController.HardenServerAuthentication(serverId);
+		}
+
         [WebMethod]
         public int UpdateServerADPassword(int serverId, string adPassword)
         {

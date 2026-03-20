@@ -140,6 +140,22 @@ namespace FuseCP.Web.Services
 				}
 			}
 			var policy = contract.GetCustomAttribute<PolicyAttribute>();
+			if (!isRest && policy != null && policy.Policy == PolicyAttribute.ServerAuthenticated &&
+				UserNamePasswordValidator.ValidateServerRequestAuthentication != null)
+			{
+				var requestAuthentication = TryGetServerRequestAuthentication(request);
+				if (requestAuthentication != null)
+				{
+					requestAuthentication.Action = request.Headers.Action;
+					requestAuthentication.Resource = request.Headers.To?.PathAndQuery ??
+						OperationContext.Current.EndpointDispatcher.EndpointAddress.Uri.AbsolutePath;
+
+					if (!UserNamePasswordValidator.ValidateServerRequestAuthentication(requestAuthentication))
+						throw new FaultException("Invalid server request authentication");
+
+					return null;
+				}
+			}
 			if (!isRest && policy != null && policy.Policy != PolicyAttribute.Encrypted)
 			{
                 int hpos = request.Headers.FindHeader(nameof(Credentials), $"{Namespace}{nameof(Credentials)}");
@@ -149,6 +165,29 @@ namespace FuseCP.Web.Services
 				validator.ValidateAsync(header.Username, header.Password).AsTask().Wait();
 			}
             return null;
+		}
+
+		private static ServerRequestAuthenticationData TryGetServerRequestAuthentication(Message request)
+		{
+			if (!request.Properties.TryGetValue(HttpRequestMessageProperty.Name, out object property) ||
+				!(property is HttpRequestMessageProperty httpRequest))
+			{
+				return null;
+			}
+
+			string version = httpRequest.Headers[ServerRequestAuthentication.VersionHeaderName];
+			if (string.IsNullOrEmpty(version))
+				return null;
+
+			return new ServerRequestAuthenticationData
+			{
+				Version = version,
+				Timestamp = httpRequest.Headers[ServerRequestAuthentication.TimestampHeaderName],
+				Nonce = httpRequest.Headers[ServerRequestAuthentication.NonceHeaderName],
+				KeyId = httpRequest.Headers[ServerRequestAuthentication.KeyIdHeaderName],
+				ClusterId = httpRequest.Headers[ServerRequestAuthentication.ClusterIdHeaderName],
+				Signature = httpRequest.Headers[ServerRequestAuthentication.SignatureHeaderName]
+			};
 		}
 
 		public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)

@@ -23,6 +23,7 @@ using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Channels;
+using System.Globalization;
 using FuseCP.Providers;
 
 namespace FuseCP.Web.Clients
@@ -42,9 +43,14 @@ namespace FuseCP.Web.Clients
 		{
 			var methodName = Regex.Match(request.Headers.Action, "(?<=/)[^/]*?$").Value;
 			var hasSoapHeader = Client.CheckSoapHeader(methodName);
+			var useServerRequestAuthentication = Client.IsAuthenticated &&
+				(Client.IsHttp || Client.IsHttps) &&
+				Client.Credentials != null &&
+				!string.IsNullOrEmpty(Client.Credentials.Password) &&
+				string.IsNullOrEmpty(Client.Credentials.UserName);
 
 			if (hasSoapHeader || Client.Credentials != null && Client.Credentials.Password != null && 
-				(Client.IsSecureProtocol || Client.IsLocal))
+				(Client.IsSecureProtocol || Client.IsLocal) || useServerRequestAuthentication)
 			{
 				// Prepare the request message copy to be modified
 				MessageBuffer buffer = request.CreateBufferedCopy(Int32.MaxValue);
@@ -62,6 +68,42 @@ namespace FuseCP.Web.Clients
 				var header = MessageHeader.CreateHeader(nameof(Credentials), $"{Namespace}{nameof(Credentials)}", cred);
 				request.Headers.Add(header);
 				// Client.Credentials.UserName = Client.Credentials.Password = null;
+			}
+			if (useServerRequestAuthentication)
+			{
+				var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture);
+				var nonce = ServerRequestAuthentication.CreateNonce();
+				var keyId = ServerRequestAuthentication.BuildKeyId(Client.Credentials.Password);
+				var resource = request.Headers.To != null
+					? request.Headers.To.PathAndQuery
+					: channel.RemoteAddress?.Uri?.PathAndQuery ?? string.Empty;
+				var signature = ServerRequestAuthentication.ComputeSignature(
+					Client.Credentials.Password,
+					request.Headers.Action,
+					resource,
+					timestamp,
+					nonce,
+					keyId,
+					string.Empty);
+
+				HttpRequestMessageProperty httpRequest;
+				if (request.Properties.TryGetValue(HttpRequestMessageProperty.Name, out object existingValue) &&
+					existingValue is HttpRequestMessageProperty existing)
+				{
+					httpRequest = existing;
+				}
+				else
+				{
+					httpRequest = new HttpRequestMessageProperty();
+					request.Properties[HttpRequestMessageProperty.Name] = httpRequest;
+				}
+
+				httpRequest.Headers[ServerRequestAuthentication.VersionHeaderName] = ServerRequestAuthentication.CurrentVersion;
+				httpRequest.Headers[ServerRequestAuthentication.TimestampHeaderName] = timestamp;
+				httpRequest.Headers[ServerRequestAuthentication.NonceHeaderName] = nonce;
+				httpRequest.Headers[ServerRequestAuthentication.KeyIdHeaderName] = keyId;
+				httpRequest.Headers[ServerRequestAuthentication.ClusterIdHeaderName] = string.Empty;
+				httpRequest.Headers[ServerRequestAuthentication.SignatureHeaderName] = signature;
 			}
 			return null;
 		}

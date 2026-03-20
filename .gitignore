@@ -92,3 +92,5 @@ packages/
 /FuseCP/buildandupload.bat
 
 .fake
+# Runtime-written hardened authentication overlay - contains hashed credentials, never commit
+appsettings.hardened.json

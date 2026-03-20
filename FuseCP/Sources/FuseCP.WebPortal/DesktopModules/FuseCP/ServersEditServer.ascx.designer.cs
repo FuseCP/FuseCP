@@ -104,24 +104,6 @@ namespace FuseCP.Portal {
         protected global::System.Web.UI.WebControls.Label lblNewPassword;
         
         /// <summary>
-        /// serverPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::FuseCP.Portal.ServerPasswordControl serverPassword;
-        
-        /// <summary>
-        /// btnChangeServerPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnChangeServerPassword;
-        
-        /// <summary>
         /// ADHeader control.
         /// </summary>
         /// <remarks>
@@ -606,6 +588,33 @@ namespace FuseCP.Portal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkServerReboot;
+        
+        /// <summary>
+        /// lblServerConnectionPasswordTools control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblServerConnectionPasswordTools;
+        
+        /// <summary>
+        /// lblServerCredentialState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblServerCredentialState;
+        
+        /// <summary>
+        /// lblServerCredentialGuidance control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblServerCredentialGuidance;
         
         /// <summary>
         /// lblRecoveryTools control.

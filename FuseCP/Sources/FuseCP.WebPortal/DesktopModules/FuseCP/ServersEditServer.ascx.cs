@@ -192,6 +192,20 @@ namespace FuseCP.Portal
 
 			// Preview Domain
 			txtPreviewDomain.Text = server.InstantDomainAlias;
+
+			bool hasStoredCredential = !string.IsNullOrWhiteSpace(server.Password);
+			string credentialMode = server.PasswordIsSHA256 ? "SHA-256" : "legacy SHA-1";
+			lblServerCredentialState.Text = hasStoredCredential
+				? $"Stored {credentialMode} credential present"
+				: "No stored credential";
+			lblServerCredentialState.CssClass = !hasStoredCredential
+				? "badge bg-danger"
+				: server.PasswordIsSHA256
+					? "badge bg-success"
+					: "badge bg-warning text-dark";
+			lblServerCredentialGuidance.Text = hasStoredCredential
+				? "Portal only edits the server URL. Direct GUI and web API password reset is disabled. Rotate the secret on the server host, then reconcile Enterprise with Recover-ServerCredential.ps1."
+				: "Portal only edits the server URL. FuseCP does not currently have a stored server credential. Recover on the server host, then reconcile Enterprise with Recover-ServerCredential.ps1.";
 		}
 
 		private async Task BindServerVersion()
@@ -326,35 +340,6 @@ namespace FuseCP.Portal
 			catch (Exception ex)
 			{
 				ShowErrorMessage("SERVER_DISCOVER_SERVICES", ex);
-				return;
-			}
-		}
-
-		protected void btnChangeServerPassword_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				string password = serverPassword.Password;
-
-				if (string.IsNullOrEmpty(password))
-				{
-					ShowErrorMessage("SERVER_UPDATE_SERVER_PSW", new InvalidOperationException("Password field was empty in postback."));
-					return;
-				}
-
-				int result = ES.Services.Servers.UpdateServerConnectionPassword(
-					 PanelRequest.ServerId, password);
-				if (result < 0)
-				{
-					ShowResultMessage(result);
-					return;
-				}
-
-				ShowSuccessMessage("SERVER_UPDATE_SERVER_PSW");
-			}
-			catch (Exception ex)
-			{
-				ShowErrorMessage("SERVER_UPDATE_SERVER_PSW", ex);
 				return;
 			}
 		}

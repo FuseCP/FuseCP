@@ -56,5 +56,8 @@ namespace FuseCP.Server
         [WebMethod]
         public bool GetServerPasswordIsSHA256() => AutoDiscoveryHelper.IsServerPasswordSHA256;
 
+        [WebMethod]
+        public FuseCP.Providers.ServerAuthenticationInfo GetServerAuthenticationInfo() => AutoDiscoveryHelper.GetServerAuthenticationInfo();
+
 	}
 }

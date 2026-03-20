@@ -18,8 +18,10 @@ using System.Data;
 using System.Web;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using FuseCP.Web.Services;
 using System.ComponentModel;
+using FuseCP.EnterpriseServer.Security;
 
 namespace FuseCP.EnterpriseServer
 {
@@ -32,6 +34,12 @@ namespace FuseCP.EnterpriseServer
     [ToolboxItem(false)]
     public class esUsers: WebService
     {
+        private void EnsureServerAdminAccess()
+        {
+            if (SecurityContext.CheckAccount(DemandAccount.IsActive | DemandAccount.IsAdmin | DemandAccount.NotDemo) != 0)
+                throw new Exception("This method could be called by serveradmin only.");
+        }
+
         [WebMethod(Description = "Checks if the account with the specified username exists.")]
         public bool UserExists(string username)
         {
@@ -290,6 +298,123 @@ namespace FuseCP.EnterpriseServer
         {
             return UserController.ChangeUserStatus(userId, status);
         }
+
+        [WebMethod]
+        public List<BruteForceAttemptInfo> GetBruteForceAttempts(string ipAddress, string layer,
+            bool failedOnly, int skip, int take)
+        {
+            EnsureServerAdminAccess();
+
+            var service = new BruteForceProtectionService();
+            return service.GetAttempts(ipAddress, layer, failedOnly, skip, take)
+                .Select(a => new BruteForceAttemptInfo
+                {
+                    Id = a.Id,
+                    IpAddress = a.IpAddress,
+                    Username = a.Username,
+                    Layer = a.Layer,
+                    AttemptTime = a.AttemptTime,
+                    Succeeded = a.Succeeded,
+                    UserAgent = a.UserAgent
+                })
+                .ToList();
+        }
+
+        [WebMethod]
+        public List<IpSecurityPolicyInfo> GetIpSecurityPolicies(bool whitelistOnly, bool blacklistOnly, bool includeInactive)
+        {
+            EnsureServerAdminAccess();
+
+            var service = new BruteForceProtectionService();
+            return service.GetPolicies(whitelistOnly, blacklistOnly, includeInactive)
+                .Select(p => new IpSecurityPolicyInfo
+                {
+                    Id = p.Id,
+                    IpRange = p.IpRange,
+                    IsWhitelist = p.IsWhitelist,
+                    CreatedDate = p.CreatedDate,
+                    ExpiresDate = p.ExpiresDate,
+                    Reason = p.Reason,
+                    IsActive = p.IsActive,
+                    SeverityLevel = p.SeverityLevel,
+                    CreatedBy = p.CreatedBy
+                })
+                .ToList();
+        }
+
+        [WebMethod]
+        public void BlockIpAddress(string ipAddress, string reason, int durationMinutes)
+        {
+            EnsureServerAdminAccess();
+
+            var service = new BruteForceProtectionService();
+            DateTime? expiry = durationMinutes > 0 ? DateTime.UtcNow.AddMinutes(durationMinutes) : null;
+            service.BlockIp(ipAddress, reason, SecurityContext.User?.Identity?.Name, expiry);
+        }
+
+        [WebMethod]
+        public void UnblockIpAddress(string ipAddress)
+        {
+            EnsureServerAdminAccess();
+
+            var service = new BruteForceProtectionService();
+            service.UnblockIp(ipAddress);
+        }
+
+        [WebMethod]
+        public void RemoveIpSecurityPolicy(int policyId)
+        {
+            EnsureServerAdminAccess();
+
+            var service = new BruteForceProtectionService();
+            service.RemovePolicy(policyId);
+        }
+
+        [WebMethod]
+        public void SetIpSecurityPolicyState(int policyId, bool isActive)
+        {
+            EnsureServerAdminAccess();
+
+            var service = new BruteForceProtectionService();
+            service.SetPolicyState(policyId, isActive);
+        }
+
+        [WebMethod]
+        public void WhitelistIpAddress(string ipRange, string reason, int durationMinutes)
+        {
+            EnsureServerAdminAccess();
+
+            var service = new BruteForceProtectionService();
+            DateTime? expiry = durationMinutes > 0 ? DateTime.UtcNow.AddMinutes(durationMinutes) : null;
+            service.WhitelistIp(ipRange, reason, SecurityContext.User?.Identity?.Name, expiry);
+        }
+
+        [WebMethod]
+        public PasswordHardeningStatusInfo GetPasswordHardeningStatus()
+        {
+            EnsureServerAdminAccess();
+
+            var service = new PasswordHardeningStatusService();
+            return service.GetStatus();
+        }
+
+        [WebMethod]
+        public List<LegacyPasswordUserInfo> GetLegacyPasswordUsers(int maxResults, string usernameFilter)
+        {
+            EnsureServerAdminAccess();
+
+            var service = new PasswordHardeningStatusService();
+            return service.GetLegacyUsers(maxResults, usernameFilter);
+        }
+
+		[WebMethod]
+		public AutoHardenEligibleUsersResultInfo AutoHardenEligibleUserPasswords()
+		{
+			EnsureServerAdminAccess();
+
+			var service = new PasswordHardeningStatusService();
+			return service.AutoHardenEligibleUsers();
+		}
 
         #region User Settings
         [WebMethod]

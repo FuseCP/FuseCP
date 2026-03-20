@@ -26,9 +26,17 @@ namespace FuseCP.Server
 	    public static string Password => ServerConfiguration.Security.Password;
 #else
 	    public static string Password => Configuration.Password;
+        public static bool AllowLegacyPasswordAuthentication => Configuration.AllowLegacyPasswordAuthentication;
 #endif
 
         static string cryptoKey = null;
         public static string CryptoKey => cryptoKey ?? (cryptoKey = Cryptor.SHA256($"{Password}{DateTime.Now}"));
+
+        public static void ApplyAuthenticationSettings(string password, bool allowLegacyPasswordAuthentication)
+        {
+            Configuration.Password = password ?? string.Empty;
+            Configuration.AllowLegacyPasswordAuthentication = allowLegacyPasswordAuthentication;
+            cryptoKey = null;
+        }
     }
 }

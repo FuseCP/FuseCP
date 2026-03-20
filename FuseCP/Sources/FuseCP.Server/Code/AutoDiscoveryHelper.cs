@@ -93,5 +93,19 @@ namespace FuseCP.Server.Code
 			(OSInfo.IsMac ? "Mac" :
 			(OSInfo.IsLinux ? "Linux" : "Unix"));
 		public static bool IsServerPasswordSHA256 => Cryptor.IsSHA256(Settings.Password);
+
+        public static ServerAuthenticationInfo GetServerAuthenticationInfo()
+        {
+            return new ServerAuthenticationInfo
+            {
+                Version = 2,
+                SupportsHmacAuthentication = true,
+                SupportsLegacyPasswordAuthentication = Settings.AllowLegacyPasswordAuthentication,
+                PasswordIsSha256 = IsServerPasswordSHA256,
+                AllowedClockSkewSeconds = ServerRequestAuthentication.DefaultAllowedClockSkewSeconds,
+                KeyId = ServerRequestAuthentication.BuildKeyId(Settings.Password),
+                ClusterId = string.Empty
+            };
+        }
 	}
 }
