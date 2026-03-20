@@ -7475,5 +7475,56 @@ BEGIN
     VALUES ('20260318133000_AddBruteForceProtection', '9.0.9');
     END IF;
 END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20260320130002_RemovedLegacyStorefrontArtifacts') THEN
+    DROP TABLE IF EXISTS public."ecTopLevelDomainsCycles" CASCADE;
+    DROP TABLE IF EXISTS public."ecTopLevelDomains" CASCADE;
+    DROP TABLE IF EXISTS public."ecTaxations" CASCADE;
+    DROP TABLE IF EXISTS public."ecSystemTriggers" CASCADE;
+    DROP TABLE IF EXISTS public."ecSvcsUsageLog" CASCADE;
+    DROP TABLE IF EXISTS public."ecSupportedPlugins" CASCADE;
+    DROP TABLE IF EXISTS public."ecSupportedPluginLog" CASCADE;
+    DROP TABLE IF EXISTS public."ecStoreSettings" CASCADE;
+    DROP TABLE IF EXISTS public."ecStoreDefaultSettings" CASCADE;
+    DROP TABLE IF EXISTS public."ecServiceHandlersResponses" CASCADE;
+    DROP TABLE IF EXISTS public."ecService" CASCADE;
+    DROP TABLE IF EXISTS public."ecProductTypeControls" CASCADE;
+    DROP TABLE IF EXISTS public."ecProductType" CASCADE;
+    DROP TABLE IF EXISTS public."ecProductsHighlights" CASCADE;
+    DROP TABLE IF EXISTS public."ecProductCategories" CASCADE;
+    DROP TABLE IF EXISTS public."ecProduct" CASCADE;
+    DROP TABLE IF EXISTS public."ecPluginsProperties" CASCADE;
+    DROP TABLE IF EXISTS public."ecPaymentProfiles" CASCADE;
+    DROP TABLE IF EXISTS public."ecPaymentMethods" CASCADE;
+    DROP TABLE IF EXISTS public."ecInvoiceItems" CASCADE;
+    DROP TABLE IF EXISTS public."ecInvoice" CASCADE;
+    DROP TABLE IF EXISTS public."ecHostingPlansBillingCycles" CASCADE;
+    DROP TABLE IF EXISTS public."ecHostingPlans" CASCADE;
+    DROP TABLE IF EXISTS public."ecHostingPackageSvcsCycles" CASCADE;
+    DROP TABLE IF EXISTS public."ecHostingPackageSvcs" CASCADE;
+    DROP TABLE IF EXISTS public."ecHostingAddonSvcsCycles" CASCADE;
+    DROP TABLE IF EXISTS public."ecHostingAddonSvcs" CASCADE;
+    DROP TABLE IF EXISTS public."ecHostingAddonsCycles" CASCADE;
+    DROP TABLE IF EXISTS public."ecHostingAddons" CASCADE;
+    DROP TABLE IF EXISTS public."ecDomainSvcsCycles" CASCADE;
+    DROP TABLE IF EXISTS public."ecDomainSvcs" CASCADE;
+    DROP TABLE IF EXISTS public."ecCustomersPayments" CASCADE;
+    DROP TABLE IF EXISTS public."ecContracts" CASCADE;
+    DROP TABLE IF EXISTS public."ecCategory" CASCADE;
+    DROP TABLE IF EXISTS public."ecBillingCycles" CASCADE;
+    DROP TABLE IF EXISTS public."ecAddonProducts" CASCADE;
+
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20260320130002_RemovedLegacyStorefrontArtifacts') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20260320130002_RemovedLegacyStorefrontArtifacts', '9.0.9');
+    END IF;
+END $EF$;
 COMMIT;
 

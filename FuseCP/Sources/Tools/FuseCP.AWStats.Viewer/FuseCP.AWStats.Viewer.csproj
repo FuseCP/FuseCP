@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <OutputPath>bin\</OutputPath>
         <LangVersion>13</LangVersion>
         <Nullable>disable</Nullable>
@@ -10,29 +10,12 @@
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="System.Web" />
-        <Reference Include="System.Web.ApplicationServices" />
-        <Reference Include="System.Web.DynamicData" />
-        <Reference Include="System.Web.Entity" />
-        <Reference Include="System.Web.Extensions" />
-        <Reference Include="System.Web.Services" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.0" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="Default.aspx" />
         <Compile Include="..\..\VersionInfo.cs" Link="VersionInfo.cs" />
-        <Compile Update="Default.aspx.cs">
-            <SubType>ASPXCodeBehind</SubType>
-            <DependentUpon>Default.aspx</DependentUpon>
-        </Compile>
-        <Compile Update="Default.aspx.designer.cs">
-            <DependentUpon>Default.aspx</DependentUpon>
-        </Compile>
-        <Content Include="Readme.htm" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="Web-v2.0.config" />
+        <Compile Remove="Default.aspx.cs" />
+        <Compile Remove="Default.aspx.designer.cs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\FuseCP.EnterpriseServer.Base\FuseCP.EnterpriseServer.Base.csproj" />

@@ -1,4 +1,4 @@
-// Copyright (C) 2025 FuseCP
+// Copyright (C) 2026 FuseCP
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,28 +13,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FuseCP.Ecommerce.EnterpriseServer
+#nullable disable
+
+namespace FuseCP.EnterpriseServer.Data.Migrations.Sqlite
 {
-	/// <summary>
-	/// PayPal Payment Provider keys set
-	/// </summary>
-	public class PayPalProKeys
+	[DbContext(typeof(SqliteDbContext))]
+	[Migration("20260320130000_RemovedLegacyStorefrontArtifacts")]
+	public class RemovedLegacyStorefrontArtifacts : Migration
 	{
-		/// <summary>2.20</summary>
-		public const string Version = "Version";
-		public const string Username = "Username";
-		public const string Password = "Password";
-		public const string Signature = "Signature";
-		
-		public const string ErrorPrefix = "PayPalPro.";
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.Sql(LegacyStorefrontCleanupSql.BuildSqliteDropTablesScript());
+		}
 
-		private PayPalProKeys()
+		protected override void Down(MigrationBuilder migrationBuilder)
 		{
 		}
 	}
 }
-

@@ -30,132 +30,62 @@ namespace FuseCP.Providers.SharePoint
 		#region Sites
 		public override void ExtendVirtualServer(SharePointSite site)
 		{
-			AppDomain domain = null;
-			try
-			{
-				domain = CreateAppDomain();
-				Sps30Remote wss = CreateSps30Remote(domain);
+			Sps30Remote wss = CreateSps30Remote();
 
-				// call method
-				wss.ExtendVirtualServer(site, ExclusiveNTLM);
-			}
-			finally
-			{
-				if (domain != null)
-					AppDomain.Unload(domain);
-			}
+			// call method
+			wss.ExtendVirtualServer(site, ExclusiveNTLM);
 		}
 
 		public override void UnextendVirtualServer(string url, bool deleteContent)
 		{
-			AppDomain domain = null;
-			try
-			{
-				domain = CreateAppDomain();
-				Sps30Remote wss = CreateSps30Remote(domain);
+			Sps30Remote wss = CreateSps30Remote();
 
-				// call method
-				wss.UnextendVirtualServer(url, deleteContent);
-			}
-			finally
-			{
-				if (domain != null)
-					AppDomain.Unload(domain);
-			}
+			// call method
+			wss.UnextendVirtualServer(url, deleteContent);
 		}
 		#endregion
 
 		#region Backup/Restore
 		public override string BackupVirtualServer(string url, string fileName, bool zipBackup)
 		{
-			AppDomain domain = null;
-			try
-			{
-				domain = CreateAppDomain();
-				Sps30Remote wss = CreateSps30Remote(domain);
+			Sps30Remote wss = CreateSps30Remote();
 
-				// call method
-				return wss.BackupVirtualServer(url, fileName, zipBackup);
-			}
-			finally
-			{
-				if (domain != null)
-					AppDomain.Unload(domain);
-			}
+			// call method
+			return wss.BackupVirtualServer(url, fileName, zipBackup);
 		}
 
 		public override void RestoreVirtualServer(string url, string fileName)
 		{
-			AppDomain domain = null;
-			try
-			{
-				domain = CreateAppDomain();
-				Sps30Remote wss = CreateSps30Remote(domain);
+			Sps30Remote wss = CreateSps30Remote();
 
-				// call method
-				wss.RestoreVirtualServer(url, fileName);
-			}
-			finally
-			{
-				if (domain != null)
-					AppDomain.Unload(domain);
-			}
+			// call method
+			wss.RestoreVirtualServer(url, fileName);
 		}
 		#endregion
 
 		#region Web Parts
 		public override string[] GetInstalledWebParts(string url)
 		{
-			AppDomain domain = null;
-			try
-			{
-				domain = CreateAppDomain();
-				Sps30Remote wss = CreateSps30Remote(domain);
+			Sps30Remote wss = CreateSps30Remote();
 
-				// call method
-				return wss.GetInstalledWebParts(url);
-			}
-			finally
-			{
-				if (domain != null)
-					AppDomain.Unload(domain);
-			}
+			// call method
+			return wss.GetInstalledWebParts(url);
 		}
 
 		public override void InstallWebPartsPackage(string url, string fileName)
 		{
-			AppDomain domain = null;
-			try
-			{
-				domain = CreateAppDomain();
-				Sps30Remote wss = CreateSps30Remote(domain);
+			Sps30Remote wss = CreateSps30Remote();
 
-				// call method
-				wss.InstallWebPartsPackage(url, fileName);
-			}
-			finally
-			{
-				if (domain != null)
-					AppDomain.Unload(domain);
-			}
+			// call method
+			wss.InstallWebPartsPackage(url, fileName);
 		}
 
 		public override void DeleteWebPartsPackage(string url, string packageName)
 		{
-			AppDomain domain = null;
-			try
-			{
-				domain = CreateAppDomain();
-				Sps30Remote wss = CreateSps30Remote(domain);
+			Sps30Remote wss = CreateSps30Remote();
 
-				// call method
-				wss.DeleteWebPartsPackage(url, packageName);
-			}
-			finally
-			{
-				if (domain != null)
-					AppDomain.Unload(domain);
-			}
+			// call method
+			wss.DeleteWebPartsPackage(url, packageName);
 		}
 		#endregion
 
@@ -179,21 +109,9 @@ namespace FuseCP.Providers.SharePoint
 			return (String.Compare(spVal, "installed", true) == 0);
 		}
 
-		private AppDomain CreateAppDomain()
+		private Sps30Remote CreateSps30Remote()
 		{
-			string binPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
-
-			AppDomainSetup info = new AppDomainSetup();
-			info.ApplicationBase = binPath;
-
-			return AppDomain.CreateDomain("WSS30", null, info);
-		}
-
-		private Sps30Remote CreateSps30Remote(AppDomain domain)
-		{
-			return (Sps30Remote)domain.CreateInstanceAndUnwrap(
-				typeof(Sps30Remote).Assembly.FullName,
-				typeof(Sps30Remote).FullName);
+			return new Sps30Remote();
 		}
 		#endregion
 

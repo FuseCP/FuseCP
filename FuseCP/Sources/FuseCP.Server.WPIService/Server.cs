@@ -15,9 +15,9 @@
 
 using System;
 using System.Diagnostics;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Threading;
 
 namespace FuseCP.Server.WPIService
@@ -34,12 +34,15 @@ namespace FuseCP.Server.WPIService
                 Console.WriteLine("The service is already running.");
                 return;
             }
-            TcpChannel ch = new TcpChannel(WPIServiceContract.PORT);
-            ChannelServices.RegisterChannel(ch, true);
-
             WPIService wpiService = new WPIService();
-            RemotingServices.Marshal(wpiService, "WPIServiceContract");
 
+            var listener = new HttpListener();
+            listener.Prefixes.Add($"http://127.0.0.1:{WPIServiceContract.PORT}/");
+            listener.Start();
+
+            var worker = new Thread(() => ProcessRequests(listener, wpiService));
+            worker.IsBackground = true;
+            worker.Start();
 
             Console.WriteLine("The service is running.");
                         
@@ -48,7 +51,77 @@ namespace FuseCP.Server.WPIService
                 Thread.Sleep(2000);
             }
 
+            listener.Stop();
+
             Console.WriteLine("The service is finished.");
+        }
+
+        private static void ProcessRequests(HttpListener listener, WPIService service)
+        {
+            while (listener.IsListening)
+            {
+                try
+                {
+                    var context = listener.GetContext();
+                    string path = context.Request.Url.AbsolutePath.Trim('/').ToLowerInvariant();
+                    string response = "";
+
+                    switch (path)
+                    {
+                        case "ping":
+                            response = service.Ping();
+                            break;
+                        case "initialize":
+                            service.Initialize(GetValues(context.Request, "feed"));
+                            response = "OK";
+                            break;
+                        case "begininstallation":
+                            service.BeginInstallation(GetValues(context.Request, "product"));
+                            response = "OK";
+                            break;
+                        case "status":
+                            response = service.GetStatus();
+                            break;
+                        case "logfiledirectory":
+                            response = service.GetLogFileDirectory() ?? "";
+                            break;
+                        default:
+                            context.Response.StatusCode = 404;
+                            response = "Not Found";
+                            break;
+                    }
+
+                    WriteResponse(context.Response, response);
+                }
+                catch (HttpListenerException)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
+            }
+        }
+
+        private static string[] GetValues(HttpListenerRequest request, string key)
+        {
+            string value = request.QueryString[key] ?? "";
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return Array.Empty<string>();
+            }
+
+            return value.Split(',', StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private static void WriteResponse(HttpListenerResponse response, string text)
+        {
+            byte[] payload = Encoding.UTF8.GetBytes(text ?? "");
+            response.ContentType = "text/plain; charset=utf-8";
+            response.ContentLength64 = payload.Length;
+            using var stream = response.OutputStream;
+            stream.Write(payload, 0, payload.Length);
         }
     }
 }

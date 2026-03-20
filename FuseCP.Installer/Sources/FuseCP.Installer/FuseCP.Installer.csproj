@@ -2,7 +2,7 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <ApplicationIcon>FuseCP.ico</ApplicationIcon>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <GenerateAssemblyInfo>False</GenerateAssemblyInfo>

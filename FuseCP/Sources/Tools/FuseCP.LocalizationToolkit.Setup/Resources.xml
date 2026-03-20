@@ -157,21 +157,6 @@
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecServiceUpgrade</Key>
-    <DefaultValue>Service Upgrade</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecCustomersInvoices</Key>
-    <DefaultValue>Customers Invoices</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecCustomersPayments</Key>
-    <DefaultValue>Customers Payments</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
     <Key>ModuleTitle.ecCustomersServices</Key>
     <DefaultValue>Customers Services</DefaultValue>
   </Resource>
@@ -257,51 +242,6 @@
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecAddDomainName</Key>
-    <DefaultValue>Add Domain Name</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecAddHostingAddon</Key>
-    <DefaultValue>Add Hosting Add-On</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecAddHostingPlan</Key>
-    <DefaultValue>Add Hosting Plan</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecDomainNames</Key>
-    <DefaultValue>Domain Names</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecEditDomainName</Key>
-    <DefaultValue>Edit Domain Name</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecEditHostingAddon</Key>
-    <DefaultValue>Edit Hosting Add-On</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecEditHostingPlan</Key>
-    <DefaultValue>Edit Hosting Plan</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecHostingAddons</Key>
-    <DefaultValue>Hosting Add-Ons</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecHostingPlans</Key>
-    <DefaultValue>Hosting Plans</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
     <Key>ModuleTitle.ecAddBillingCycle</Key>
     <DefaultValue>Add Billing Cycle</DefaultValue>
   </Resource>
@@ -332,16 +272,6 @@
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ec2CheckoutMethod</Key>
-    <DefaultValue>2Checkout Method Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecOfflineMethod</Key>
-    <DefaultValue>Offline Payment Method Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
     <Key>ModuleTitle.ecAddTax</Key>
     <DefaultValue>Add Tax</DefaultValue>
   </Resource>
@@ -362,21 +292,6 @@
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecNotifyNewInvoice</Key>
-    <DefaultValue>New Invoice Notification</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecNotifyPaymentRcvd</Key>
-    <DefaultValue>Payment Received Notification</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecNotifySvcActivated</Key>
-    <DefaultValue>Service Activated Notification</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
     <Key>ModuleTitle.ecNotifySvcSuspended</Key>
     <DefaultValue>Service Suspended Notification</DefaultValue>
   </Resource>
@@ -389,21 +304,6 @@
     <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
     <Key>ModuleTitle.ecProvSettings</Key>
     <DefaultValue>Provisioning Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecDirectiRegistrar</Key>
-    <DefaultValue>Directi Registrar Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecEnomRegistrar</Key>
-    <DefaultValue>Enom Registrar Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
-    <Key>ModuleTitle.ecOfflineRegistrar</Key>
-    <DefaultValue>Offline Registrar Settings</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_Modules.ascx.resx</File>
@@ -552,16 +452,6 @@
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_Pages.ascx.resx</File>
-    <Key>PageName.ecHostingAddons</Key>
-    <DefaultValue>Hosting Add-Ons</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Pages.ascx.resx</File>
-    <Key>PageTitle.ecHostingAddons</Key>
-    <DefaultValue>Hosting Add-Ons</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Pages.ascx.resx</File>
     <Key>PageName.ecCategories</Key>
     <DefaultValue>Categories</DefaultValue>
   </Resource>
@@ -702,26 +592,6 @@
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_Pages.ascx.resx</File>
-    <Key>PageName.ecDomainNames</Key>
-    <DefaultValue>Domain Names</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Pages.ascx.resx</File>
-    <Key>PageName.ecHostingPlans</Key>
-    <DefaultValue>Hosting Plans</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Pages.ascx.resx</File>
-    <Key>PageTitle.ecDomainNames</Key>
-    <DefaultValue>Domain Names</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Pages.ascx.resx</File>
-    <Key>PageTitle.ecHostingPlans</Key>
-    <DefaultValue>Hosting Plans</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_Pages.ascx.resx</File>
     <Key>PageName.ecBillingCycles</Key>
     <DefaultValue>Billing Cycles</DefaultValue>
   </Resource>
@@ -852,16 +722,6 @@
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.2Checkout.3</Key>
-    <DefaultValue>The credit card has been rejected by payment provider</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.2Checkout.5</Key>
-    <DefaultValue>Payment provider request is corrupted or missed some fields please contact with your reseller</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
     <Key>Error.ACCOUNT_LOCKED</Key>
     <DefaultValue>Login failed due to the locked user account. Please contact your administrator or hosting provider.</DefaultValue>
   </Resource>
@@ -909,321 +769,6 @@
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
     <Key>Error.ADD_TLD_EXTENSION</Key>
     <DefaultValue>Couldn't add TLD extension</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.22</Key>
-    <DefaultValue>This transaction has been declined.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.227</Key>
-    <DefaultValue>The transaction resulted in an AVS mismatch. The address provided does not match billing address of cardholder.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.23</Key>
-    <DefaultValue>This transaction has been declined.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.24</Key>
-    <DefaultValue>This transaction has been declined.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.241</Key>
-    <DefaultValue>This transaction has been declined. Only merchants set up for the FraudScreen.Net service would receive this decline. This code will be returned if a given transaction�s fraud score is higher than the threshold set by the merchant.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.244</Key>
-    <DefaultValue>This transaction has been declined. The merchant would receive this error if the Card Code filter has been set in the Merchant Interface and the transaction received an error code from the processor that matched the rejection criteria set by the merchant.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.245</Key>
-    <DefaultValue>This transaction has been declined. This error would be returned if the transaction received a code from the processor that matched the rejection criteria set by the merchant for both the AVS and Card Code filters.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.25</Key>
-    <DefaultValue>This transaction has been declined.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.251</Key>
-    <DefaultValue>This transaction has been declined.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.265</Key>
-    <DefaultValue>This transaction has been declined. The transaction was declined because the merchant configured their account through the Merchant Interface to reject transactions with certain values for a Card Code mismatch.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.311</Key>
-    <DefaultValue>A duplicate transaction has been submitted.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.313</Key>
-    <DefaultValue>The merchant API login ID is invalid or the account is inactive.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.315</Key>
-    <DefaultValue>The transaction ID is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.316</Key>
-    <DefaultValue>The transaction was not found. The transaction ID sent in was properly formatted but the gateway had no record of the transaction.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.317</Key>
-    <DefaultValue>The merchant does not accept this type of credit card.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.3171</Key>
-    <DefaultValue>The merchant does not accept this type of credit card. The merchant was not configured to accept the credit card submitted in the transaction.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.318</Key>
-    <DefaultValue>ACH transactions are not accepted by this merchant. The merchant does not accept electronic checks.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.319</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.320</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.321</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.322</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.323</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.324</Key>
-    <DefaultValue>The Nova Bank Number or Terminal ID is incorrect. Call Merchant Service Provider.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.325</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.326</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.328</Key>
-    <DefaultValue>The merchant does not accept this type of credit card. The Merchant ID at the processor was not configured to accept this card type.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.329</Key>
-    <DefaultValue>The PaymentTech identification numbers are incorrect. Call Merchant Service Provider.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.330</Key>
-    <DefaultValue>The configuration with the processor is invalid. Call Merchant Service Provider.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.331</Key>
-    <DefaultValue>The FDC Merchant ID or Terminal ID is incorrect. Call Merchant Service Provider. The merchant was incorrectly set up at the processor.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.332</Key>
-    <DefaultValue>This reason code is reserved or not applicable to this API.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.334</Key>
-    <DefaultValue>The VITAL identification numbers are incorrect. Call Merchant Service Provider. The merchant was incorrectly set up at the processor.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.335</Key>
-    <DefaultValue>An error occurred during processing. Call Merchant Service Provider. The merchant was incorrectly set up at the processor.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.336</Key>
-    <DefaultValue>The authorization was approved, but settlement failed.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.337</Key>
-    <DefaultValue>The credit card number is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.338</Key>
-    <DefaultValue>The Global Payment System identification numbers are incorrect. Call Merchant Service Provider. The merchant was incorrectly set up at the processor.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.339</Key>
-    <DefaultValue>The supplied currency code is either invalid, not supported, not allowed for this merchant or doesn�t have an exchange rate.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.340</Key>
-    <DefaultValue>This transaction must be encrypted.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.342</Key>
-    <DefaultValue>There is missing or invalid information in a required field. This is applicable only to merchants processing through the Wells Fargo SecureSource product who have requirements for transaction submission that are different from merchants not processing through Wells Fargo.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.343</Key>
-    <DefaultValue>The merchant was incorrectly set up at the processor. Call your Merchant Service Provider. The merchant was incorrectly set up at the processor.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.346</Key>
-    <DefaultValue>Your session has expired or does not exist. You must log in to continue working.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.347</Key>
-    <DefaultValue>The amount requested for settlement may not be greater than the original amount authorized. This occurs if the merchant tries to capture funds greater than the amount of the original authorization-only transaction.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.348</Key>
-    <DefaultValue>This processor does not accept partial reversals. The merchant attempted to settle for less than the originally authorized amount.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.349</Key>
-    <DefaultValue>The transaction amount submitted was greater than the maximum amount allowed.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.350</Key>
-    <DefaultValue>This transaction is awaiting settlement and cannot be refunded. Credits or refunds may only be performed against settled ransactions. The transaction against which the credit/refund was submitted has not been settled, so a credit cannot be issued.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.351</Key>
-    <DefaultValue>The sum of all credits against this transaction is greater than the original transaction amount.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.352</Key>
-    <DefaultValue>The transaction was authorized, but the client could not be notified; the transaction will not be settled.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.353</Key>
-    <DefaultValue>The transaction type was invalid for ACH transactions.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.354</Key>
-    <DefaultValue>The referenced transaction does not meet the criteria for issuing a credit.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.355</Key>
-    <DefaultValue>The sum of credits against the referenced transaction would exceed the original debit amount. The transaction is rejected if the sum of this credit and prior credits exceeds the original debit amount.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.356</Key>
-    <DefaultValue>This merchant accepts ACH transactions only; no credit card transactions are accepted. The merchant processes eCheck transactions only and does not accept credit cards.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.357</Key>
-    <DefaultValue>An error occurred in processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.358</Key>
-    <DefaultValue>An error occurred in processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.359</Key>
-    <DefaultValue>An error occurred in processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.36</Key>
-    <DefaultValue>The credit card number is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.360</Key>
-    <DefaultValue>An error occurred in processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.361</Key>
-    <DefaultValue>An error occurred in processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.362</Key>
-    <DefaultValue>An error occurred in processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.363</Key>
-    <DefaultValue>An error occurred in processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.364</Key>
-    <DefaultValue>The referenced transaction was not approved. This error is applicable to Wells Fargo SecureSource merchants only. Credits or refunds cannot be issued against transactions that were not authorized.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.366</Key>
-    <DefaultValue>This transaction cannot be accepted for processing. The transaction did not meet gateway security guidelines.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.37</Key>
-    <DefaultValue>The credit card expiration date is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.38</Key>
-    <DefaultValue>The credit card has expired.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.AuthorizeNet.INVALID_SIGN</Key>
-    <DefaultValue>Sorry we unable to complete your transaction. Please contact merchant for more information.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
@@ -1373,166 +918,6 @@
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
     <Key>Error.EDIT_PRODUCT_TYPE</Key>
-    <DefaultValue>Couldn't save product type changes</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.EDIT_TLD_EXTENSION</Key>
-    <DefaultValue>Couldn't save TLD extension changes</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.EMPTY_STORE_OWNER</Key>
-    <DefaultValue>Can't find account with the specified username and password.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.FAILED_CHECK_DOMAIN</Key>
-    <DefaultValue>Sorry we are expirenced some technical errors and could not process your request. Please try later or contact your administrator/reseller.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1007</Key>
-    <DefaultValue>The credit card expiration date is invalid. The format of the date submitted was incorrect.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1008</Key>
-    <DefaultValue>The credit card has expired.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1009</Key>
-    <DefaultValue>The ABA code is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1010</Key>
-    <DefaultValue>The account number is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1011</Key>
-    <DefaultValue>A duplicate transaction has been submitted.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1012</Key>
-    <DefaultValue>An authorization code is required but not present.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1013</Key>
-    <DefaultValue>The merchant API login ID is invalid or the account is inactive.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1014</Key>
-    <DefaultValue>The Referrer or Relay Response URL is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1015</Key>
-    <DefaultValue>The transaction ID is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1016</Key>
-    <DefaultValue>The transaction was not found.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1017</Key>
-    <DefaultValue>The merchant does not accept this type of credit card.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1018</Key>
-    <DefaultValue>ACH transactions are not accepted by this merchant.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1019</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1020</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1021</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1022</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1023</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1024</Key>
-    <DefaultValue>The Nova Bank Number or Terminal ID is incorrect. Call Merchant Service Provider.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.1025</Key>
-    <DefaultValue>An error occurred during processing. Please try again in 5 minutes.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.Authnet.2</Key>
-    <DefaultValue>This transaction has been declined.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.Authnet.3</Key>
-    <DefaultValue>This transaction has been declined.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.Authnet.4</Key>
-    <DefaultValue>This transaction has been declined. The code returned from the processor indicating that the card used needs to be picked up.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.Authnet.5</Key>
-    <DefaultValue>A valid amount is required. The value submitted in the amount field did not pass validation for a number.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Gateway.Authnet.6</Key>
-    <DefaultValue>The credit card number is invalid.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.General.Unspecified</Key>
-    <DefaultValue>The unspecified error has been occured. Please contact with your reseller and sorry for possible inconvenience.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.GET_CUSTOMER_CONTRACT</Key>
-    <DefaultValue>Could not load customer account contract.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.HOSTING_ADDON_DELETE</Key>
-    <DefaultValue>Could not delete hosting addon</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.HOSTING_ADDON_SAVE</Key>
-    <DefaultValue>Could not save hosting addon</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.HOSTING_PLAN_SAVE</Key>
     <DefaultValue>Could not save hosting plan</DefaultValue>
   </Resource>
   <Resource>
@@ -1583,731 +968,312 @@
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
     <Key>Error.LOAD_PLUGIN_SETTINGS</Key>
-    <DefaultValue>Error reading plug-in information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_PLUGIN_SETTINGS_CONTROL</Key>
-    <DefaultValue>Couldn't load plugin settings control</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_PRODUCT_TYPE_CONTROLS</Key>
-    <DefaultValue>Couldn't load product type controls</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_PRODUCT_TYPE_DEFINITION</Key>
-    <DefaultValue>Couldn't load product type definition</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_SPACE_SETTINGS</Key>
-    <DefaultValue>Couldn't load space settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_TERMS_AND_CONDS</Key>
-    <DefaultValue>Couldn't load terms and conditions</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_TERMS_CONDS</Key>
-    <DefaultValue>Could not load terms and conditions</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_TLD_EXTENSION</Key>
-    <DefaultValue>Couldn't load TLD extension data</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_TLD_REGISTRARS</Key>
-    <DefaultValue>Couldn't load list of available domain registrars</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOAD_WELCOME_MSG</Key>
-    <DefaultValue>Could not load welcome message due to the technical problems on server-side</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.Login.WrongLogin</Key>
-    <DefaultValue>Specified user account does not exist or incorrect password</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOGIN_FAILURE</Key>
-    <DefaultValue>Login failed due to the authentication failure. Please contact your administrator or hosting provider.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.LOGIN_NOT_APPROVED</Key>
-    <DefaultValue>Login failed due to the incomplete account approval procedure. Please contact your administrator or hosting provider.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.NotificationTemplate.Update</Key>
-    <DefaultValue>Couldn't update notification template</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10500</Key>
-    <DefaultValue>This transaction cannot be processed due to an invalid merchant configuration.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10501</Key>
-    <DefaultValue>This transaction cannot be processed due to an invalid merchant configuration.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10502</Key>
-    <DefaultValue>The credit card used is expired. This transaction cannot be processed. Please use a valid credit card.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10504</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a valid Credit Card Verification Number.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10505</Key>
-    <DefaultValue>This transaction cannot be processed. The transaction was refused because the AVS response returned the value of N, and the merchant account is not able to accept such transactions.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10507</Key>
-    <DefaultValue>Sorry we've experienced some technical problems and your transaction cannot be processed. Please try later.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10508</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a valid credit card expiration date.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10509</Key>
-    <DefaultValue>This transaction cannot be processed. Couldn't submit an IP address of the buyer.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10510</Key>
-    <DefaultValue>The credit card type is not supported. Try another card type.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10511</Key>
-    <DefaultValue>This transaction cannot be processed. Please contact with your merchant.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10512</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a first name.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10513</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a last name.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10519</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a credit card.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10520</Key>
-    <DefaultValue>This transaction cannot be processed. It seems some technical problems with your invoice. Please try later or contact with your merchant.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10521</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a valid credit card.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10523</Key>
-    <DefaultValue>This transaction cannot be processed. Sorry our payment provider experienced some technical problems. Please try later</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10525</Key>
-    <DefaultValue>This transaction cannot be processed. The amount to be charged is zero. Please contact with your merchant.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10526</Key>
-    <DefaultValue>This transaction cannot be processed. The currency is not supported at this time</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10527</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a valid credit card number and type. The credit card entered is invalid
-</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10534</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a valid credit card number and type. The credit card entered is currently restricted by payment provider. Contact merchant for more information
-</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10535</Key>
-    <DefaultValue>This transaction cannot be processed. Please enter a valid credit card number and type. The credit card entered is invalid</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10536</Key>
-    <DefaultValue>This transaction cannot be processed. The merchant entered an invoice ID that is already associated with a transaction by the same merchant.  By default, the invoice ID must be unique for all transactions. Please contact merchant for more information</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10537</Key>
-    <DefaultValue>This transaction cannot be processed. The transaction was declined by the country filter managed by the merchant. To accept this transaction, please contact merchant</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10538</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by the maximum amount filter managed by the merchant. To accept this transaction, please contact merchant</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10539</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by payment provider. Contact merchant for more information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10540</Key>
     <DefaultValue>The transaction cannot be processed due to an invalid address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10541</Key>
     <DefaultValue>This transaction cannot be processed. Please enter a valid credit card number and type. The credit card entered is currently restricted by payment provider. Contact merchant for more information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10542</Key>
     <DefaultValue>This transaction cannot be processed. Please enter a valid email address. The email address provided by the buyer is in an invalid format</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10544</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by payment provider. Contact merchant for more information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10545</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by payment provider because of possible fraudulent activity. Contact merchant for more information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10546</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by payment provider because of possible fraudulent activity on the IP address.  Contact merchant for more information </DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10547</Key>
     <DefaultValue>This transaction cannot be processed. Sorry our payment provide have experienced some technical problems. Please try later</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10548</Key>
     <DefaultValue>This transaction cannot be processed. The merchant�s account is not able to process transactions. Please contact merchant</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10549</Key>
     <DefaultValue>This transaction cannot be processed. The merchant�s account is not able to process transactions. Please contact merchant</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10550</Key>
     <DefaultValue>This transaction cannot be processed. Access to Direct Payment was disabled for merchant account. Contact merchant for more information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10552</Key>
     <DefaultValue>This transaction cannot be processed. The merchant account attempting the transaction does not have a confirmed email address with payment provider</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10553</Key>
     <DefaultValue>This transaction cannot be processed. The merchant attempted a transaction where the amount exceeded the upper limit for that merchant </DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10554</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined because of a merchant risk filter for AVS. Specifically, the merchant has set to decline transaction when the AVS returned a no match. Please contact merchant </DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10555</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined because of a merchant risk filter for AVS. Specifically, the merchant has set to decline transaction when the AVS returned a partial match</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10556</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined because of a merchant risk filter for AVS. Specifically, the merchant has set to decline transaction when the AVS was unsupported</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10701</Key>
     <DefaultValue>There's an error with this transaction. Please enter a valid billing address.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10702</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid Address in the billing address.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10703</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid Address in the billing address.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10704</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid city in the billing address.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10705</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid state in the billing address.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10706</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your five digit postal code in the billing address.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10707</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid country in the billing address.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10708</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a complete billing address.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10709</Key>
     <DefaultValue>There�s an error with this transaction. Please enter an primary address in the billing address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10710</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a city in the billing address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10711</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10712</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your five digit postal code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10713</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a country</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10714</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid primary address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10715</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10716</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your five digit postal code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10717</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your five digit postal code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10718</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid city and state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10719</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid shipping address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10720</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid primary address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10721</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid secondary address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10722</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid city</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10723</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10724</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your five digit postal code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10725</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid country</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10726</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a complete shipping address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10727</Key>
     <DefaultValue>There�s an error with this transaction. Please enter an primary address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10728</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a city</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10729</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10730</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your five digit postal code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10731</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a country</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10732</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid primary address</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10733</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10734</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your five digit postal code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10735</Key>
     <DefaultValue>There�s an error with this transaction. Please enter your five digit postal code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10736</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid city and state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10744</Key>
     <DefaultValue>This transaction cannot be processed. Please enter a valid country code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10745</Key>
     <DefaultValue>This transaction cannot be processed. Please enter a valid country code</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10746</Key>
     <DefaultValue>This transaction cannot be processed. Please use a valid country</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10747</Key>
     <DefaultValue>This transaction cannot be processed. The merchant entered an IP address that was in an invalid format. The IP address must be in a format such as 123.456.123.456 10748 Invalid Data This transaction cannot be processed without a Credit Card Verification number</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10750</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10751</Key>
     <DefaultValue>There�s an error with this transaction. Please enter a valid state</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10752</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by the issuing bank, not payment provider. Please contact merchant
 </DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10754</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by payment provider. Contact merchant for more information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10755</Key>
     <DefaultValue>This transaction cannot be processed due to an unsupported currency. The currency code entered by the merchant is not supported</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10756</Key>
     <DefaultValue>The transaction cannot be processed. The country and billing address associated with this credit card do not match</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10758</Key>
     <DefaultValue>There�s been an error due to invalid API username and/or password</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10759</Key>
     <DefaultValue>This transaction cannot be processed. Please enter a valid credit card number and type.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10760</Key>
     <DefaultValue>This transaction cannot be processed. The country listed for your business address is not currently supported</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10761</Key>
     <DefaultValue>This transaction cannot be processed. Please check the status of your first transaction before placing  another order</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10762</Key>
     <DefaultValue>This transaction cannot be processed. The CVV provide is invalid. The CVV is between 3-4 digits long</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.10763</Key>
     <DefaultValue>This transaction cannot be processed. Sorry our payment provider has experienced some technical problems. Please try later</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.15001</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was rejected by payment provider because of excessive failures over a short period of time for this credit card
 </DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.15002</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by payment provider. Contact merchant for more information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.15003</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined because the merchant does not have a valid commercial entity agreement on file with payment provider. Contact merchant for more information</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.15004</Key>
     <DefaultValue>This transaction cannot be processed. Please enter a valid Credit Card Verification Number</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.15005</Key>
     <DefaultValue>This transaction cannot be processed. The transaction was declined by the issuing bank, not payment provider. Please try later</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.15006</Key>
     <DefaultValue>This transaction cannot be processed. Please enter a valid credit card number and type. The  transaction was declined by the issuing bank, not payment provider</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalPro.15007</Key>
     <DefaultValue>This transaction cannot be processed. Please use a valid credit card. The transaction was declined by the issuing bank because of an expired credit card</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10001</Key>
-    <DefaultValue>Sorry our payment provider has experienced some technical problems. Please try later</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10004</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional  error messages for details. Transaction refused because of an invalid argument. See additional error messages for details.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10007</Key>
-    <DefaultValue>Permission denied You do not have permissions to make this API call</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10102</Key>
-    <DefaultValue>PaymentAction of Order Temporarily Unavailable PaymentAction of Order is temporarily unavailable. Please try later or use other PaymentAction.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10402</Key>
-    <DefaultValue>Authorization only is not allowed for merchant. This merchant account  is not permitted to set PaymentAction to Authorization. Please contact Customer Service.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10404</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. ReturnURL is missing.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10405</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. CancelURL is missing.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10407</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. Invalid buyer email address (BuyerEmail).</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10409</Key>
-    <DefaultValue>You�re not authorized to access this info. Express Checkout token was issued for a merchant account other than yours.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10410</Key>
-    <DefaultValue>Invalid token</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10411</Key>
-    <DefaultValue>This Express Checkout session has expired.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10412</Key>
-    <DefaultValue>Duplicate invoice Payment has already been made for this InvoiceID.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10415</Key>
-    <DefaultValue>Transaction refused because of an invalid argument.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10425</Key>
-    <DefaultValue>Express Checkout has been disabled for this merchant.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10432</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. Invoice ID value exceeds maximum allowable length.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10433</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. Value of OrderDescription element has been truncated.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10434</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. Value of Custom element has been truncated.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10436</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. PageStyle value exceeds maximum allowable length.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10437</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional  error messages for details. cpp-header-image value exceeds maximum allowable length.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10438</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. cpp-header-image value exceeds maximum allowable length.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10439</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. cpp-header-image value exceeds maximum allowable length.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10440</Key>
-    <DefaultValue>Transaction refused because of an invalid argument. See additional error messages for details. cpp-header-image value exceeds maximum allowable length.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10537</Key>
-    <DefaultValue>Risk Control Country Filter Failure The transaction was refused because the country was prohibited as a result of your Country Monitor Risk Control Settings.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10538</Key>
-    <DefaultValue>Risk Control Max Amount Failure The transaction was refused because the maximum amount was excceeded as a result of your Maximum Amount Risk Control Settings.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10539</Key>
-    <DefaultValue>Payment declined by your Risk Controls settings: PayPal Risk Model. Payment declined by your Risk Controls settings: PayPal Risk Model.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10725</Key>
-    <DefaultValue>Shipping Address Country Error There was an error in the Shipping Address Country field</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10727</Key>
-    <DefaultValue>Shipping Address1 Empty The field Shipping Address1 is required</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10728</Key>
-    <DefaultValue>Shipping Address City Empty The field Shipping Address City is required</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10729</Key>
-    <DefaultValue>Shipping Address State Empty The field Shipping Address State is required</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10730</Key>
-    <DefaultValue>Shipping Address Postal Code Empty The field Shipping Address Postal Code is required</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10731</Key>
-    <DefaultValue>Shipping Address Country Empty The field Shipping Address Country is required</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
-    <Key>Error.PayPalStd.10736</Key>
-    <DefaultValue>Shipping Address Invalid City State Postal Code A match of the Shipping Address City, State, and Postal Code failed.</DefaultValue>
   </Resource>
   <Resource>
     <File>App_GlobalResources\Ecommerce_SharedResources.ascx.resx</File>
@@ -13141,131 +12107,14 @@
     <DefaultValue>WHOIS Enabled:</DefaultValue>
   </Resource>
   <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>btnCancel.Text</Key>
-    <DefaultValue>Cancel</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>btnDisable.Text</Key>
-    <DefaultValue>Disable</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>btnSaveSettings.Text</Key>
-    <DefaultValue>Save Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lblFirsttimeUserNote.InnerHtml</Key>
-    <DefaultValue>&lt;div class="Normal" style="text-align: justify;"&gt;
-Before proceed to Directi domain registrar configuration in control panel, please follow these guidelines to deploy ResellerClub .NET API Kit on the server where &lt;strong&gt;Enterprise Server&lt;/strong&gt; component resides. Unless you do so control 
-panel will not be able to provision domain names at the registrar's side as well as the registrar integration bridge is in non-operational state.
-&lt;br /&gt;&lt;br /&gt;
-Please, make sure you followed carefully all the steps outlined below.&lt;/div&gt;
-&lt;ul class="Normal"&gt;
-	&lt;li&gt;Click or open the following link in the browser &lt;a href="http://manage.resellerclub.com/kb/servlet/KBServlet/faq589.html" target="_blank"&gt;.NET API Kit and Integration Guide&lt;/a&gt;;&lt;/li&gt;
-	&lt;li&gt;Download NET_Core_Setup_v*_**.zip and NET_Domains_Setup_v*_**.zip packages;&lt;/li&gt;
-	&lt;li&gt;Run an installation process of the distributives downloaded with administrative privileges;&lt;/li&gt;
-	&lt;li&gt;After installations are finished, please proceeed to Directi domain registrar configuration;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="Normal" style="text-align: justify;"&gt;We are providing this information for your convenience, however, we are unable to provide support 
-for your installation of ResellerClub .NET API Kit.&lt;/div&gt;</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lblFtuNote.Text</Key>
-    <DefaultValue>Information for first-time users of FuseCP Control Panel</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lblRegistrarConfig.Text</Key>
-    <DefaultValue>Registrar Configuration</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lclLiveMode.Text</Key>
-    <DefaultValue>Live Mode:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lclParentId.Text</Key>
-    <DefaultValue>Parent ID:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lclSecureChannel.Text</Key>
-    <DefaultValue>Secure Channel:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lclServiceAccount.Text</Key>
-    <DefaultValue>Username:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lclServicePassword.Text</Key>
-    <DefaultValue>Password:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarDirecti.ascx.resx</File>
-    <Key>lclServiceURL.Text</Key>
-    <DefaultValue>Service URL:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarEnom.ascx.resx</File>
-    <Key>btnCancel.Text</Key>
-    <DefaultValue>Cancel</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarEnom.ascx.resx</File>
-    <Key>btnDisable.Text</Key>
-    <DefaultValue>Disable</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarEnom.ascx.resx</File>
-    <Key>btnSaveSettings.Text</Key>
-    <DefaultValue>Save Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarEnom.ascx.resx</File>
-    <Key>lclLiveMode.Text</Key>
-    <DefaultValue>Live Mode:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarEnom.ascx.resx</File>
-    <Key>lclServiceAccount.Text</Key>
-    <DefaultValue>Username:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\DomainRegistrarEnom.ascx.resx</File>
-    <Key>lclServicePassword.Text</Key>
-    <DefaultValue>Password:</DefaultValue>
-  </Resource>
-  <Resource>
     <File>DesktopModules\Ecommerce\App_LocalResources\EcommerceSystemSettings.ascx.resx</File>
     <Key>EmailNotifyCollapse.Text</Key>
     <DefaultValue>E-mail Notifications</DefaultValue>
   </Resource>
   <Resource>
     <File>DesktopModules\Ecommerce\App_LocalResources\EcommerceSystemSettings.ascx.resx</File>
-    <Key>Link2Checkout.Text</Key>
-    <DefaultValue>2Checkout Payments</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\EcommerceSystemSettings.ascx.resx</File>
     <Key>LinkCreditCard.Text</Key>
     <DefaultValue>Credit Card Payments</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\EcommerceSystemSettings.ascx.resx</File>
-    <Key>LinkDirectiRegistrar.Text</Key>
-    <DefaultValue>Directi Registrar</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\EcommerceSystemSettings.ascx.resx</File>
-    <Key>LinkEnomRegistrar.Text</Key>
-    <DefaultValue>Enom Registrar</DefaultValue>
   </Resource>
   <Resource>
     <File>DesktopModules\Ecommerce\App_LocalResources\EcommerceSystemSettings.ascx.resx</File>
@@ -13901,26 +12750,6 @@ for your installation of ResellerClub .NET API Kit.&lt;/div&gt;</DefaultValue>
     <File>DesktopModules\Ecommerce\App_LocalResources\OrderComplete.ascx.resx</File>
     <Key>locFinalizeMessage.Text</Key>
     <DefaultValue>Thank you for your order! Your transaction is in progress and once it is processed, corresponding receipt for your purchase will be emailed to you.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\PaymentMethod2Checkout.ascx.resx</File>
-    <Key>btnCancel.Text</Key>
-    <DefaultValue>Cancel</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\PaymentMethod2Checkout.ascx.resx</File>
-    <Key>btnDisable.Text</Key>
-    <DefaultValue>Disable</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\PaymentMethod2Checkout.ascx.resx</File>
-    <Key>btnSaveSettings.Text</Key>
-    <DefaultValue>Save Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\App_LocalResources\PaymentMethod2Checkout.ascx.resx</File>
-    <Key>lclDisplayName.Text</Key>
-    <DefaultValue>Display Name:</DefaultValue>
   </Resource>
   <Resource>
     <File>DesktopModules\Ecommerce\App_LocalResources\PaymentMethodCreditCard.ascx.resx</File>
@@ -15113,157 +13942,18 @@ for your installation of ResellerClub .NET API Kit.&lt;/div&gt;</DefaultValue>
     <DefaultValue>Username:</DefaultValue>
   </Resource>
   <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>btnCancel.Text</Key>
-    <DefaultValue>Cancel</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>btnSaveSettings.Text</Key>
-    <DefaultValue>Save Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lcl2CO_Currency.Text</Key>
-    <DefaultValue>2CO Currency:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lcl2COAccount.Text</Key>
-    <DefaultValue>2CO Account:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lcl2COSettings.Text</Key>
-    <DefaultValue>2CheckOut Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lclCreditCard.Text</Key>
-    <DefaultValue>Credit Card</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lclFixedCart.Text</Key>
-    <DefaultValue>Fixed 2CO Cart:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
     <Key>lclLiveMode.Text</Key>
     <DefaultValue>Live Mode:</DefaultValue>
   </Resource>
   <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lclPaymentRoutine.Text</Key>
-    <DefaultValue>Payment Routine:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lclPaymentRoutineNotes.Text</Key>
-    <DefaultValue>Please note that 2CheckOut payment gateway requires to set both Approved and Pending URL settings to integrate with third-party billing systems. You can use URL specified below for both Approved and Pending URL settings. These settings can be found in the "Look and Feel" settings page on 2CheckOut site. Warning: 2CheckOut passback doesn't work if url below contains port number.</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lclPayMethod.Text</Key>
-    <DefaultValue>Pay Method:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lclReturnUrl.Text</Key>
-    <DefaultValue>Return URL:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\2Checkout_Settings.ascx.resx</File>
-    <Key>lclSecretWord.Text</Key>
-    <DefaultValue>Secret Word:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>btnCancel.Text</Key>
-    <DefaultValue>Cancel</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>btnSaveSettings.Text</Key>
-    <DefaultValue>Save Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclAuthNetSettings.Text</Key>
-    <DefaultValue>Authorize.Net Settings</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclCreditCard.Text</Key>
-    <DefaultValue>Credit Card</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclDemoAccount.Text</Key>
-    <DefaultValue>Demo Account:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclLiveMode.Text</Key>
-    <DefaultValue>Live Mode:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclMD5HashKey.Text</Key>
-    <DefaultValue>MD5 Hash Value:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclMerchantEmail.Text</Key>
-    <DefaultValue>Merchant Email:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclPayMethod.Text</Key>
-    <DefaultValue>Pay Method:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclSendConfirmation.Text</Key>
-    <DefaultValue>Send Confirmation:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclServiceLogin.Text</Key>
-    <DefaultValue>Username:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\AuthorizeNet_Settings.ascx.resx</File>
-    <Key>lclTransKey.Text</Key>
-    <DefaultValue>Transaction Key:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\OfflinePayment_Settings.ascx.resx</File>
-    <Key>lclAutoApprove.Text</Key>
-    <DefaultValue>Auto Approve Payments:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\OfflinePayment_Settings.ascx.resx</File>
-    <Key>lclTranNumberFormat.Text</Key>
-    <DefaultValue>Transaction Number Format:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\PayPalPro_Settings.ascx.resx</File>
-    <Key>lclLiveMode.Text</Key>
-    <DefaultValue>Live Mode:</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\PayPalPro_Settings.ascx.resx</File>
     <Key>lclServiceAccount.Text</Key>
     <DefaultValue>Username:</DefaultValue>
   </Resource>
   <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\PayPalPro_Settings.ascx.resx</File>
     <Key>lclServicePassword.Text</Key>
     <DefaultValue>Password:</DefaultValue>
   </Resource>
   <Resource>
-    <File>DesktopModules\Ecommerce\SupportedPlugins\App_LocalResources\PayPalPro_Settings.ascx.resx</File>
     <Key>lclServiceSignature.Text</Key>
     <DefaultValue>Signature:</DefaultValue>
   </Resource>
@@ -15391,11 +14081,6 @@ for your installation of ResellerClub .NET API Kit.&lt;/div&gt;</DefaultValue>
     <File>DesktopModules\Ecommerce\UserControls\App_LocalResources\ChoosePaymentMethod.ascx.resx</File>
     <Key>lclChooseMethod.Text</Key>
     <DefaultValue>Choose Payment Method</DefaultValue>
-  </Resource>
-  <Resource>
-    <File>DesktopModules\Ecommerce\UserControls\App_LocalResources\ChoosePaymentMethod.ascx.resx</File>
-    <Key>rb2Checkout.Text</Key>
-    <DefaultValue>2Checkout</DefaultValue>
   </Resource>
   <Resource>
     <File>DesktopModules\Ecommerce\UserControls\App_LocalResources\ChoosePaymentMethod.ascx.resx</File>

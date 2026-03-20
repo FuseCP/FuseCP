@@ -76516,7 +76516,7 @@ END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
+    WHERE [MigrationId] = N'20260319085603_AddBruteForceProtection'
 )
 BEGIN
     CREATE TABLE [BruteForceLogs] (
@@ -76524,55 +76524,128 @@ BEGIN
         [IpAddress] nvarchar(45) NOT NULL,
         [Username] nvarchar(255) NULL,
         [Layer] nvarchar(20) NOT NULL,
-        [AttemptTime] datetime2 NOT NULL,
+        [AttemptTime] datetime NOT NULL,
         [Succeeded] bit NOT NULL,
         [UserAgent] nvarchar(500) NULL,
-        CONSTRAINT [PK_BruteForceLogs] PRIMARY KEY ([Id])
+        CONSTRAINT [PK_BruteForceLog] PRIMARY KEY ([Id])
     );
 END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
+    WHERE [MigrationId] = N'20260319085603_AddBruteForceProtection'
 )
 BEGIN
     CREATE TABLE [IpSecurityPolicies] (
         [Id] int NOT NULL IDENTITY,
         [IpRange] nvarchar(50) NOT NULL,
         [IsWhitelist] bit NOT NULL,
-        [CreatedDate] datetime2 NOT NULL,
-        [ExpiresDate] datetime2 NULL,
+        [CreatedDate] datetime NOT NULL,
+        [ExpiresDate] datetime NULL,
         [Reason] nvarchar(500) NULL,
         [IsActive] bit NOT NULL,
         [SeverityLevel] int NOT NULL,
         [CreatedBy] nvarchar(255) NULL,
-        CONSTRAINT [PK_IpSecurityPolicies] PRIMARY KEY ([Id])
+        CONSTRAINT [PK_IpSecurityPolicy] PRIMARY KEY ([Id])
     );
 END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
-)
-BEGIN
-    CREATE INDEX [IX_BruteForceLogs_IpAddress_Layer_AttemptTime] ON [BruteForceLogs] ([IpAddress], [Layer], [AttemptTime]);
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
-)
-BEGIN
-    CREATE INDEX [IX_IpSecurityPolicies_IpRange_IsActive] ON [IpSecurityPolicies] ([IpRange], [IsActive]);
-END;
-
-IF NOT EXISTS (
-    SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20260318133000_AddBruteForceProtection'
+    WHERE [MigrationId] = N'20260319085603_AddBruteForceProtection'
 )
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20260318133000_AddBruteForceProtection', N'9.0.9');
+    VALUES (N'20260319085603_AddBruteForceProtection', N'9.0.9');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260320130003_RemovedLegacyStorefrontArtifacts'
+)
+BEGIN
+    IF EXISTS (SELECT 1 FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ServiceHandlersResponsesDetailed]'))
+    DROP VIEW [dbo].[ServiceHandlersResponsesDetailed]
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260320130003_RemovedLegacyStorefrontArtifacts'
+)
+BEGIN
+    IF EXISTS (SELECT 1 FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ContractsServicesDetailed]'))
+    DROP VIEW [dbo].[ContractsServicesDetailed]
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260320130003_RemovedLegacyStorefrontArtifacts'
+)
+BEGIN
+    IF EXISTS (SELECT 1 FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ContractsInvoicesDetailed]'))
+    DROP VIEW [dbo].[ContractsInvoicesDetailed]
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260320130003_RemovedLegacyStorefrontArtifacts'
+)
+BEGIN
+    PRINT 'DECLARE @dropProcedures nvarchar(max) = N'''';'
+    EXECUTE sp_executesql N'DECLARE @dropProcedures nvarchar(max) = N'''';
+
+    SELECT @dropProcedures = @dropProcedures +
+    	N''DROP PROCEDURE '' + QUOTENAME(SCHEMA_NAME(schema_id)) + N''.'' + QUOTENAME(name) + N'';'' + CHAR(13) + CHAR(10)
+    FROM sys.procedures
+    WHERE name LIKE N''ec%'';
+
+    IF LEN(@dropProcedures) > 0
+    	EXEC sp_executesql @dropProcedures;'
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260320130003_RemovedLegacyStorefrontArtifacts'
+)
+BEGIN
+    PRINT 'DECLARE @dropConstraints nvarchar(max) = N'''';'
+    EXECUTE sp_executesql N'DECLARE @dropConstraints nvarchar(max) = N'''';
+
+    SELECT @dropConstraints = @dropConstraints +
+    	N''ALTER TABLE '' + QUOTENAME(SCHEMA_NAME(parentTable.schema_id)) + N''.'' + QUOTENAME(parentTable.name) +
+    	N'' DROP CONSTRAINT '' + QUOTENAME(foreignKey.name) + N'';'' + CHAR(13) + CHAR(10)
+    FROM sys.foreign_keys foreignKey
+    INNER JOIN sys.tables parentTable ON parentTable.object_id = foreignKey.parent_object_id
+    WHERE parentTable.name LIKE N''ec%'';
+
+    IF LEN(@dropConstraints) > 0
+    	EXEC sp_executesql @dropConstraints;'
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260320130003_RemovedLegacyStorefrontArtifacts'
+)
+BEGIN
+    PRINT 'DECLARE @dropTables nvarchar(max) = N'''';'
+    EXECUTE sp_executesql N'DECLARE @dropTables nvarchar(max) = N'''';
+
+    SELECT @dropTables = @dropTables +
+    	N''DROP TABLE '' + QUOTENAME(SCHEMA_NAME(schema_id)) + N''.'' + QUOTENAME(name) + N'';'' + CHAR(13) + CHAR(10)
+    FROM sys.tables
+    WHERE name LIKE N''ec%'';
+
+    IF LEN(@dropTables) > 0
+    	EXEC sp_executesql @dropTables;'
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260320130003_RemovedLegacyStorefrontArtifacts'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20260320130003_RemovedLegacyStorefrontArtifacts', N'9.0.9');
 END;
 
 COMMIT;

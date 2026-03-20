@@ -2,7 +2,7 @@
     <PropertyGroup>
         <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <OutputPath>..\FuseCP.Installer\bin\$(Configuration)</OutputPath>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <Nullable>disable</Nullable>

@@ -1,4 +1,4 @@
-// Copyright (C) 2025 FuseCP
+// Copyright (C) 2026 FuseCP
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,14 +13,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
+#nullable disable
 
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e28cac4e-9660-4174-8010-c6a00c81bf57")]
+namespace FuseCP.EnterpriseServer.Data.Migrations.PostgreSql
+{
+	[DbContext(typeof(PostgreSqlDbContext))]
+	[Migration("20260320130002_RemovedLegacyStorefrontArtifacts")]
+	public class RemovedLegacyStorefrontArtifacts : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.Sql(LegacyStorefrontCleanupSql.BuildPostgreSqlDropTablesScript());
+		}
+
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+		}
+	}
+}

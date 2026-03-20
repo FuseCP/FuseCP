@@ -16,7 +16,6 @@
 using System;
 using System.Configuration;
 using System.IO;
-using System.Web;
 
 namespace FuseCP.AWStats.Viewer
 {
@@ -29,7 +28,7 @@ namespace FuseCP.AWStats.Viewer
 		{
             string dataFolder = ConfigurationManager.AppSettings["AWStats.ConfigFileAuthenticationProvider.DataFolder"];
 			if(dataFolder.StartsWith("~"))
-				dataFolder =  HttpContext.Current.Server.MapPath(dataFolder);
+				dataFolder = Path.Combine(AppContext.BaseDirectory, dataFolder.TrimStart('~', '/', '\\').Replace('/', Path.DirectorySeparatorChar));
 
             string awStatsScript = ConfigurationManager.AppSettings["AWStats.URL"];
 			int idx = awStatsScript.LastIndexOf("/");
@@ -76,7 +75,7 @@ namespace FuseCP.AWStats.Viewer
 			}
 			catch(Exception ex)
 			{
-				HttpContext.Current.Response.Write(ex.ToString());
+				Console.Error.WriteLine(ex.ToString());
 			}
 			finally
 			{

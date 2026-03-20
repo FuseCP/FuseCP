@@ -200,6 +200,7 @@
     </ItemGroup>
 
     <ItemGroup>
+            <None Remove="Migrations\SqlServer\v2.0.0\RemoveLegacyStorefrontArtifacts.sql" />
       <None Remove="Migrations\SqlServer\v2.0.0\Migrate_msSQL.sql" />
     </ItemGroup>
 

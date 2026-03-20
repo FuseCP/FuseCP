@@ -8238,5 +8238,48 @@ CREATE INDEX "IX_IpSecurityPolicies_IpRange_IsActive" ON "IpSecurityPolicies" ("
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
 VALUES ('20260318133000_AddBruteForceProtection', '9.0.9');
 
+PRAGMA foreign_keys = OFF;
+DROP TABLE IF EXISTS "ecTopLevelDomainsCycles";
+DROP TABLE IF EXISTS "ecTopLevelDomains";
+DROP TABLE IF EXISTS "ecTaxations";
+DROP TABLE IF EXISTS "ecSystemTriggers";
+DROP TABLE IF EXISTS "ecSvcsUsageLog";
+DROP TABLE IF EXISTS "ecSupportedPlugins";
+DROP TABLE IF EXISTS "ecSupportedPluginLog";
+DROP TABLE IF EXISTS "ecStoreSettings";
+DROP TABLE IF EXISTS "ecStoreDefaultSettings";
+DROP TABLE IF EXISTS "ecServiceHandlersResponses";
+DROP TABLE IF EXISTS "ecService";
+DROP TABLE IF EXISTS "ecProductTypeControls";
+DROP TABLE IF EXISTS "ecProductType";
+DROP TABLE IF EXISTS "ecProductsHighlights";
+DROP TABLE IF EXISTS "ecProductCategories";
+DROP TABLE IF EXISTS "ecProduct";
+DROP TABLE IF EXISTS "ecPluginsProperties";
+DROP TABLE IF EXISTS "ecPaymentProfiles";
+DROP TABLE IF EXISTS "ecPaymentMethods";
+DROP TABLE IF EXISTS "ecInvoiceItems";
+DROP TABLE IF EXISTS "ecInvoice";
+DROP TABLE IF EXISTS "ecHostingPlansBillingCycles";
+DROP TABLE IF EXISTS "ecHostingPlans";
+DROP TABLE IF EXISTS "ecHostingPackageSvcsCycles";
+DROP TABLE IF EXISTS "ecHostingPackageSvcs";
+DROP TABLE IF EXISTS "ecHostingAddonSvcsCycles";
+DROP TABLE IF EXISTS "ecHostingAddonSvcs";
+DROP TABLE IF EXISTS "ecHostingAddonsCycles";
+DROP TABLE IF EXISTS "ecHostingAddons";
+DROP TABLE IF EXISTS "ecDomainSvcsCycles";
+DROP TABLE IF EXISTS "ecDomainSvcs";
+DROP TABLE IF EXISTS "ecCustomersPayments";
+DROP TABLE IF EXISTS "ecContracts";
+DROP TABLE IF EXISTS "ecCategory";
+DROP TABLE IF EXISTS "ecBillingCycles";
+DROP TABLE IF EXISTS "ecAddonProducts";
+PRAGMA foreign_keys = ON;
+
+
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20260320130000_RemovedLegacyStorefrontArtifacts', '9.0.9');
+
 COMMIT;
 

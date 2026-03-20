@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net48;net10.0-windows</TargetFrameworks>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <RootNamespace>FuseCP.UniversalInstaller</RootNamespace>
         <LangVersion>13</LangVersion>
         <UseWindowsForms>true</UseWindowsForms>
@@ -15,10 +15,6 @@
         <Optimize>false</Optimize>
     </PropertyGroup>
 
-    <PropertyGroup Condition="$(TargetFramework) == 'net48'">
-        <AssemblyName>FuseCP.UniversalInstaller.UI.WinForms.NetFX</AssemblyName>
-        <NoWarn>$(NoWarn);MSB3277</NoWarn>
-    </PropertyGroup>
     <PropertyGroup Condition="$(TargetFramework) == 'net10.0-windows'">
         <AssemblyName>FuseCP.UniversalInstaller.UI.WinForms.NetCore</AssemblyName>
         <UseRidGraph>true</UseRidGraph>
@@ -58,10 +54,6 @@
         <ProjectReference Include="..\FuseCP.UniversalInstaller.Core\FuseCP.UniversalInstaller.Core.csproj" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="System.Resources.Extensions" Version="10.0.0" />
-    </ItemGroup>
-
-    <ItemGroup Condition="$(TargetFramework) == 'net48'">
-        <Reference Include="System.Windows.Forms" />
     </ItemGroup>
 
     <ItemGroup>

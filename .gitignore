@@ -19,7 +19,6 @@ install.*.exe
 **/Resources/*.dll
 **/Resources/*.pdb
 **/Resources/*.exe
-FuseCP\Sources\Tools\FCPTransportAgent\*.dll
 TestResults/
 **/[Bb]uild/
 **/[Dd]eploy/
@@ -77,7 +76,6 @@ bin/Release
 packages/
 /FuseCP/msbuild.log
 /FuseCP/Sources/FuseCP.WebPortal/novnc/
-/FuseCP/Sources/Tools/FCPTransportAgent/FCPTransportAgent.dll
 /FuseCP.Installer/Sources/packages/
 /FuseCP.Installer/Sources/Setup.WIXBootstrapper/FuseCP.msi
 /FuseCP.Installer/Sources/FuseCP.Installer/[Uu]pdater.exe

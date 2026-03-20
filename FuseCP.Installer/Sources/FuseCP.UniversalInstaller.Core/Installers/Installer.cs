@@ -24,6 +24,7 @@ using FuseCP.Providers.OS;
 using FuseCP.Providers.Utils;
 using FuseCP.Providers.Web;
 using FuseCP.UniversalInstaller.Core;
+using UnixFileMode = FuseCP.Providers.OS.UnixFileMode;
 using System;
 using System.Collections;
 using System.Data;

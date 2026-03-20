@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net10.0;net48</TargetFrameworks>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>13</LangVersion>
@@ -53,26 +53,21 @@
         <ProjectReference Include="..\FuseCP.UniversalInstaller.UI.Console\FuseCP.UniversalInstaller.UI.Console.csproj" />
     </ItemGroup>
 
-    <ItemGroup Condition="$(TargetFramework) == 'net48'">
-        <ProjectReference Include="..\FuseCP.UniversalInstaller.UI.WinForms\FuseCP.UniversalInstaller.UI.WinForms.csproj">
-            <SetTargetFramework>TargetFramework=net48</SetTargetFramework>
-        </ProjectReference>
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
-        <PackageReference Include="System.Security.Permissions" Version="10.0.0" />
-    </ItemGroup>
-    <ItemGroup Condition="$(TargetFramework) == 'net10.0'">
+    <ItemGroup Condition="$(TargetFramework) == 'net10.0-windows'">
         <ProjectReference Include="..\FuseCP.UniversalInstaller.UI.WinForms\FuseCP.UniversalInstaller.UI.WinForms.csproj">
             <SetTargetFramework>TargetFramework=net10.0-windows</SetTargetFramework>
         </ProjectReference>
         <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.0" />
+        <PackageReference Include="System.Security.Permissions" Version="10.0.0" />
     </ItemGroup>
 
-    <PropertyGroup Condition="$(TargetFramework) == 'net10.0'">
+    <PropertyGroup Condition="$(TargetFramework) == 'net10.0-windows'">
         <NoWarn>$(NoWarn);MSB3277;NU1702</NoWarn>
         <UseRidGraph>true</UseRidGraph>
     </PropertyGroup>
 
-    <ItemGroup Condition="$(TargetFramework) == 'net10.0'">
+    <ItemGroup Condition="$(TargetFramework) == 'net10.0-windows'">
         <PackageReference Include="System.Runtime.Serialization.Formatters" Version="10.0.0" />
         <PackageReference Include="System.Management" Version="10.0.0" GeneratePathProperty="true" IncludeAssets="None" ExcludeAssets="All" PrivateAssets="None" />
         <PackageReference Include="Mono.Posix" Version="7.1.0-final.1.21458.1" GeneratePathProperty="true" />
@@ -101,7 +96,7 @@
         </Content>
     </ItemGroup>
 
-    <ItemGroup Condition="$(TargetFramework) == 'net10.0'">
+    <ItemGroup Condition="$(TargetFramework) == 'net10.0-windows'">
         <Content Include="FuseCP.Installer.runtimeconfig.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -112,9 +107,8 @@
         <None Include="SetPathCustomAction.cs" />
     </ItemGroup>
 
-    <ItemGroup Condition="$(TargetFramework) == 'net48'">
+    <ItemGroup Condition="$(TargetFramework) == 'net10.0-windows'">
         <Compile Include="SetPathCustomAction.cs" />
-        <Reference Include="System.Configuration.Install" />
     </ItemGroup>
 
     <ItemGroup>
@@ -128,7 +122,7 @@
         </EmbeddedResource>
     </ItemGroup>
 
-    <ItemGroup Condition="$(TargetFramework) == 'net10.0'">
+    <ItemGroup Condition="$(TargetFramework) == 'net10.0-windows'">
         <EmbeddedResource Include="$(PkgSystem_Management)\runtimes\win\lib\net10.0\System.Management.dll">
             <LogicalName>DllsNetCore/System.Management.dll</LogicalName>
         </EmbeddedResource>
@@ -164,7 +158,7 @@
         <RemoveDir Directories="@(Dirs)" />
     </Target>
 
-    <Target Name="CopyOutput" AfterTargets="Build" Condition="$(TargetFramework) == 'net10.0'">
+    <Target Name="CopyOutput" AfterTargets="Build" Condition="$(TargetFramework) == 'net10.0-windows'">
         <ItemGroup>
             <OutputExe Include="$(OutputPath)\**\FuseCP.Installer.deps.json" />
             <OutputExe Include="$(OutputPath)\**\FuseCP.Installer.runtimeconfig.json" />

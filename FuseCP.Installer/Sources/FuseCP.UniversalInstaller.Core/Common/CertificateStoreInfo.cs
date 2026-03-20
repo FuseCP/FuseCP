@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
 using System.Reflection;
 using FuseCP.Providers.OS;
+using UnixFileMode = FuseCP.Providers.OS.UnixFileMode;
 
 namespace FuseCP.UniversalInstaller.Core
 {

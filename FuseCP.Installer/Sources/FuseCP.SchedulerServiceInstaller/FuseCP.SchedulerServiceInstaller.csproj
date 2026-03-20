@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <TargetFramework>net48</TargetFramework>
+	<TargetFramework>net10.0-windows</TargetFramework>
 		<WixToolsetV314Targets>$([System.Environment]::GetEnvironmentVariable('ProgramFiles(x86)'))\WiX Toolset v3.14\SDK\wix.ca.targets</WixToolsetV314Targets>
 		<WixToolsetV311Targets>$([System.Environment]::GetEnvironmentVariable('ProgramFiles(x86)'))\WiX Toolset v3.11\SDK\wix.ca.targets</WixToolsetV311Targets>
 	<WixCATargetsPath Condition=" '$(WixCATargetsPath)' == '' and Exists('$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.CA.targets') ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.CA.targets</WixCATargetsPath>

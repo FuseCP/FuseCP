@@ -34,49 +34,59 @@ namespace FuseCP.Providers.SharePoint
 {
 	public class Sps30Remote : MarshalByRefObject
 	{
+		private static void RunAsCurrentUser(Action action)
+		{
+			using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+			WindowsIdentity.RunImpersonated(identity.AccessToken, action);
+		}
+
+		private static T RunAsCurrentUser<T>(Func<T> action)
+		{
+			using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+			return WindowsIdentity.RunImpersonated(identity.AccessToken, action);
+		}
+
         public void ExtendVirtualServer(SharePointSite site, bool exclusiveNTLM)
 		{
 			try
 			{
-				WindowsImpersonationContext wic = WindowsIdentity.GetCurrent().Impersonate();
+				RunAsCurrentUser(() =>
+				{
+					string siteUrl = "http://" + site.Name;
 
-				string siteUrl = "http://" + site.Name;
+					// check input parameters
+					if (String.IsNullOrEmpty(site.RootFolder)
+						|| !Directory.Exists(site.RootFolder))
+						throw new Exception("Could not create SharePoint site, because web site root folder does not exist. Open web site properties and click \"Update\" button to re-create site folder.");
 
-				// check input parameters
-				if (String.IsNullOrEmpty(site.RootFolder)
-					|| !Directory.Exists(site.RootFolder))
-					throw new Exception("Could not create SharePoint site, because web site root folder does not exist. Open web site properties and click \"Update\" button to re-create site folder.");
+					SPWebApplication app = SPWebApplication.Lookup(new Uri(siteUrl));
+					if (app != null)
+						throw new Exception("SharePoint is already installed on this web site.");
 
-				SPWebApplication app = SPWebApplication.Lookup(new Uri(siteUrl));
-				if (app != null)
-					throw new Exception("SharePoint is already installed on this web site.");
+					SPFarm farm = SPFarm.Local;
+					SPWebApplicationBuilder builder = new SPWebApplicationBuilder(farm);
+					builder.ApplicationPoolId = site.ApplicationPool;
+					builder.DatabaseServer = site.DatabaseServer;
+					builder.DatabaseName = site.DatabaseName;
+					builder.DatabaseUsername = site.DatabaseUser;
+					builder.DatabasePassword = site.DatabasePassword;
 
-				//SPFarm farm = SPFarm.Local;
-				SPFarm farm = SPFarm.Local;
-				SPWebApplicationBuilder builder = new SPWebApplicationBuilder(farm);
-				builder.ApplicationPoolId = site.ApplicationPool;
-				builder.DatabaseServer = site.DatabaseServer;
-				builder.DatabaseName = site.DatabaseName;
-				builder.DatabaseUsername = site.DatabaseUser;
-				builder.DatabasePassword = site.DatabasePassword;
+					builder.ServerComment = site.Name;
+					builder.HostHeader = site.Name;
+					builder.Port = 80;
 
-				builder.ServerComment = site.Name;
-				builder.HostHeader = site.Name;
-				builder.Port = 80;
+					builder.RootDirectory = new DirectoryInfo(site.RootFolder);
+					builder.DefaultZoneUri = new Uri(siteUrl);
+                    builder.UseNTLMExclusively = exclusiveNTLM;
 
-				builder.RootDirectory = new DirectoryInfo(site.RootFolder);
-				builder.DefaultZoneUri = new Uri(siteUrl);
-                builder.UseNTLMExclusively = exclusiveNTLM;
+					app = builder.Create();
+					app.Name = site.Name;
 
-				app = builder.Create();
-				app.Name = site.Name;
+					app.Sites.Add(siteUrl, null, null, (uint)site.LocaleID, null, site.OwnerLogin, null, site.OwnerEmail);
 
-				app.Sites.Add(siteUrl, null, null, (uint)site.LocaleID, null, site.OwnerLogin, null, site.OwnerEmail);
-
-				app.Update();
-				app.Provision();
-
-				wic.Undo();
+					app.Update();
+					app.Provision();
+				});
 			}
 			catch (Exception ex)
 			{
@@ -97,23 +107,18 @@ namespace FuseCP.Providers.SharePoint
 		{
 			try
 			{
-				WindowsImpersonationContext wic = WindowsIdentity.GetCurrent().Impersonate();
+				RunAsCurrentUser(() =>
+				{
+					Uri uri = new Uri("http://" + url);
+					SPWebApplication app = SPWebApplication.Lookup(uri);
+					if (app == null)
+						return;
 
-				Uri uri = new Uri("http://" + url);
-				SPWebApplication app = SPWebApplication.Lookup(uri);
-				if (app == null)
-					return;
+					SPGlobalAdmin adm = new SPGlobalAdmin();
+					adm.UnextendVirtualServer(uri, false);
 
-				SPGlobalAdmin adm = new SPGlobalAdmin();
-				adm.UnextendVirtualServer(uri, false);
-
-				//typeof(SPWebApplication).InvokeMember("UnprovisionIisWebSitesAsAdministrator",
-				//    BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod,
-				//    null, null, new object[] { false, new string[] { url }, app.ApplicationPool });
-				//app.Unprovision();
-				app.Delete();
-
-				wic.Undo();
+					app.Delete();
+				});
 			}
 			catch (Exception ex)
 			{
@@ -125,38 +130,32 @@ namespace FuseCP.Providers.SharePoint
 		{
 			try
 			{
-				WindowsImpersonationContext wic = WindowsIdentity.GetCurrent().Impersonate();
-
-				string tempPath = Path.GetTempPath();
-				string bakFile = Path.Combine(tempPath, (zipBackup
-					? StringUtils.CleanIdentifier(url) + ".bsh"
-					: StringUtils.CleanIdentifier(fileName)));
-
-				SPWebApplication app = SPWebApplication.Lookup(new Uri("http://" + url));
-				if (app == null)
-					throw new Exception("SharePoint is not installed on the web site");
-
-				// backup
-				app.Sites.Backup("http://" + url, bakFile, true);
-
-				// zip backup file
-				if (zipBackup)
+				return RunAsCurrentUser(() =>
 				{
-					string zipFile = Path.Combine(tempPath, fileName);
-					string zipRoot = Path.GetDirectoryName(bakFile);
+					string tempPath = Path.GetTempPath();
+					string bakFile = Path.Combine(tempPath, (zipBackup
+						? StringUtils.CleanIdentifier(url) + ".bsh"
+						: StringUtils.CleanIdentifier(fileName)));
 
-					// zip files
-					FileUtils.ZipFiles(zipFile, zipRoot, new string[] { Path.GetFileName(bakFile) });
+					SPWebApplication app = SPWebApplication.Lookup(new Uri("http://" + url));
+					if (app == null)
+						throw new Exception("SharePoint is not installed on the web site");
 
-					// delete data files
-					FileUtils.DeleteFile(bakFile);
+					app.Sites.Backup("http://" + url, bakFile, true);
 
-					bakFile = zipFile;
-				}
+					if (zipBackup)
+					{
+						string zipFile = Path.Combine(tempPath, fileName);
+						string zipRoot = Path.GetDirectoryName(bakFile);
 
-				wic.Undo();
+						FileUtils.ZipFiles(zipFile, zipRoot, new string[] { Path.GetFileName(bakFile) });
+						FileUtils.DeleteFile(bakFile);
 
-				return bakFile;
+						bakFile = zipFile;
+					}
+
+					return bakFile;
+				});
 			}
 			catch (Exception ex)
 			{
@@ -168,36 +167,27 @@ namespace FuseCP.Providers.SharePoint
 		{
 			try
 			{
-				WindowsImpersonationContext wic = WindowsIdentity.GetCurrent().Impersonate();
-
-				SPWebApplication app = SPWebApplication.Lookup(new Uri("http://" + url));
-				if (app == null)
-					throw new Exception("SharePoint is not installed on the web site");
-
-				string tempPath = Path.GetTempPath();
-
-				// unzip uploaded files if required
-				string expandedFile = fileName;
-				if (Path.GetExtension(fileName).ToLower() == ".zip")
+				RunAsCurrentUser(() =>
 				{
-					// unpack file
-					expandedFile = FileUtils.UnzipFiles(fileName, tempPath)[0];
+					SPWebApplication app = SPWebApplication.Lookup(new Uri("http://" + url));
+					if (app == null)
+						throw new Exception("SharePoint is not installed on the web site");
 
-					// delete zip archive
-					FileUtils.DeleteFile(fileName);
-				}
+					string tempPath = Path.GetTempPath();
 
-				// delete site
-				SPSiteAdministration site = new SPSiteAdministration("http://" + url);
-				site.Delete(false);
+					string expandedFile = fileName;
+					if (Path.GetExtension(fileName).ToLower() == ".zip")
+					{
+						expandedFile = FileUtils.UnzipFiles(fileName, tempPath)[0];
+						FileUtils.DeleteFile(fileName);
+					}
 
-				// restore from backup
-				app.Sites.Restore("http://" + url, expandedFile, true);
+					SPSiteAdministration site = new SPSiteAdministration("http://" + url);
+					site.Delete(false);
 
-				// delete expanded file
-				FileUtils.DeleteFile(expandedFile);
-
-				wic.Undo();
+					app.Sites.Restore("http://" + url, expandedFile, true);
+					FileUtils.DeleteFile(expandedFile);
+				});
 			}
 			catch (Exception ex)
 			{
@@ -209,29 +199,28 @@ namespace FuseCP.Providers.SharePoint
 		{
 			try
 			{
-				WindowsImpersonationContext wic = WindowsIdentity.GetCurrent().Impersonate();
-
-				SPGlobalAdmin adm = new SPGlobalAdmin();
-				string lines = adm.EnumWPPacks(null, "http://" + url, false);
-
-				List<string> list = new List<string>();
-
-				if(!String.IsNullOrEmpty(lines))
+				return RunAsCurrentUser(() =>
 				{
-					string line = null;
-					StringReader reader = new StringReader(lines);
-					while ((line = reader.ReadLine()) != null)
+					SPGlobalAdmin adm = new SPGlobalAdmin();
+					string lines = adm.EnumWPPacks(null, "http://" + url, false);
+
+					List<string> list = new List<string>();
+
+					if (!String.IsNullOrEmpty(lines))
 					{
-						line = line.Trim();
-						int commaIdx = line.IndexOf(",");
-						if (!String.IsNullOrEmpty(line) && commaIdx != -1)
-							list.Add(line.Substring(0, commaIdx));
+						string line = null;
+						StringReader reader = new StringReader(lines);
+						while ((line = reader.ReadLine()) != null)
+						{
+							line = line.Trim();
+							int commaIdx = line.IndexOf(",");
+							if (!String.IsNullOrEmpty(line) && commaIdx != -1)
+								list.Add(line.Substring(0, commaIdx));
+						}
 					}
-				}
 
-				wic.Undo();
-
-				return list.ToArray();
+					return list.ToArray();
+				});
 			}
 			catch (Exception ex)
 			{
@@ -243,32 +232,26 @@ namespace FuseCP.Providers.SharePoint
 		{
 			try
 			{
-				WindowsImpersonationContext wic = WindowsIdentity.GetCurrent().Impersonate();
-
-				string tempPath = Path.GetTempPath();
-
-				// unzip uploaded files if required
-				string expandedFile = fileName;
-				if (Path.GetExtension(fileName).ToLower() == ".zip")
+				RunAsCurrentUser(() =>
 				{
-					// unpack file
-					expandedFile = FileUtils.UnzipFiles(fileName, tempPath)[0];
+					string tempPath = Path.GetTempPath();
 
-					// delete zip archive
-					FileUtils.DeleteFile(fileName);
-				}
+					string expandedFile = fileName;
+					if (Path.GetExtension(fileName).ToLower() == ".zip")
+					{
+						expandedFile = FileUtils.UnzipFiles(fileName, tempPath)[0];
+						FileUtils.DeleteFile(fileName);
+					}
 
-				StringWriter errors = new StringWriter();
+					StringWriter errors = new StringWriter();
 
-				SPGlobalAdmin adm = new SPGlobalAdmin();
-				int result = adm.AddWPPack(expandedFile, null, 0, "http://" + url, false, true, errors);
-				if (result > 1)
-					throw new Exception("Error installing web parts package: " + errors.ToString());
+					SPGlobalAdmin adm = new SPGlobalAdmin();
+					int result = adm.AddWPPack(expandedFile, null, 0, "http://" + url, false, true, errors);
+					if (result > 1)
+						throw new Exception("Error installing web parts package: " + errors.ToString());
 
-				// delete expanded file
-				FileUtils.DeleteFile(expandedFile);
-
-				wic.Undo();
+					FileUtils.DeleteFile(expandedFile);
+				});
 
 			}
 			catch (Exception ex)
@@ -281,16 +264,15 @@ namespace FuseCP.Providers.SharePoint
 		{
 			try
 			{
-				WindowsImpersonationContext wic = WindowsIdentity.GetCurrent().Impersonate();
+				RunAsCurrentUser(() =>
+				{
+					StringWriter errors = new StringWriter();
 
-				StringWriter errors = new StringWriter();
-
-				SPGlobalAdmin adm = new SPGlobalAdmin();
-				int result = adm.RemoveWPPack(packageName, 0, "http://" + url, errors);
-				if (result > 1)
-					throw new Exception("Error uninstalling web parts package: " + errors.ToString());
-
-				wic.Undo();
+					SPGlobalAdmin adm = new SPGlobalAdmin();
+					int result = adm.RemoveWPPack(packageName, 0, "http://" + url, errors);
+					if (result > 1)
+						throw new Exception("Error uninstalling web parts package: " + errors.ToString());
+				});
 			}
 			catch (Exception ex)
 			{

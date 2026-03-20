@@ -16,5 +16,4 @@
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugType>pdbonly</DebugType>
 	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="System.Data.DataSetExtensions" />
+</Project>

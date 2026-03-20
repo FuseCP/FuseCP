@@ -68,7 +68,7 @@ namespace FuseCP.AWStats.Viewer
             }
             catch (Exception ex)
             {
-                System.Web.HttpContext.Current.Response.Write(ex.ToString());
+                Console.Error.WriteLine(ex.ToString());
             }
 
             return AuthenticationResult.DomainNotFound;
