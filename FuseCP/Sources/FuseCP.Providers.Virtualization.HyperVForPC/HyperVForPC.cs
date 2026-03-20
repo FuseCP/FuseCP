@@ -165,6 +165,13 @@ namespace FuseCP.Providers.VirtualizationForPC
 
 	public class FCPVirtualMachineManagementServiceClient : VirtualMachineManagementServiceClient, IDisposable
 	{
+		private static WSHttpBinding CreateWsHttpBinding()
+		{
+			var binding = new WSHttpBinding(SecurityMode.Message);
+			binding.Security.Message.ClientCredentialType = MessageCredentialType.Windows;
+			return binding;
+		}
+
 		private static EndpointAddress BuildEndpoint(string remoteAddress, string endpointConfigurationName)
 		{
 			if (!String.IsNullOrWhiteSpace(remoteAddress))
@@ -179,10 +186,7 @@ namespace FuseCP.Providers.VirtualizationForPC
 
 		private static Binding BuildBinding(string endpointConfigurationName)
 		{
-			if (!String.IsNullOrWhiteSpace(endpointConfigurationName))
-				return new WSHttpBinding(endpointConfigurationName);
-
-			return new WSHttpBinding("WSHttpBinding_IVirtualMachineManagementService");
+			return CreateWsHttpBinding();
 		}
 
 		public FCPVirtualMachineManagementServiceClient()
@@ -246,6 +250,13 @@ namespace FuseCP.Providers.VirtualizationForPC
 
 	public class FCPMonitoringServiceClient : MonitoringServiceClient, IDisposable
 	{
+		private static WSHttpBinding CreateWsHttpBinding()
+		{
+			var binding = new WSHttpBinding(SecurityMode.Message);
+			binding.Security.Message.ClientCredentialType = MessageCredentialType.Windows;
+			return binding;
+		}
+
 		private static EndpointAddress BuildEndpoint(string remoteAddress, string endpointConfigurationName)
 		{
 			if (!String.IsNullOrWhiteSpace(remoteAddress))
@@ -260,10 +271,7 @@ namespace FuseCP.Providers.VirtualizationForPC
 
 		private static Binding BuildBinding(string endpointConfigurationName)
 		{
-			if (!String.IsNullOrWhiteSpace(endpointConfigurationName))
-				return new WSHttpBinding(endpointConfigurationName);
-
-			return new WSHttpBinding("WSHttpBinding_IMonitoringService");
+			return CreateWsHttpBinding();
 		}
 
 		public FCPMonitoringServiceClient()
@@ -1670,7 +1678,10 @@ namespace FuseCP.Providers.VirtualizationForPC
 							{
 								EndpointAddress endPointAddress = GetEndPointAddress(connString, connName);
 
-								using (VirtualMachineManagementServiceClient check = new VirtualMachineManagementServiceClient(new WSHttpBinding("WSHttpBinding_IVirtualMachineManagementService"), endPointAddress))
+								using (VirtualMachineManagementServiceClient check = new VirtualMachineManagementServiceClient(new WSHttpBinding(SecurityMode.Message)
+								{
+									Security = { Message = { ClientCredentialType = MessageCredentialType.Windows } }
+								}, endPointAddress))
 								{
 									check.Open();
 									ret = true;
@@ -1686,7 +1697,10 @@ namespace FuseCP.Providers.VirtualizationForPC
 							{
 								EndpointAddress endPointAddress = GetEndPointAddress(connString, connName);
 
-								using (MonitoringServiceClient checkMonitoring = new MonitoringServiceClient(new WSHttpBinding("WSHttpBinding_IMonitoringService"), endPointAddress))
+								using (MonitoringServiceClient checkMonitoring = new MonitoringServiceClient(new WSHttpBinding(SecurityMode.Message)
+								{
+									Security = { Message = { ClientCredentialType = MessageCredentialType.Windows } }
+								}, endPointAddress))
 								{
 									checkMonitoring.Open();
 									ret = true;
@@ -1897,12 +1911,12 @@ namespace FuseCP.Providers.VirtualizationForPC
 			if (UseSPN)
 			{
 				endPointAddress = new EndpointAddress(new Uri(connString)
-								 , EndpointIdentity.CreateSpnIdentity(connName));
+								 , new SpnEndpointIdentity(connName));
 			}
 			else
 			{
 				endPointAddress = new EndpointAddress(new Uri(connString)
-								 , EndpointIdentity.CreateUpnIdentity(connName));
+								 , new UpnEndpointIdentity(connName));
 
 			}
 
@@ -1922,7 +1936,10 @@ namespace FuseCP.Providers.VirtualizationForPC
 			{
 				EndpointAddress endPointAddress = GetEndPointAddress(SCVMMServer, SCVMMPrincipalName);
 
-				ret = new FCPVirtualMachineManagementServiceClient(new WSHttpBinding("WSHttpBinding_IVirtualMachineManagementService"), endPointAddress);
+				ret = new FCPVirtualMachineManagementServiceClient(new WSHttpBinding(SecurityMode.Message)
+				{
+					Security = { Message = { ClientCredentialType = MessageCredentialType.Windows } }
+				}, endPointAddress);
 
 				VersionInfo ver = new VersionInfo();
 			}
@@ -1943,7 +1960,10 @@ namespace FuseCP.Providers.VirtualizationForPC
 			{
 				EndpointAddress endPointAddress = GetEndPointAddress(SCOMServer, SCOMPrincipalName);
 
-				ret = new FCPMonitoringServiceClient(new WSHttpBinding("WSHttpBinding_IMonitoringService"), endPointAddress);
+				ret = new FCPMonitoringServiceClient(new WSHttpBinding(SecurityMode.Message)
+				{
+					Security = { Message = { ClientCredentialType = MessageCredentialType.Windows } }
+				}, endPointAddress);
 			}
 			else
 			{

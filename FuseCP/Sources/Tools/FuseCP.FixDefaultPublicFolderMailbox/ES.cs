@@ -20,6 +20,7 @@ using System.Text;
 
 using FuseCP.EnterpriseServer;
 using FuseCP.EnterpriseServer.Client;
+using FuseCP.Web.Clients;
 
 
 namespace FuseCP.FixDefaultPublicFolderMailbox
@@ -173,7 +174,7 @@ namespace FuseCP.FixDefaultPublicFolderMailbox
             string key = t.FullName + ".ServiceProxy";
             T proxy = (T)Activator.CreateInstance(t);
 
-            Web.Clients.ClientBase p = proxy as Web.Clients.ClientBase;
+            ClientBase p = proxy as ClientBase;
 
             // configure proxy
             EnterpriseServerProxyConfigurator cnfg = new EnterpriseServerProxyConfigurator();

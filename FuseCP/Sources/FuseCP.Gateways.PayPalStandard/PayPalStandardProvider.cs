@@ -14,7 +14,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System;
-using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Net;
@@ -23,6 +22,7 @@ using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
+using System.Net.Http;
 
 namespace FuseCP.Ecommerce.EnterpriseServer
 {
@@ -232,30 +232,22 @@ namespace FuseCP.Ecommerce.EnterpriseServer
 		
 		private bool IsResponseGenuine(string strFormValues)
 		{
-			// Create the request back
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ServiceUrl);
-
-			// Set values for the request back
-			request.Method = "POST";
-			request.ContentType = "application/x-www-form-urlencoded";
 			string strNewValue = strFormValues + "&cmd=_notify-validate";
-			request.ContentLength = strNewValue.Length;
-			// Write the request back IPN strings
-			StreamWriter writer = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
-			writer.Write(strNewValue);
-			writer.Close();
-
-			// Do the request to PayPal and get the response
-			StreamReader reader = new StreamReader(request.GetResponse().GetResponseStream());
-			string strResponse = reader.ReadToEnd().Trim().ToUpper();
-			reader.Close();
+			string strResponse;
+			using (HttpClient httpClient = new HttpClient())
+			using (StringContent content = new StringContent(strNewValue, Encoding.ASCII, "application/x-www-form-urlencoded"))
+			using (HttpResponseMessage response = httpClient.PostAsync(ServiceUrl, content).GetAwaiter().GetResult())
+			{
+				response.EnsureSuccessStatusCode();
+				strResponse = response.Content.ReadAsStringAsync().GetAwaiter().GetResult().Trim().ToUpperInvariant();
+			}
 
 			return String.Equals(strResponse, "VERIFIED", StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		private string HtmlEncode(string s)
 		{
-			return HttpContext.Current.Server.UrlEncode(s);
+			return WebUtility.UrlEncode(s);
 		}
 	}
 }

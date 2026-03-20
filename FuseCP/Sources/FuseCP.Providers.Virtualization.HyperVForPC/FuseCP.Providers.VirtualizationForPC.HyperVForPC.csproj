@@ -1,26 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{64BEEB10-7F9F-4860-B2FF-84CDA02766B3}</ProjectGuid>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FuseCP.Providers.VirtualizationForPC</RootNamespace>
     <AssemblyName>FuseCP.Providers.VirtualizationForPC.HyperVForPC</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <OutputPath>..\FuseCP.Server\bin\Providers\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>disable</Nullable>
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\FuseCP.Server\bin\Providers\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -28,162 +22,30 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\FuseCP.Server\bin\Providers\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AntiXSSLibrary">
-      <HintPath>..\packages\AntiXSS Library v4.2\NET35\AntiXSSLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.Storage.Vds">
       <HintPath>..\..\Lib\References\Microsoft\Microsoft.Storage.Vds.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management.Automation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\System.Management.Automation.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.XML" />
+    <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\VersionInfo.cs">
-      <Link>VersionInfo.cs</Link>
-    </Compile>
-    <Compile Include="Helper.cs" />
-    <Compile Include="HyperVForPC.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\MonitoringWebService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\SVMMService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.14" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.0" />
+    <PackageReference Include="System.Management.Automation" Version="7.5.5" />
+    <PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Compile Include="..\VersionInfo.cs" Link="VersionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\MonitoringWebService\MonitoringService.wsdl" />
-    <None Include="Service References\MonitoringWebService\MonitoringService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService10.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MonitoringWebService\MonitoringService9.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\SVMMService\VirtualMachineManagementService.wsdl" />
-    <None Include="Service References\SVMMService\VirtualMachineManagementService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\SVMMService\VirtualMachineManagementService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\SVMMService\VirtualMachineManagementService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\SVMMService\VirtualMachineManagementService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\SVMMService\VirtualMachineManagementService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\SVMMService\VirtualMachineManagementService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\SVMMService\VirtualMachineManagementService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <ProjectReference Include="..\FuseCP.Providers.Base\FuseCP.Providers.Base.csproj" />
+    <ProjectReference Include="..\FuseCP.Server.Utils\FuseCP.Server.Utils.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\MonitoringWebService\" />
-    <WCFMetadataStorage Include="Service References\SVMMService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\SVMMService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\SVMMService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\SVMMService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\MonitoringWebService\MonitoringService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\MonitoringWebService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\MonitoringWebService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\MonitoringWebService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FuseCP.Providers.Base\FuseCP.Providers.Base.csproj">
-      <Project>{684C932A-6C75-46AC-A327-F3689D89EB42}</Project>
-      <Name>FuseCP.Providers.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuseCP.Server.Utils\FuseCP.Server.Utils.csproj">
-      <Project>{E91E52F3-9555-4D00-B577-2B1DBDD87CA7}</Project>
-      <Name>FuseCP.Server.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

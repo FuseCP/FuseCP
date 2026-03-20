@@ -57,8 +57,7 @@ namespace FuseCP.Ecommerce.EnterpriseServer
 			//
 			if (!File.Exists(assemblyFile))
 			{
-				//
-				EventLog.WriteEntry("FuseCPES:DIRECTI", "OrderBoxCoreLib assembly could not be found at " + assemblyFile, EventLogEntryType.Information);
+				Trace.TraceInformation("OrderBoxCoreLib assembly could not be found at {0}", assemblyFile);
 				return null;
 			}
 			//
@@ -84,8 +83,7 @@ namespace FuseCP.Ecommerce.EnterpriseServer
 			//
 			if (!File.Exists(assemblyFile))
 			{
-				//
-				EventLog.WriteEntry("FuseCPES:DIRECTI", "OrderBoxDomainsLib assembly could not be found at " + assemblyFile, EventLogEntryType.Information);
+				Trace.TraceInformation("OrderBoxDomainsLib assembly could not be found at {0}", assemblyFile);
 				return null;
 			}
 			//

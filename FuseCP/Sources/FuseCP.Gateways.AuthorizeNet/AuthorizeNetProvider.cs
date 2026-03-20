@@ -20,6 +20,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
+using System.Net.Http;
 
 namespace FuseCP.Ecommerce.EnterpriseServer
 {
@@ -124,37 +125,15 @@ namespace FuseCP.Ecommerce.EnterpriseServer
 			TransactionResult ret = new TransactionResult();
 			//create request content
 			string data = GetRequestData(details);
-			// create webrequest instance
-			HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(ServiceUrl);
-			webRequest.Method = "POST";
-			webRequest.ContentLength = data.Length;
-			webRequest.ContentType = "application/x-www-form-urlencoded";
-			// send service request
-			StreamWriter sw = null;
-			try
-			{
-				sw = new StreamWriter(webRequest.GetRequestStream());
-				sw.Write(data);
-			}
-			finally
-			{
-				if (sw != null)
-					sw.Close();
-			}
 			// read service response
 			AIMResponse aimResponse = null;
-			HttpWebResponse webResponse = null;
-			try
+			using (HttpClient httpClient = new HttpClient())
+			using (StringContent content = new StringContent(data, Encoding.ASCII, "application/x-www-form-urlencoded"))
+			using (HttpResponseMessage response = httpClient.PostAsync(ServiceUrl, content).GetAwaiter().GetResult())
+			using (Stream responseStream = response.Content.ReadAsStreamAsync().GetAwaiter().GetResult())
 			{
-				// get response
-				webResponse = (HttpWebResponse)webRequest.GetResponse();
-				// emit new response
-				aimResponse = new AIMResponse(webResponse.GetResponseStream(), DELIMITER_CHAR);
-			}
-			finally
-			{
-				webResponse.Close();
-				webRequest.Abort();
+				response.EnsureSuccessStatusCode();
+				aimResponse = new AIMResponse(responseStream, DELIMITER_CHAR);
 			}
 			// copy raw service response
 			ret.RawResponse = aimResponse.RawResponse;
@@ -199,8 +178,11 @@ namespace FuseCP.Ecommerce.EnterpriseServer
 		{
 			//input string = "MD5 Hash Value"+"API Login ID"+"Trans ID"+"Amount"
 			byte[] data = Encoding.ASCII.GetBytes(md5hash + login + transactId + amount);
-			MD5 md5 = new MD5CryptoServiceProvider();
-			byte[] result = md5.ComputeHash(data);
+			byte[] result;
+			using (MD5 md5 = MD5.Create())
+			{
+				result = md5.ComputeHash(data);
+			}
 			StringBuilder sb = new StringBuilder();
 			foreach (byte b in result)
 			{

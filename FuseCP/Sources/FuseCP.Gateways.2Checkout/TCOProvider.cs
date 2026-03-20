@@ -224,8 +224,11 @@ namespace FuseCP.Ecommerce.EnterpriseServer
 			System.Text.Encoding encoding = System.Text.Encoding.ASCII;
 
 			byte[] bufferIn = encoding.GetBytes(rawString);
-			MD5CryptoServiceProvider cryptoProv = new MD5CryptoServiceProvider();
-			byte[] bufferOut = cryptoProv.ComputeHash(bufferIn);
+			byte[] bufferOut;
+			using (MD5 cryptoProv = MD5.Create())
+			{
+				bufferOut = cryptoProv.ComputeHash(bufferIn);
+			}
 
 			string hashString = String.Empty;
 

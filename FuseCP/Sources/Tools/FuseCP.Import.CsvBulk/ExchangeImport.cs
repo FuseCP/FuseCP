@@ -16,11 +16,11 @@
 using System;
 using System.IO;
 using System.Data;
-using System.Data.SqlClient;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.Data.SqlClient;
 
 using FuseCP.Providers.HostedSolution;
 using FuseCP.EnterpriseServer;

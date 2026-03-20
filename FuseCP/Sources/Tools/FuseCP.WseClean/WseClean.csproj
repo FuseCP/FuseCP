@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyTitle>WseClean</AssemblyTitle>
     <Product>WseClean</Product>
     <OutputPath>..\..\..\Tools\</OutputPath>
@@ -18,9 +18,6 @@
   <PropertyGroup>
     <StartupObject>WseClean.Program</StartupObject>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\VersionInfo.cs" Link="VersionInfo.cs" />
   </ItemGroup>

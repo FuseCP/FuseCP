@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <AssemblyTitle>FuseCP.FixDefaultPublicFolderMailbox</AssemblyTitle>
     <Product>FuseCP.FixDefaultPublicFolderMailbox</Product>
-    <Copyright>Copyright ©  2014</Copyright>
+    <Copyright>Copyright ï¿½  2014</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Web.Services" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.14" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FuseCP.EnterpriseServer.Base\FuseCP.EnterpriseServer.Base.csproj" />

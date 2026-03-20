@@ -167,9 +167,9 @@ namespace FuseCP.Ecommerce.EnterpriseServer
 				// fill string reader
 				sr = new StringReader(builder.ToString());
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				throw;
 			}
 			finally
 			{

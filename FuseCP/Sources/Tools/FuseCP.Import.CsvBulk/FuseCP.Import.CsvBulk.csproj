@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <AssemblyTitle>FuseCP.Import.CsvBulk</AssemblyTitle>
     <Product>FuseCP.Import.CsvBulk</Product>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -12,11 +12,8 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Services" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\VersionInfo.cs" Link="VersionInfo.cs" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.14" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FuseCP.EnterpriseServer.Base\FuseCP.EnterpriseServer.Base.csproj" />

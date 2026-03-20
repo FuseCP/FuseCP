@@ -1253,22 +1253,37 @@ namespace FuseCP.Providers.VirtualizationForPC.VirtualizationWebService {
     public partial class VirtualizationProvisioningServiceClient : System.ServiceModel.ClientBase<FuseCP.Providers.VirtualizationForPC.VirtualizationWebService.IVirtualizationProvisioningService>, FuseCP.Providers.VirtualizationForPC.VirtualizationWebService.IVirtualizationProvisioningService {
         
         public VirtualizationProvisioningServiceClient() {
+            this.Endpoint.Address = GetDefaultEndpoint(null);
         }
         
         public VirtualizationProvisioningServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+            base(GetDefaultBinding(), GetDefaultEndpoint(null)) {
         }
         
         public VirtualizationProvisioningServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+            base(GetDefaultBinding(), GetDefaultEndpoint(remoteAddress)) {
         }
         
         public VirtualizationProvisioningServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+            base(GetDefaultBinding(), remoteAddress) {
         }
         
         public VirtualizationProvisioningServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
+        }
+
+        private static System.ServiceModel.Channels.Binding GetDefaultBinding() {
+            System.ServiceModel.WSHttpBinding binding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Message);
+            binding.Security.Message.ClientCredentialType = System.ServiceModel.MessageCredentialType.Windows;
+            return binding;
+        }
+
+        private static System.ServiceModel.EndpointAddress GetDefaultEndpoint(string remoteAddress) {
+            string address = string.IsNullOrWhiteSpace(remoteAddress)
+                ? "http://localhost/VirtualizationWebService/VirtualizationService.svc"
+                : remoteAddress;
+
+            return new System.ServiceModel.EndpointAddress(address);
         }
         
         public bool CreateVirtualSystem(FuseCP.Providers.VirtualizationForPC.VirtualizationWebService.VirtualMachineProvisioningRequest request, string serverName, string domain, string userName, string password) {
