@@ -17,9 +17,6 @@
 		<DebugType>portable</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
-		<Reference Include="Microsoft.CSharp" />
-	</ItemGroup>
-	<ItemGroup>
 		<Compile Include="..\VersionInfo.cs" Link="VersionInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
