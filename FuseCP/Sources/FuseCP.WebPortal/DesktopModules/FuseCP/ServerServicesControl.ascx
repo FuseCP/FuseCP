@@ -1,4 +1,10 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ServerServicesControl.ascx.cs" Inherits="FuseCP.Portal.ServerServicesControl" %>
+<asp:Panel ID="pnlLoadServices" runat="server" CssClass="alert alert-secondary d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+	<asp:Label ID="lblLoadServicesHint" runat="server" Text="Installed services are loaded on demand to keep large server pages responsive."></asp:Label>
+	<asp:LinkButton ID="btnLoadServices" runat="server" CssClass="btn btn-outline-primary" OnClick="btnLoadServices_Click" CausesValidation="False">
+		<i class="bi bi-arrow-repeat">&nbsp;</i>&nbsp;Load Existing Services
+	</asp:LinkButton>
+</asp:Panel>
 <asp:Repeater id="dlServiceGroups" Runat="server" >
 	<ItemTemplate>
         <div class="card border-info">

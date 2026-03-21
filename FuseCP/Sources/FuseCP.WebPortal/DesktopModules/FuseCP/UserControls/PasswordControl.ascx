@@ -65,7 +65,7 @@
                 <ajaxToolkit:PasswordStrength ID="PS" runat="server" TargetControlID="txtPassword" DisplayPosition="RightSide" StrengthIndicatorType="Text"
                     PreferredPasswordLength="10" PrefixText="Strength:" TextCssClass="fcp-password-strength-text" MinimumNumericCharacters="1" MinimumSymbolCharacters="1"
                     RequiresUpperAndLowerCaseCharacters="true" TextStrengthDescriptions="Very Poor;Weak;Average;Strong;Excellent"
-                    StrengthStyles="alert alert-danger;alert alert-warning;alert alert-default;alert alert-success;alert alert-success" CalculationWeightings="50;15;15;20" />
+                    CalculationWeightings="50;15;15;20" />
                 <asp:HyperLink ID="lnkGenerate" runat="server" NavigateUrl="#" meta:resourcekey="lnkGenerate" CssClass="btn btn-outline-primary btn-sm" Visible="true">
                     Generate Random Password
                 </asp:HyperLink>

@@ -24,7 +24,8 @@ namespace FuseCP.Portal
 {
     public partial class SpaceServerUsage : FuseCPModuleBase
     {
-        private const int SERVER_TIMEOUT = 10000; //10 sec
+        private static readonly TimeSpan NonCriticalLoadTimeout = TimeSpan.FromSeconds(10);
+
         protected void Page_Init(object sender, EventArgs e)
         {
             Page.Load += PageLoadAsync;
@@ -69,7 +70,7 @@ namespace FuseCP.Portal
         {
             try
             {
-                Providers.OS.SystemResourceUsageInfo resourceUsage = await GetSystemResourceUsage();
+                Providers.OS.SystemResourceUsageInfo resourceUsage = await WithTimeoutAsync(GetSystemResourceUsage());
                 int cpuUsage = 0;
                 if (resourceUsage.LogicalProcessorUsagePercent != -1)
                 {
@@ -96,6 +97,15 @@ namespace FuseCP.Portal
             {
                 gaugeUsage.Visible = true;
             }
+        }
+
+        private static async Task<T> WithTimeoutAsync<T>(Task<T> task)
+        {
+            Task completedTask = await Task.WhenAny(task, Task.Delay(NonCriticalLoadTimeout));
+            if (completedTask != task)
+                throw new TimeoutException();
+
+            return await task;
         }
 
         private void FillNA()

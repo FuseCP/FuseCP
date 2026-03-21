@@ -30,6 +30,14 @@ namespace FuseCP.Portal
 {
     public partial class GlobalDnsRecordsControl : FuseCPControlBase
     {
+        private const string RecordsLoadedViewStateKey = "RecordsLoaded";
+
+        private bool RecordsLoaded
+        {
+            get { return (bool?)ViewState[RecordsLoadedViewStateKey] ?? false; }
+            set { ViewState[RecordsLoadedViewStateKey] = value; }
+        }
+
         public string IPServerIdParam
         {
             get { return ipAddress.ServerIdParam; }
@@ -61,23 +69,16 @@ namespace FuseCP.Portal
         {
             if (!IsPostBack)
             {
+                RecordsLoaded = false;
                 ShowPanels(false);
-
-                try
-                {
-                    BindDnsRecords();
-                }
-                catch (Exception ex)
-                {
-                    HostModule.ShowErrorMessage("GDNS_GET_RECORD", ex);
-                    return;
-                }
+                ToggleRecordControls();
             }
 
         }
 
         private void BindDnsRecords()
         {
+            RecordsLoaded = true;
             DataSet ds = null;
 
             if (ServiceIdParam != null)
@@ -100,6 +101,7 @@ namespace FuseCP.Portal
         {
             try
             {
+                ipAddress.EnsureBound();
                 ViewState["RecordID"] = recordId;
 
                 GlobalDnsRecord record = ES.Services.Servers.GetDnsRecord(recordId);
@@ -262,6 +264,7 @@ namespace FuseCP.Portal
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
+            ipAddress.EnsureBound();
             ViewState["RecordID"] = 0;
 
             // erase fields
@@ -281,7 +284,20 @@ namespace FuseCP.Portal
         {
             pnlEdit.Visible = editMode;
             pnlRecords.Visible = !editMode;
-            gvRecords.Visible = !editMode;
+            pnlLoadRecords.Visible = !editMode && !RecordsLoaded;
+            gvRecords.Visible = !editMode && RecordsLoaded;
+        }
+        protected void btnLoadRecords_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BindDnsRecords();
+                ShowPanels(false);
+            }
+            catch (Exception ex)
+            {
+                HostModule.ShowErrorMessage("GDNS_GET_RECORD", ex);
+            }
         }
         protected void btnSave_Click(object sender, EventArgs e)
         {

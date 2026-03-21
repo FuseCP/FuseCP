@@ -25,6 +25,7 @@ using System.Runtime.Remoting.Channels;
 using System.Xml;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Collections.Specialized;
 
 namespace FuseCP.Providers
 {
@@ -47,6 +48,12 @@ namespace FuseCP.Providers
                 type == typeof(DateTime) || type == typeof(TimeSpan) ||
                 type == typeof(DateTimeOffset) || type == typeof(Guid) ||
                 type == typeof(Uri) || type == typeof(XmlQualifiedName)) return src;
+
+            if (src is NameValueCollection nvc)
+            {
+                // DataContractSerializer cannot serialize NameValueCollection reliably.
+                return new NameValueCollection(nvc);
+            }
 
             if (type.IsArray && type.GetArrayRank() == 1) // treat array of primitive types special
             {
@@ -89,23 +96,35 @@ namespace FuseCP.Providers
                 }
             }
             var mem = new ChunkedMemoryStream(BufferPool);
-            var writer = XmlDictionaryWriter.CreateBinaryWriter(mem);
-            var serializer = new DataContractSerializer(type, knownTypes);
-            serializer.WriteObject(writer, src);
-            writer.Flush();
-            mem.Seek(0, SeekOrigin.Begin);
-
-            var reader = XmlDictionaryReader.CreateBinaryReader(mem, new XmlDictionaryReaderQuotas()
+            try
             {
-                MaxArrayLength = int.MaxValue,
-                MaxBytesPerRead = int.MaxValue,
-                MaxDepth = int.MaxValue,
-                MaxNameTableCharCount = int.MaxValue,
-                MaxStringContentLength = int.MaxValue
-            });
-            var copy = serializer.ReadObject(reader);
-            mem.Dispose();
-            return copy;
+                var writer = XmlDictionaryWriter.CreateBinaryWriter(mem);
+                var serializer = new DataContractSerializer(type, knownTypes);
+                serializer.WriteObject(writer, src);
+                writer.Flush();
+                mem.Seek(0, SeekOrigin.Begin);
+
+                var reader = XmlDictionaryReader.CreateBinaryReader(mem, new XmlDictionaryReaderQuotas()
+                {
+                    MaxArrayLength = int.MaxValue,
+                    MaxBytesPerRead = int.MaxValue,
+                    MaxDepth = int.MaxValue,
+                    MaxNameTableCharCount = int.MaxValue,
+                    MaxStringContentLength = int.MaxValue
+                });
+                var copy = serializer.ReadObject(reader);
+                return copy;
+            }
+            catch (InvalidDataContractException)
+            {
+                // Some framework collection types (for example NameValueCollection in object graphs)
+                // cannot round-trip via DataContractSerializer in net10 paths.
+                return src;
+            }
+            finally
+            {
+                mem.Dispose();
+            }
         }
     }
 }

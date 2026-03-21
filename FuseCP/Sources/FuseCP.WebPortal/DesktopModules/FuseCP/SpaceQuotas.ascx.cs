@@ -110,8 +110,16 @@ namespace FuseCP.Portal
         {
             // load package context
             cntx = PackagesHelper.GetCachedPackageContext(PanelSecurity.PackageId);
-            
-            int packageId = ES.Services.Packages.GetPackage(PanelSecurity.PackageId).PackageId;
+            var package = ES.Services.Packages.GetPackage(PanelSecurity.PackageId);
+            if (cntx == null || package == null)
+            {
+                // Invalid or inaccessible package context should not crash page rendering.
+                lnkViewBandwidthDetails.Visible = false;
+                lnkViewDiskspaceDetails.Visible = false;
+                return;
+            }
+
+            int packageId = package.PackageId;
             lnkViewBandwidthDetails.NavigateUrl = GetNavigateBandwidthDetails(packageId);
 			lnkViewDiskspaceDetails.NavigateUrl = GetNavigateDiskspaceDetails(packageId);
         }
@@ -143,6 +151,12 @@ namespace FuseCP.Portal
 
 		protected override void OnPreRender(EventArgs e)
 		{
+            if (cntx == null || cntx.QuotasArray == null)
+            {
+                base.OnPreRender(e);
+                return;
+            }
+
             //
             AddServiceLevelsQuotas();
 			//
@@ -195,6 +209,11 @@ namespace FuseCP.Portal
 
         private void AddServiceLevelsQuotas()
         {
+            if (cntx == null || cntx.QuotasArray == null)
+            {
+                return;
+            }
+
             var orgs = ES.Services.Organizations.GetOrganizations(PanelSecurity.PackageId, true);
             OrganizationStatistics stats = null;
             if (orgs != null && orgs.FirstOrDefault() != null)

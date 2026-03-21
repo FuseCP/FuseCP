@@ -31,10 +31,13 @@ jobs:
         include:
           - language: csharp
             build_scope: server
+            build_mode: manual
           - language: csharp
             build_scope: enterprise
+            build_mode: manual
           - language: javascript-typescript
             build_scope: none
+            build_mode: none
 
     steps:
       - name: Checkout
@@ -48,6 +51,7 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: security-and-quality
+          build-mode: ${{ matrix.build_mode }}
 
       - name: Normalize checkout for JS CodeQL extraction
         if: matrix.language == 'javascript-typescript'

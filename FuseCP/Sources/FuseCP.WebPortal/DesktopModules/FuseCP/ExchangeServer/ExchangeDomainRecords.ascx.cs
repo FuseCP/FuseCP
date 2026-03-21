@@ -36,7 +36,10 @@ namespace FuseCP.Portal.ExchangeServer
             if (!IsPostBack)
             {
                 // save return URL
-                ViewState["ReturnUrl"] = Request.UrlReferrer.ToString();
+                if (Request.UrlReferrer != null)
+                {
+                    ViewState["ReturnUrl"] = Request.UrlReferrer.ToString();
+                }
 
                 ToggleRecordControls();
 

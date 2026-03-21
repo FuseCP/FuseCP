@@ -36,6 +36,9 @@ namespace FuseCP.Portal
 {
 	public partial class ServersEditServer : FuseCPModuleBase
 	{
+		private static readonly TimeSpan NonCriticalLoadTimeout = TimeSpan.FromSeconds(8);
+		private const string DiagnosticsUnavailableText = "Server unavailable";
+
 		int ServerId;
 		Task<ServerInfo> serverInfo = null;
 		async Task<ServerInfo> ServerInfo()
@@ -69,12 +72,11 @@ namespace FuseCP.Portal
 				try
 				{
 					ServerId = PanelRequest.ServerId;
+					await Task.WhenAll(BindTools(), BindServer());
 					await Task.WhenAll(
-						BindTools(),
-						BindServer(),
-						BindServerMemory(),
-						BindServerVersion(),
-						BindServerFilepath());
+						LoadNonCriticalAsync(BindServerMemory, SetMemoryDiagnosticsUnavailable),
+						LoadNonCriticalAsync(BindServerVersion, () => SetDiagnosticsText(fcpVersion, DiagnosticsUnavailableText)),
+						LoadNonCriticalAsync(BindServerFilepath, () => SetDiagnosticsText(fcpFilepath, DiagnosticsUnavailableText)));
 				}
 				catch (Exception ex)
 				{
@@ -83,6 +85,46 @@ namespace FuseCP.Portal
 				}
 
 				IPAddressesHeader.IsCollapsed = IsIpAddressesCollapsed;
+			}
+		}
+
+		private async Task LoadNonCriticalAsync(Func<Task> action, Action onFailure)
+		{
+			try
+			{
+				await WithTimeoutAsync(action());
+			}
+			catch (Exception)
+			{
+				onFailure?.Invoke();
+			}
+		}
+
+		private static async Task WithTimeoutAsync(Task task)
+		{
+			Task completedTask = await Task.WhenAny(task, Task.Delay(NonCriticalLoadTimeout));
+			if (completedTask != task)
+				throw new TimeoutException();
+
+			await task;
+		}
+
+		private void SetMemoryDiagnosticsUnavailable()
+		{
+			SetDiagnosticsText(freeMemory, "N/A");
+			SetDiagnosticsText(totalMemory, "N/A");
+		}
+
+		private static void SetDiagnosticsText(WebControl control, string value)
+		{
+			if (control is null)
+				return;
+
+			switch (control)
+			{
+				case Label label:
+					label.Text = value;
+					break;
 			}
 		}
 		//protected void rbUsersCreationMode_SelectedIndexChanged(object sender, EventArgs e)

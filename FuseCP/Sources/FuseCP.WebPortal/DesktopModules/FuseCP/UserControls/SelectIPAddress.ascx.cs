@@ -30,6 +30,8 @@ namespace FuseCP.Portal
 {
     public partial class SelectIPAddress : FuseCPControlBase
     {
+        public bool AutoBindOnInitialLoad { get; set; } = true;
+
         private bool allowEmptySelection = true;
         public bool AllowEmptySelection
         {
@@ -96,7 +98,15 @@ namespace FuseCP.Portal
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (!IsPostBack && AutoBindOnInitialLoad)
+            {
+                BindIPAddresses();
+            }
+        }
+
+        public void EnsureBound()
+        {
+            if (ddlIPAddresses.Items.Count == 0)
             {
                 BindIPAddresses();
             }

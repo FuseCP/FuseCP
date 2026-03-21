@@ -12,6 +12,33 @@ namespace FuseCP.Portal {
     
     
     public partial class ServerServicesControl {
+
+        /// <summary>
+        /// pnlLoadServices control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLoadServices;
+
+        /// <summary>
+        /// lblLoadServicesHint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLoadServicesHint;
+
+        /// <summary>
+        /// btnLoadServices control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnLoadServices;
         
         /// <summary>
         /// dlServiceGroups control.

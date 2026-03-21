@@ -28,18 +28,32 @@ namespace FuseCP.Portal
 {
     public partial class ServerServicesControl : FuseCPControlBase
     {
+        private const string ServicesLoadedViewStateKey = "ServicesLoaded";
+
         DataSet dsServices = null;
+
+        private bool ServicesLoaded
+        {
+            get { return (bool?)ViewState[ServicesLoadedViewStateKey] ?? false; }
+            set { ViewState[ServicesLoadedViewStateKey] = value; }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            BindServices();
+            if (!IsPostBack)
+            {
+                ServicesLoaded = false;
+                UpdateServicesVisibility();
+            }
         }
 
         public void BindServices()
         {
+            ServicesLoaded = true;
             dsServices = ES.Services.Servers.GetRawServicesByServerId(PanelRequest.ServerId);
             dlServiceGroups.DataSource = dsServices.Tables[0];
             dlServiceGroups.DataBind();
+            UpdateServicesVisibility();
         }
 
         public DataView GetGroupServices(int groupId)
@@ -50,6 +64,17 @@ namespace FuseCP.Portal
         public string EditServiceUrl(string key, string keyVal, string ctrlKey)
         {
             return HostModule.EditUrl(key, keyVal, ctrlKey, "ServerID=" + PanelRequest.ServerId);
+        }
+
+        private void UpdateServicesVisibility()
+        {
+            pnlLoadServices.Visible = !ServicesLoaded;
+            dlServiceGroups.Visible = ServicesLoaded;
+        }
+
+        protected void btnLoadServices_Click(object sender, EventArgs e)
+        {
+            BindServices();
         }
 
         private void linkAddService_Click(object sender, System.EventArgs e)

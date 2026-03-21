@@ -9,6 +9,12 @@
         <br />
     </div>
 </asp:Panel>
+<asp:Panel ID="pnlLoadRecords" runat="server" CssClass="alert alert-secondary d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <asp:Label ID="lblLoadRecordsHint" runat="server" Text="Existing DNS records are loaded on demand to keep large server pages responsive."></asp:Label>
+    <asp:LinkButton ID="btnLoadRecords" runat="server" CssClass="btn btn-outline-primary" OnClick="btnLoadRecords_Click" CausesValidation="False">
+        <i class="bi bi-arrow-repeat">&nbsp;</i>&nbsp;Load Existing DNS Records
+    </asp:LinkButton>
+</asp:Panel>
 <asp:GridView ID="gvRecords" runat="server" AutoGenerateColumns="False"
     DataKeyNames="RecordID" EmptyDataText="gvRecords" CssSelectorClass="NormalGridView"
     OnRowEditing="gvRecords_RowEditing" OnRowDeleting="gvRecords_RowDeleting">
@@ -60,7 +66,7 @@
             <td class="SubHead"><asp:Label ID="lblRecordData" runat="server" meta:resourcekey="lblRecordData" Text="Record Data:"></asp:Label></td>
             <td class="Normal text-nowrap">
                 <div class="d-flex flex-wrap gap-2 align-items-center">
-                <asp:TextBox ID="txtRecordData" runat="server" Width="260px" CssClass="form-control"></asp:TextBox> <uc1:SelectIPAddress ID="ipAddress" CssClass="form-control" runat="server" />
+                <asp:TextBox ID="txtRecordData" runat="server" Width="260px" CssClass="form-control"></asp:TextBox> <uc1:SelectIPAddress ID="ipAddress" CssClass="form-control" runat="server" AutoBindOnInitialLoad="false" />
                     </div>
 <!--
                 <asp:RequiredFieldValidator ID="valRequireData" runat="server" ControlToValidate="txtRecordData"

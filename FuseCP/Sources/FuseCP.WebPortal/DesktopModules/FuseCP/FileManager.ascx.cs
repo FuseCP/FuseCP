@@ -43,7 +43,10 @@ namespace FuseCP.Portal
 			// Localization for JS
 			RegisterJsLocalizedMessages();
 			//
-            gvFilesID.Text = gvFiles.ClientID;
+            if (gvFilesID != null && gvFiles != null)
+            {
+                gvFilesID.Text = gvFiles.ClientID;
+            }
 
             string downloadFile = Request["DownloadFile"];
             if (downloadFile != null)
