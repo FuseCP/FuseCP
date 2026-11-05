@@ -181,7 +181,8 @@ namespace SolidCP.Providers.Mail
 			HttpClient client = new HttpClient();
 			var loginData = new { 
 				username = AdminUsername, 
-				password = AdminPassword
+				password = AdminPassword,
+				clientId = "solidcp-" + Guid.NewGuid().ToString("N").Substring(0, 16)
 			};
 			var loginDatajson = JsonConvert.SerializeObject(loginData);
 			var authinput_post = new StringContent(loginDatajson, Encoding.UTF8, "application/json");
